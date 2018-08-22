@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/edt_obs"
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:background="@android:drawable/editbox_background"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        android:hint="Digite sua observação"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btSalvarObs"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Inserir" />
+
+</LinearLayout>

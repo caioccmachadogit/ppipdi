@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txtMarca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Marca:" />
+
+        <EditText
+            android:id="@+id/edtMarca"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:inputType="textCapSentences" />
+
+        <TextView
+            android:id="@+id/txtModelo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Modelo:" />
+
+        <EditText
+            android:id="@+id/edtModelo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:inputType="textCapSentences" />
+
+        <TextView
+            android:id="@+id/txtCapacidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Capacidade (Ah):" />
+
+        <EditText
+            android:id="@+id/edtCapacidade"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:inputType="textCapSentences" />
+
+        <TextView
+            android:id="@+id/txtLocal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Local de Instalação:" />
+
+        <EditText
+            android:id="@+id/edtLocal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:inputType="textCapSentences" />
+        
+        
+        <Button
+            android:id="@+id/btnFotoBat"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_default_lay_main"
+            android:drawableLeft="@android:drawable/ic_menu_camera"
+            android:text="Adicionar Foto"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/btnVisBat"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_default_lay_main"
+            android:drawableLeft="@android:drawable/ic_menu_gallery"
+            android:text="Visualizar Foto"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+        
+
+        <View
+            android:id="@+id/linhaBtnGravarCarr"
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="#33B5E5" />
+
+        <Button
+            android:id="@+id/btnGravarBat"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_default_lay_main"
+            android:drawableLeft="@android:drawable/ic_menu_save"
+            android:text="GRAVAR"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+</ScrollView>

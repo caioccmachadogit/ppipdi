@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- BORDA -->
+
+    <!-- ARREDONDAMENTO DAS PONTAS -->
+    <corners android:radius="5dp" />
+
+    <!-- COR GRADIENT -->
+    <!--
+         <gradient
+        android:angle="90"
+        android:endColor="#8e0101"
+        android:startColor="#ca4645" />
+    -->
+    <solid android:color="#E3E3E3" />
+
+</shape>

@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtTipoSite"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Tipo de Site: "
+                    android:textSize="15dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerTipoSite"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtAltEdif"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Altura Edificação(m):"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edtAltEdif"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"
+                    android:ems="10"
+                    android:inputType="numberDecimal" >
+                </EditText>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtEvTipo"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Estrutura Tipo:"
+                    android:textSize="15dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerEvTipo"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtEvbase"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Estrutura Base:"
+                    android:textSize="15dp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_base"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <RadioButton
+                        android:id="@+id/rb_quad"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Quadrado" />
+
+                    <RadioButton
+                        android:id="@+id/rb_trian"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Triangulo" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtEvAlt"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Estrutura Altura(m):"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edtEvAlt"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"
+                    android:ems="10"
+                    android:inputType="numberDecimal" >
+                </EditText>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtEvTot"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Altura Total    (Edificação + Altura):"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edtAltTot"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"
+                    android:ems="10"
+                    android:inputType="numberDecimal" >
+                </EditText>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtInclinado"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Trecho Inclinado Existente?"
+                    android:textSize="15dp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_inclinado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <RadioButton
+                        android:id="@+id/rb_inc_sim"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sim" />
+
+                    <RadioButton
+                        android:id="@+id/rb_inc_nao"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Não" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtReto"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Trecho Reto Existente?"
+                    android:textSize="15dp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_reto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <RadioButton
+                        android:id="@+id/rb_ret_sim"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sim" />
+
+                    <RadioButton
+                        android:id="@+id/rb_ret_nao"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Não" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtAltReta"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Altura seção reta(m):"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edtAltReta"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"
+                    android:ems="10"
+                    android:inputType="numberDecimal" >
+                </EditText>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtPoste"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Poste Reto ou Cônico?"
+                    android:textSize="15dp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_poste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <RadioButton
+                        android:id="@+id/rb_poste_ret"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Reto" />
+
+                    <RadioButton
+                        android:id="@+id/rb_poste_con"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Cônico" />
+                </RadioGroup>
+            </TableRow>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:layout_centerHorizontal="true"
+                android:background="#33B5E5" />
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtCanto"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:text="Selecione uma Cantoneira: "
+                    android:textSize="15dp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_canto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <RadioButton
+                        android:id="@+id/rb_cant_gr_1"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/tr01" />
+
+                    <RadioButton
+                        android:id="@+id/rb_cant_gr_2"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/tr02" />
+
+                    <RadioButton
+                        android:id="@+id/rb_cant_gr_3"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/tr04" />
+
+                    <RadioButton
+                        android:id="@+id/rb_cant_gr_4"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/tr05" />
+
+                    <RadioButton
+                        android:id="@+id/rb_cant_circ"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/qr_tr_circ" />
+
+                    <RadioButton
+                        android:id="@+id/rb_cant_int"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/qr_tr_inte" />
+
+                    <RadioButton
+                        android:id="@+id/rb_cant_ho_1"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/qr01" />
+
+                    <!-- <RadioButton
+                        android:id="@+id/rb_cant_ho_2"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/qr02" /> -->
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtReforco"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Reforço presente?"
+                    android:textSize="15dp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_reforco"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <RadioButton
+                        android:id="@+id/rb_reforco_sim"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sim" />
+
+                    <RadioButton
+                        android:id="@+id/rb_reforco_nao"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Não" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <TextView
+                    android:id="@+id/txtPlat"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:text="Plataforma de Topo existente?"
+                    android:textSize="15dp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_plat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <RadioButton
+                        android:id="@+id/rb_plat_sim"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sim" />
+
+                    <RadioButton
+                        android:id="@+id/rb_plat_nao"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Não" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <LinearLayout android:id="@+id/ll_tv_aba" >
+
+                    <TextView
+                        android:id="@+id/txtAba"
+                        android:layout_width="160dp"
+                        android:layout_height="match_parent"
+                        android:text="Aba Utilizada na Plataf. de Topo?"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/trImgAba"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <LinearLayout android:id="@+id/ll_rg_aba" >
+
+                    <RadioGroup
+                        android:id="@+id/rg_aba"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <RadioButton
+                            android:id="@+id/rb_aba_ps_1"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableTop="@drawable/ps_1" />
+
+                        <RadioButton
+                            android:id="@+id/rb_aba_ps_2"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableTop="@drawable/ps_2" />
+
+                        <RadioButton
+                            android:id="@+id/rb_aba_ps_3"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableTop="@drawable/ps_3" />
+
+                        <RadioButton
+                            android:id="@+id/rb_aba_ps_4"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableTop="@drawable/ps_4" />
+
+                        <RadioButton
+                            android:id="@+id/rb_aba_ps_5"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableTop="@drawable/qr_tr_inte" />
+                    </RadioGroup>
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/txtObs"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                    android:text="Observação:"
+                    android:textSize="15dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <EditText
+                    android:id="@+id/edtObs"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"
+                    android:lines="5" >
+                </EditText>
+            </TableRow>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:layout_centerHorizontal="true"
+                android:background="#33B5E5" />
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="15dp" >
+
+                <Button
+                    android:id="@+id/btnGravarEv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_default_lay_main"
+                    android:drawableLeft="@android:drawable/ic_menu_save"
+                    android:text="GRAVAR"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+</ScrollView>

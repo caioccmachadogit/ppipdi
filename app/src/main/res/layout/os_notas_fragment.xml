@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        android:text="Notas:"
+        android:textSize="15dp" />
+
+    <EditText
+        android:id="@+id/edt_notas"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@android:drawable/edit_text"
+        android:gravity="center"
+        android:hint="@string/prompt_Notas"
+        android:lines="15"
+        android:maxLength="990"
+        android:singleLine="false"
+        android:textColor="#000"
+        android:textColorHint="#000" />
+
+    <Button
+        android:id="@+id/btnGravarNotas"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_default_lay_main"
+        android:drawableLeft="@android:drawable/ic_menu_save"
+        android:text="GRAVAR"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+</LinearLayout>

@@ -1,0 +1,26 @@
+<resources>
+    <string name="geral_Ok">OK</string>
+    <string name="geral_Atencao">Atenção!</string>
+    <string name="geral_RegistroSalvo">Registro salvo com sucesso!</string>
+
+    <string name="app_name">PPI PDI</string>
+    <string name="action_settings">V.060415</string> <!-- ATUALIZACAO: NOVA FUNC BATERIAS -->
+
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+
+    <string name="circle_title">Circle Fotos</string>
+    <string name="crud_title">CRUD</string>
+    <string name="gps_title">GPS</string>
+    <string name="camera_title">Câmera</string>
+    <string name="shared_title">SharedPref</string>
+
+    <string name="nova_foto">Nova Foto</string>
+    <string name="visu_foto">Visualizar Foto</string>
+
+    <string name="login_progress_signing_in">Aguarde Verificando Dados!&#8230;</string>
+    <string name="prompt_Email">Digite Aqui seu E-mail!</string>
+    <string name="prompt_Notas">Digite aqui suas Notas!</string>
+    <string name="prompt_Passw">Digite Aqui sua Senha!</string>
+    <string name="action_sign_in_register"><b>Entrar</b> </string>
+</resources>
