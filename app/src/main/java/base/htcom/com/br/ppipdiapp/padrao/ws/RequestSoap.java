@@ -21,10 +21,10 @@ public class RequestSoap {
 	private String TAG = getClass().getSimpleName();
 	
 	public Object conectar(SoapObject soapObject, String soapAction){
-
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 				SoapEnvelope.VER11);
 		envelope.dotNet = true;
+		Log.d(TAG, soapAction+"-REQUEST->"+soapObject.toString());
 
 		envelope.setOutputSoapObject(soapObject);
 		MarshalDouble md = new MarshalDouble();
@@ -39,6 +39,7 @@ public class RequestSoap {
 			Log.e(TAG,"ERROR->"+soapAction, exception);
 			response = "x";
 		}
+		Log.d(TAG, soapAction+"-RESPONSE->"+response);
 		return response;
 	}
 	

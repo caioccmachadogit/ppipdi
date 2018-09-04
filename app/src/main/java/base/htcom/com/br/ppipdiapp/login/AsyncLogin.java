@@ -43,7 +43,6 @@ public class AsyncLogin extends AsyncTask<Colaborador, Void, String>{
 	
 	protected void onPostExecute(String result) 
 	{
-		Log.d(TAG, "response->"+result);
 		//---Executa a Pos-Requisi��o
 		this.pd.dismiss();
 		delegate.processFinish(result);

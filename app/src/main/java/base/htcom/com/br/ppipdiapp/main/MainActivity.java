@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_view_main);
         TextView tv_titulo = (TextView) findViewById(R.id.tv_titulo);
-        tv_titulo.setText("Usu�rio: "+ SharedPreferencesUtills.loadSavedPreferencesString("USER", this));
+        tv_titulo.setText("Usuário: "+ SharedPreferencesUtills.loadSavedPreferencesString("USER", this));
         USER = SharedPreferencesUtills.loadSavedPreferencesString("USER", this);
         EMPRESA = SharedPreferencesUtills.loadSavedPreferencesString("EMPRESA", this);
         ConfigurarMenu();
@@ -124,20 +124,20 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
         menuUtills.mDrawerList
                 .setOnItemClickListener(new DrawerItemClickListener());
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
+//        getActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this,
                 menuUtills.mDrawerLayout, R.drawable.ic_drawer,
                 R.string.drawer_open, R.string.drawer_close) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
+//                getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to
                 // onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
+//                getActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to
                 // onPrepareOptionsMenu()
             }
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getActionBar().setTitle(mTitle);
+//        getActionBar().setTitle(mTitle);
     }
 
     @Override
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
                     new AsyncReceberOS(this, this).execute(pOs);
                 }
                 else {
-                    Toast.makeText(this, "Verifique sua Conex�o com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 3: // RECEBIMENTO OSs - REVISAO
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
                     frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 }
                 else {
-                    Toast.makeText(this, "Verifique sua Conex�o com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 4: // ENVIO OSs
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
                     frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 }
                 else {
-                    Toast.makeText(this, "Verifique sua Conex�o com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 5: // ENVIO Fotos
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
                     EnviarUpload();
                 }
                 else {
-                    Toast.makeText(this, "Verifique sua Conex�o com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 6: // SAIR
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
                             new AlertaDialog(this).showDialogAviso("Recebimento ETP","Nenhuma ETP Recebida!");
                         }
                         else
-                            new AlertaDialog(this).showDialogAviso("Servidor Inacess�vel","Tente mais tarde!");
+                            new AlertaDialog(this).showDialogAviso("Servidor Inacessível","Tente mais tarde!");
                     }
                     break;
                 case 2: // RECEBIMENTO SITE
@@ -446,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
             if(listCarPlntaRec != null){
                 cCarPlan = listCarPlntaRec.size();
             }
-            new AlertaDialog(this).showDialogAviso("Recebimento", "ETP: "+cOS+" | Sites: "+cSite+" | Configura��es: "+cCombo+" | Carregamento: "+cCarPlan+" | Antenas: "+cAntena+"");
+            new AlertaDialog(this).showDialogAviso("Recebimento", "ETP: "+cOS+" | Sites: "+cSite+" | Configurações: "+cCombo+" | Carregamento: "+cCarPlan+" | Antenas: "+cAntena+"");
             listSiteRec = new ArrayList<Site>();
             COUNTCONFOS = 0;
         }
@@ -544,7 +544,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
                     for(int i=0; i < lstOsFinalizada.size();i++){
                         statusOsBLL.updateStatus(this, lstOsFinalizada.get(i).getLINHA(), "imagem");
                     }
-                    new AlertaDialog(this).showDialogAviso("Confirma��o Envio", "ETP Confirmada: "+contaConfEnvOs+" | Imagens: "+contaEnvUpArqPref+"");
+                    new AlertaDialog(this).showDialogAviso("Confirmação Envio", "ETP Confirmada: "+contaConfEnvOs+" | Imagens: "+contaEnvUpArqPref+"");
                 }
                 ZerarCounts();
             }

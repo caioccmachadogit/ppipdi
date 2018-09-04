@@ -95,7 +95,7 @@
                 android:inputType="textPassword"
         		android:maxLength="10"
                 android:singleLine="true"
-                android:text="123456" />
+                android:text="htcom2018" />
 
             <LinearLayout
                 style="@style/LoginFormContainer"

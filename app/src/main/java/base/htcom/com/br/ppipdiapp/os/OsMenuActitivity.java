@@ -82,19 +82,19 @@ public class OsMenuActitivity extends AppCompatActivity{
 				(ListView) findViewById(R.id.left_drawer), this, dataList);
         menuUtills.mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
+//		getActionBar().setHomeButtonEnabled(true);
 		
 		mDrawerToggle = new ActionBarDrawerToggle(this, menuUtills.mDrawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(mTitle);
+//				getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle(mDrawerTitle);
+//				getActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
@@ -120,11 +120,11 @@ public class OsMenuActitivity extends AppCompatActivity{
     	else {
     		dataList.add(new DrawerItem("1)Estrutura Vertical", R.mipmap.ic_compose_inverse));
     		dataList.add(new DrawerItem("2)Estrutura Vertical Fotos", R.mipmap.ic_compose_inverse));
-    		dataList.add(new DrawerItem("3)Carregamento Revis�o", R.mipmap.ic_compose_inverse));
+    		dataList.add(new DrawerItem("3)Carregamento Revisão", R.mipmap.ic_compose_inverse));
     		dataList.add(new DrawerItem("4)Carregamento Existente", R.mipmap.ic_compose_inverse));
     		dataList.add(new DrawerItem("5)Arquivos Preferenciais", R.mipmap.ic_compose_inverse));
     		dataList.add(new DrawerItem("6)Baterias", R.mipmap.ic_compose_inverse));
-    		dataList.add(new DrawerItem("7)Notas Revis�o", R.mipmap.ic_compose_inverse));
+    		dataList.add(new DrawerItem("7)Notas Revisão", R.mipmap.ic_compose_inverse));
     		dataList.add(new DrawerItem("8)Finalizar ETP", R.mipmap.ic_action_good));
     		dataList.add(new DrawerItem("Voltar", R.mipmap.ic_voltar));
 		}
@@ -133,7 +133,7 @@ public class OsMenuActitivity extends AppCompatActivity{
 
 	public void setTitle(CharSequence title) {
 		mTitle = title;
-		getActionBar().setTitle(mTitle);
+//		getActionBar().setTitle(mTitle);
 	}
     
     @Override
@@ -194,7 +194,7 @@ public class OsMenuActitivity extends AppCompatActivity{
 					frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
 				}
 				else {
-					Toast.makeText(this, "N�o Habilitado para Revis�o!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, "Não Habilitado para Revisão!", Toast.LENGTH_SHORT).show();
 				}
 				break;
 			case 4:
@@ -208,7 +208,7 @@ public class OsMenuActitivity extends AppCompatActivity{
 					frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
 				}
 				else {
-					Toast.makeText(this, "N�o Habilitado para Revis�o!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, "Não Habilitado para Revisão!", Toast.LENGTH_SHORT).show();
 				}
 				break;
 			case 6:
@@ -219,7 +219,7 @@ public class OsMenuActitivity extends AppCompatActivity{
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 			     
 				 alertDialogBuilder.setTitle("Finalizar ETP");
-				 alertDialogBuilder.setMessage("Estar� dispon�vel somente para consulta, deseja finalizar?");
+				 alertDialogBuilder.setMessage("Estará disponível somente para consulta, deseja finalizar?");
 				 // set positive button: Yes message
 				 alertDialogBuilder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,int id) {
@@ -242,15 +242,15 @@ public class OsMenuActitivity extends AppCompatActivity{
 										Toast.makeText(getApplicationContext(), "ETP Finalizada pronta para envio!", Toast.LENGTH_SHORT).show();
 									}
 									else {
-										Toast.makeText(getApplicationContext(), "Problemas, ETP N�o Finalizada!", Toast.LENGTH_SHORT).show();
+										Toast.makeText(getApplicationContext(), "Problemas, ETP Não Finalizada!", Toast.LENGTH_SHORT).show();
 									}
 								}
 								else {
-									Toast.makeText(getApplicationContext(), "Problemas, ETP N�o Finalizada!", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(), "Problemas, ETP Não Finalizada!", Toast.LENGTH_SHORT).show();
 								}
 							}
 							catch (Exception e) {
-								Toast.makeText(getApplicationContext(), "Problemas, ETP N�o Finalizada!", Toast.LENGTH_SHORT).show();
+								Toast.makeText(getApplicationContext(), "Problemas, ETP Não Finalizada!", Toast.LENGTH_SHORT).show();
 								LogErrorBLL.LogError(e.getMessage(), "ERROR FINALIZACAO DE OS",getApplicationContext());
 								e.printStackTrace();
 							}
@@ -259,7 +259,7 @@ public class OsMenuActitivity extends AppCompatActivity{
 						}
 					  });
 				 // set negative button: No message
-				 alertDialogBuilder.setNegativeButton("N�o",new DialogInterface.OnClickListener() {
+				 alertDialogBuilder.setNegativeButton("Não",new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,int id) {
 							// cancel the alert box and put a Toast to the user
 							dialog.cancel();

@@ -136,7 +136,7 @@ public class OsBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores CursorCrud",  dump);
+		Log.d("Valores CursorCrud",  dump);
 		return retorno;
 	}
 	
