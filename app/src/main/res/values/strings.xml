@@ -30,4 +30,13 @@
     <string name="menu_enviar_etp">Enviar ETP</string>
     <string name="menu_enviar_fotos">Enviar Fotos</string>
     <string name="menu_sair">Sair</string>
+    <string name="menu_est_vert">1)Estrutura Vertical</string>
+    <string name="menu_est_vert_fotos">2)Estrutura Vertical Fotos</string>
+    <string name="menu_carregamento">3)Carregamento</string>
+    <string name="menu_carreg_exist">4)Carregamento Existente</string>
+    <string name="menu_arq_pref">5)Arquivos Preferenciais</string>
+    <string name="menu_baterias">6)Baterias</string>
+    <string name="menu_notas">7)Notas</string>
+    <string name="menu_finalizar">8)Finalizar ETP</string>
+    <string name="menu_voltar">Voltar</string>
 </resources>

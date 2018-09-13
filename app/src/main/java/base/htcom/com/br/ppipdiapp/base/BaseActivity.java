@@ -23,16 +23,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.arq_pref.ArqPrefListFragment;
+import base.htcom.com.br.ppipdiapp.bateria.ListBateriaFragment;
+import base.htcom.com.br.ppipdiapp.carregamento.ListCarregFragment;
+import base.htcom.com.br.ppipdiapp.carregamento.ListCarregPlantaFragment;
+import base.htcom.com.br.ppipdiapp.ev.EvFotosFragment;
+import base.htcom.com.br.ppipdiapp.ev.EvFragment;
 import base.htcom.com.br.ppipdiapp.login.LoginActivity;
 import base.htcom.com.br.ppipdiapp.main.EnviarOSFragment;
 import base.htcom.com.br.ppipdiapp.main.ListOSFinalizadaFragment;
 import base.htcom.com.br.ppipdiapp.main.ListOSFragment;
 import base.htcom.com.br.ppipdiapp.main.MainActivity;
 import base.htcom.com.br.ppipdiapp.main.ReceberOSRevFragment;
-import base.htcom.com.br.ppipdiapp.menu.MenuCreator;
-import base.htcom.com.br.ppipdiapp.menu.MenuItemEnum;
-import base.htcom.com.br.ppipdiapp.menu.NavDrawerUtil;
-import base.htcom.com.br.ppipdiapp.menu.TipoMenu;
+import base.htcom.com.br.ppipdiapp.padrao.menu.MenuCreator;
+import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
+import base.htcom.com.br.ppipdiapp.padrao.menu.NavDrawerUtil;
+import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
+import base.htcom.com.br.ppipdiapp.notas.NotasFragment;
+import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 import base.htcom.com.br.ppipdiapp.padrao.funcoes.ControleConexao;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 
@@ -80,7 +88,7 @@ public class BaseActivity extends AppCompatActivity {
 
     //=========================MENU LATERAL E TOOLBAR==========================
 
-    protected void setTitle(String title){
+    protected void setTitleTela(String title){
         tvTitle = findViewById(R.id.tvTitle);
         tvTitle.setText(title);
 
@@ -133,15 +141,13 @@ public class BaseActivity extends AppCompatActivity {
 
     // Trata o evento do menu lateral
     private void onNavDrawerItemSelected(MenuItem menuItem) {
-        Fragment fragment = null;
+        setTitleTela(menuItem.toString());
         switch (menuItem.getItemId()) {
             case R.string.menu_etp:
-                fragment = new ListOSFragment();
-                replaceFragment(fragment);
+                replaceFragment(new ListOSFragment());
                 break;
             case R.string.menu_etp_finalizada:
-                fragment = new ListOSFinalizadaFragment();
-                replaceFragment(fragment);
+                replaceFragment(new ListOSFinalizadaFragment());
                 break;
             case R.string.menu_verifica_etp:
                 if(verificaConexao())
@@ -149,14 +155,12 @@ public class BaseActivity extends AppCompatActivity {
                 break;
             case R.string.menu_verificar_rev:
                 if(verificaConexao()){
-                    fragment = new ReceberOSRevFragment();
-                    replaceFragment(fragment);
+                    replaceFragment(new ReceberOSRevFragment());
                 }
                 break;
             case R.string.menu_enviar_etp:
                 if(verificaConexao()){
-                    fragment = new EnviarOSFragment();
-                    replaceFragment(fragment);
+                    replaceFragment(new EnviarOSFragment());
                 }
                 break;
             case R.string.menu_enviar_fotos:
@@ -165,6 +169,36 @@ public class BaseActivity extends AppCompatActivity {
                 break;
             case R.string.menu_sair:
                 abrirAlertLogout();
+                break;
+
+            case R.string.menu_est_vert:
+                replaceFragment(new EvFragment());
+                break;
+            case R.string.menu_est_vert_fotos:
+                replaceFragment(new EvFotosFragment());
+                break;
+            case R.string.menu_carregamento:
+                replaceFragment(new ListCarregFragment());
+                break;
+            case R.string.menu_carreg_exist:
+                if(((OsMenuActitivity)mActivity).verificaOsAberta())
+                    replaceFragment(new ListCarregPlantaFragment());
+                break;
+            case R.string.menu_arq_pref:
+                replaceFragment(new ArqPrefListFragment());
+                break;
+            case R.string.menu_baterias:
+                if(((OsMenuActitivity)mActivity).verificaOsAberta())
+                    replaceFragment(new ListBateriaFragment());
+                break;
+            case R.string.menu_notas:
+                replaceFragment(new NotasFragment());
+                break;
+            case R.string.menu_finalizar:
+                ((OsMenuActitivity)mActivity).finalizarOs();
+                break;
+            case R.string.menu_voltar:
+                finish();
                 break;
         }
     }

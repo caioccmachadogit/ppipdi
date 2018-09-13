@@ -16,11 +16,23 @@
 
         <include layout="@layout/include_toolbar" />
 
+        <TextView
+            android:layout_marginLeft="@dimen/dimens_40"
+            android:id="@+id/tv_titulo_os"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#2e6fc8"
+            android:padding="4dp"
+            android:textSize="15dp"
+            android:textStyle="italic"
+            android:text="" />
+
         <!-- Conteúdo: layout de marcação para fragments -->
         <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            android:padding="@dimen/dimens_20"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
         <!-- Conteúdo: layout de marcação para fragments -->
 
         <!-- Conteúdo: layout de marcação para Linear -->

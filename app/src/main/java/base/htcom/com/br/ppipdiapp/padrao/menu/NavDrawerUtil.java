@@ -1,4 +1,4 @@
-package base.htcom.com.br.ppipdiapp.menu;
+package base.htcom.com.br.ppipdiapp.padrao.menu;
 
 import android.support.design.widget.NavigationView;
 import android.view.View;

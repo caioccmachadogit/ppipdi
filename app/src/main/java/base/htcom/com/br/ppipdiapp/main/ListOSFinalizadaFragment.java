@@ -101,11 +101,12 @@ public class ListOSFinalizadaFragment extends ListFragment{
 			startActivity(i);
 		}
 		else if (item.getTitle() == "Reenviar ETP") {
-			Bundle arguments = new Bundle();
-	        arguments.putString(_TAGLINHA, _linhaOs);
-	        ReenviarOSFragment reenviarOSFragment = ReenviarOSFragment.newInstance(arguments);
-	        android.support.v4.app.FragmentManager frgManager = getFragmentManager();
-			frgManager.beginTransaction().replace(R.id.content_frame, reenviarOSFragment).commit();
+			// TODO: 13/09/2018 rever
+//			Bundle arguments = new Bundle();
+//	        arguments.putString(_TAGLINHA, _linhaOs);
+//	        ReenviarOSFragment reenviarOSFragment = ReenviarOSFragment.newInstance(arguments);
+//	        android.support.v4.app.FragmentManager frgManager = getFragmentManager();
+//			frgManager.beginTransaction().replace(R.id.content_frame, reenviarOSFragment).commit();
 		}
 		else {
 			return false;

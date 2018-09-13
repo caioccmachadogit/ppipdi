@@ -35,8 +35,8 @@ import base.htcom.com.br.ppipdiapp.bll.OsBLL;
 import base.htcom.com.br.ppipdiapp.bll.SiteBLL;
 import base.htcom.com.br.ppipdiapp.bll.StatusControleUploadBLL;
 import base.htcom.com.br.ppipdiapp.bll.StatusOsBLL;
-import base.htcom.com.br.ppipdiapp.menu.MenuItemEnum;
-import base.htcom.com.br.ppipdiapp.menu.TipoMenu;
+import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
+import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
 import base.htcom.com.br.ppipdiapp.model.CarregamentoPlanta;
 import base.htcom.com.br.ppipdiapp.model.Combo;
 import base.htcom.com.br.ppipdiapp.model.ControleUpload;
@@ -79,7 +79,7 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
 
         setmActivity(this);
         replaceFragment(new ListOSFragment());
-        setTitle("ETP");
+        setTitleTela("ETP");
         setUpToolbar();
         setupNavDrawer(MenuItemEnum.ETP, TipoMenu.PRINCIPAL);
     }
