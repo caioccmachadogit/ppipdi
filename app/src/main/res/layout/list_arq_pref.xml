@@ -4,29 +4,54 @@
     android:id="@+id/linearLayout_arqPref"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp" >
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:padding="@dimen/dimens_10"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginLeft="@dimen/dimens_80"
+            android:textSize="@dimen/dimens_25"
+            android:id="@+id/tvTitCat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textColor="@color/colorWhite"
+            android:textStyle="italic|bold" />
+
+        <LinearLayout
+            android:gravity="right|bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:gravity="right"
+                android:id="@+id/tvVersao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="versao app 1231233"
+                android:textColor="@color/colorWhite"
+                android:textStyle="italic|bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tvTitSite"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:text=""
         android:textColor="#2e6fc8"
         android:textStyle="italic" />
 
-    <TextView
-        android:id="@+id/tvTitCat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="8dp"
-        android:text="Categoria"
-        android:textSize="15dp"
-        android:textStyle="bold" />
-
     <ListView
+        android:padding="@dimen/dimens_5"
         android:id="@+id/lv_arq_pref"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

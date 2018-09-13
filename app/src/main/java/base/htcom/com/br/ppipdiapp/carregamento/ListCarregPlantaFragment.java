@@ -2,13 +2,13 @@ package base.htcom.com.br.ppipdiapp.carregamento;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+
 import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
@@ -19,7 +19,6 @@ import base.htcom.com.br.ppipdiapp.model.CarregamentoPlanta;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
 public class ListCarregPlantaFragment extends Fragment {
-	private FragmentManager frgManager;
 	Bundle arguments;
 	private ListView lv;
 	public static String _ID = "_ID";
@@ -40,10 +39,8 @@ public class ListCarregPlantaFragment extends Fragment {
 				arguments = new Bundle();
 		        arguments.putString(_ID, (String)edit.getTag());
 		        NovoCarregFragment.tipoCarregamento = "PLANTA";
-				NovoCarregFragment fragment = NovoCarregFragment.newInstance(arguments); 
-				frgManager = getFragmentManager();
-				// TODO: 22/08/2018 rever
-//				frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+				NovoCarregFragment fragment = NovoCarregFragment.newInstance(arguments);
+				((OsMenuActitivity) getActivity()).setReplaceFragment(fragment);
 	        }
 	    });
 		return view;

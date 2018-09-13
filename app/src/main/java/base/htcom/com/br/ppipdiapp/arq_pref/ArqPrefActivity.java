@@ -1,7 +1,6 @@
 package base.htcom.com.br.ppipdiapp.arq_pref;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +28,7 @@ import java.util.Random;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterArqPref;
+import base.htcom.com.br.ppipdiapp.base.BaseActivity;
 import base.htcom.com.br.ppipdiapp.bll.ArqPrefBLL;
 import base.htcom.com.br.ppipdiapp.bll.ComboBLL;
 import base.htcom.com.br.ppipdiapp.bll.ControleUploadBLL;
@@ -45,7 +45,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.CriarDirExterno;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSTracker;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 
-@SuppressLint("NewApi") public class ArqPrefActivity extends Activity {
+public class ArqPrefActivity extends BaseActivity {
 	private ListView lv;
 	private AlertDialog alerta;
 	GPSUtills gpsUtills = new GPSUtills();
@@ -63,33 +63,21 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 	private static String LONGITUDE = null;
 	private String _TIPOREL;
 
-	@SuppressLint("NewApi") @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_arq_pref);
 		_TIPOREL = getIntent().getStringExtra("_TIPOREL");
-		getActionBar().setDisplayHomeAsUpEnabled(true);
 		TextView titCat = (TextView) findViewById(R.id.tvTitCat);
 		titCat.setText("Categoria - "+_TIPOREL);
+		TextView tvVersao = (TextView) findViewById(R.id.tvVersao);
+		tvVersao.setText(getContext().getResources().getString(R.string.action_settings));
 		TextView tit = (TextView) findViewById(R.id.tvTitSite);
 		tit.setText("Site: "+ OsMenuActitivity._OS.getCOD_ENTIDADE().replace("0", "")+ " | ETP: "+OsMenuActitivity._CODIGO);
 		lv = (ListView) findViewById(R.id.lv_arq_pref);
 		lv.setItemsCanFocus(true);
 		AtualizarListViewArqs();
 	}
-	
-	@Override
-	   public boolean onOptionsItemSelected(MenuItem item) {
-	      switch (item.getItemId()) {
-	         // Respond to the action bar's Up/Home button
-	         case android.R.id.home:
-				finish();
-				break;
-	      }
-	      return true;
-	   }
-	
-	
 
 	private void AtualizarListViewArqs() {
 		try {
@@ -159,11 +147,11 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 					//=========VERIFICAR GPS==========
 				}
 				else {
-					Toast.makeText(ArqPrefActivity.this, "Somente para marca��o OK!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ArqPrefActivity.this, "Somente para marcação OK!", Toast.LENGTH_SHORT).show();
 				}
 			}
 			else {
-				Toast.makeText(ArqPrefActivity.this, "Somente para marca��o OK!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ArqPrefActivity.this, "Somente para marcação OK!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -183,7 +171,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 			startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 		}
 		else {
-			Toast.makeText(ArqPrefActivity.this, "N�o habilitado para capturar foto, problemas com a mem�ria Interna!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ArqPrefActivity.this, "Não habilitado para capturar foto, problemas com a memória Interna!", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -283,10 +271,10 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 			if(LATITUDE != null && LONGITUDE != null){
 				controleUpload.setCOLUNA_REF_latitude(LATITUDE.replace(".", ","));
 				controleUpload.setCOLUNA_REF_longitude(LONGITUDE.replace(".", ","));
-				Toast.makeText(this, "Localiza��o Recebida!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Localização Recebida!", Toast.LENGTH_SHORT).show();
 			}
 			else {
-				Toast.makeText(this, "N�o foi poss�vel receber a Localiza��o!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Não foi possível receber a Localização!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -307,7 +295,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 				DialogObs(Pref);
 			}
 			else {
-				Toast.makeText(ArqPrefActivity.this, "Marque uma Op��o!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ArqPrefActivity.this, "Marque uma Opção!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -330,14 +318,14 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 					ArqPrefBLL arqPrefBLL = new ArqPrefBLL();
 					arqPref.setOS_VERIF_20XXX(arqPref.getOS_VERIF_20XXX().substring(0,10)+edObs.getText());
 					if(arqPrefBLL.update(ArqPrefActivity.this, arqPref) == 1 ){
-						Toast.makeText(ArqPrefActivity.this, "Observa��o Inserida!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ArqPrefActivity.this, "Observação Inserida!", Toast.LENGTH_SHORT).show();
 					}
 					else {
-						Toast.makeText(ArqPrefActivity.this, "Problemas ao inserir Observa��o!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ArqPrefActivity.this, "Problemas ao inserir Observação!", Toast.LENGTH_SHORT).show();
 					}
 				}
 				catch (Exception e) {
-					LogErrorBLL.LogError(e.getMessage(), "ERROR ao inserir Observa��o",ArqPrefActivity.this);
+					LogErrorBLL.LogError(e.getMessage(), "ERROR ao inserir Observação",ArqPrefActivity.this);
 					alerta.dismiss();
 					e.printStackTrace();
 				}
@@ -345,7 +333,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 			}
 		});
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Observa��o");
+		builder.setTitle("Observação");
         builder.setView(view);
         alerta = builder.create();
         alerta.show();
@@ -365,15 +353,15 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 						DialogImg(controleUpload);
 					}
 					else {
-						Toast.makeText(ArqPrefActivity.this, "Ainda n�o existe foto!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ArqPrefActivity.this, "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
 					}
 				}
 				else {
-					Toast.makeText(ArqPrefActivity.this, "Somente para marca��o OK!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ArqPrefActivity.this, "Somente para marcação OK!", Toast.LENGTH_SHORT).show();
 				}
 			}
 			else {
-				Toast.makeText(ArqPrefActivity.this, "Somente para marca��o OK!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ArqPrefActivity.this, "Somente para marcação OK!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
