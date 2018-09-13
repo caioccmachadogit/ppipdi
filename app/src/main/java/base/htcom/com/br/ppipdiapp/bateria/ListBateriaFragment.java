@@ -2,7 +2,6 @@ package base.htcom.com.br.ppipdiapp.bateria;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +21,6 @@ import base.htcom.com.br.ppipdiapp.model.Bateria;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
 public class ListBateriaFragment extends Fragment {
-	private FragmentManager frgManager;
 	private Bundle arguments;
 	private NovaBateriaFragment fragment;
 	private ListView lv;
@@ -46,9 +44,7 @@ public class ListBateriaFragment extends Fragment {
 				arguments = new Bundle();
 		        arguments.putString(_ID, (String)edit.getTag());
 				fragment = NovaBateriaFragment.newInstance(arguments); 
-				frgManager = getFragmentManager();
-				// TODO: 22/08/2018 rever
-//				frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+				((OsMenuActitivity)getActivity()).setReplaceFragment(fragment);
 	        }
 	    });
 		
@@ -60,9 +56,7 @@ public class ListBateriaFragment extends Fragment {
 					arguments = new Bundle();
 			        arguments.putString(_ID, "0");
 			        fragment = NovaBateriaFragment.newInstance(arguments);
-					frgManager = getFragmentManager();
-					// TODO: 22/08/2018 rever
-//					frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+					((OsMenuActitivity)getActivity()).setReplaceFragment(fragment);
 				}
 				catch (Exception e) {
 					e.printStackTrace();

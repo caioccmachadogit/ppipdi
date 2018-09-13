@@ -284,7 +284,6 @@ public class EvFragment extends Fragment {
 						else firstComboSite = true;*/
 					}
 					catch (Exception e) {
-						// TODO: handle exception
 					}
 				}
 				@Override
@@ -389,7 +388,6 @@ public class EvFragment extends Fragment {
 					else firstComboEv = true;
 				}
 				catch (Exception e) {
-					// TODO: handle exception
 				}
 			}
 			@Override

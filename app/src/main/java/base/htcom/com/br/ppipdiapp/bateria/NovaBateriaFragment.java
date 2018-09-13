@@ -2,7 +2,6 @@ package base.htcom.com.br.ppipdiapp.bateria;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -154,7 +152,6 @@ public class NovaBateriaFragment extends Fragment {
 	private void BtnGravar() {
 		try {
 			Fragment fragment = null;
-			FragmentManager frgManager;
 			if(validarEditTxt(lstValidade)){
 				//=======CRIA��O ===========
 				if(ID.equals("0")){
@@ -162,9 +159,7 @@ public class NovaBateriaFragment extends Fragment {
 					if(Long.valueOf(ID) > 0){
 						Toast.makeText(getActivity(), "Dados gravados com sucesso!", Toast.LENGTH_LONG).show();
 						fragment = new ListBateriaFragment();
-						frgManager = getFragmentManager();
-						// TODO: 22/08/2018 rever
-//						frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+						((OsMenuActitivity)getActivity()).setReplaceFragment(fragment);
 					}
 					else {
 						Toast.makeText(getActivity(),"Ocorreu um erro ao gravar o registro!",Toast.LENGTH_LONG).show();
@@ -175,9 +170,7 @@ public class NovaBateriaFragment extends Fragment {
 					if(bateriaBLL.Update(getActivity(), Preparar(ID)) == 1){
 						Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
 						fragment = new ListBateriaFragment();
-						frgManager = getFragmentManager();
-						// TODO: 22/08/2018 rever
-//						frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+						((OsMenuActitivity)getActivity()).setReplaceFragment(fragment);
 					}
 					else {
 						Toast.makeText(getActivity(),"Ocorreu um erro ao alterar o registro!",Toast.LENGTH_LONG).show();
@@ -251,7 +244,7 @@ public class NovaBateriaFragment extends Fragment {
 				startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 			}
 			else {
-				Toast.makeText(getActivity(), "N�o habilitado para capturar foto, problemas com a mem�ria Interna!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Não habilitado para capturar foto, problemas com a memória Interna!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -340,15 +333,15 @@ public class NovaBateriaFragment extends Fragment {
 							DialogImg(controleUpload);
 						}
 						else {
-							Toast.makeText(getActivity(), "Ainda n�o existe foto!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
 						}
 					}
 					else {
-						Toast.makeText(getActivity(), "Ainda n�o existe foto!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
 					}
 				}
 				else {
-					Toast.makeText(getActivity(), "Ainda n�o existe foto!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
 				}
 			}
 			catch (Exception e) {
@@ -424,10 +417,10 @@ public class NovaBateriaFragment extends Fragment {
 			if(LATITUDE != null && LONGITUDE != null){
 				controleUpload.setCOLUNA_REF_latitude(LATITUDE.replace(".", ","));
 				controleUpload.setCOLUNA_REF_longitude(LONGITUDE.replace(".", ","));
-				Toast.makeText(getActivity(), "Localiza��o Recebida!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Localização Recebida!", Toast.LENGTH_SHORT).show();
 			}
 			else {
-				Toast.makeText(getActivity(), "N�o foi poss�vel receber a Localiza��o!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Não foi possível receber a Localização!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {

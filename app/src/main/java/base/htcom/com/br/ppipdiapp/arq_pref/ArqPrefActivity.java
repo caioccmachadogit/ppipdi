@@ -278,7 +278,6 @@ public class ArqPrefActivity extends BaseActivity {
 			}
 		}
 		catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return controleUpload;

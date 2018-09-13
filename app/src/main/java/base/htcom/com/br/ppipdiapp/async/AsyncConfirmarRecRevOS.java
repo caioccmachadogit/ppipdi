@@ -53,7 +53,6 @@ public class AsyncConfirmarRecRevOS extends AsyncTask<Os, String, String>{
 		try {
 			ti.respostaAsyncConfirmaRecOs(result);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.pd.dismiss();
