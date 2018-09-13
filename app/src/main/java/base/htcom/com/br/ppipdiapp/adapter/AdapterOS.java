@@ -58,7 +58,7 @@ public class AdapterOS extends CursorAdapter{
 	    holder.status = (TextView)view.findViewById(R.id.tv_status);
 	    holder.status.setText("Nova");
 	    if(cursor.getString(cursor.getColumnIndex(cursor.getColumnName(16))).equals("CAMPO REVISAO")){
-	    	holder.status.setText("Revis�o");
+	    	holder.status.setText("Revisão");
 	    }
 	}
 

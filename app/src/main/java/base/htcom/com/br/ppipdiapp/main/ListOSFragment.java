@@ -70,7 +70,7 @@ public class ListOSFragment extends Fragment{
 							}
 						}
 						else {
-							Toast.makeText(getActivity(), "ETP com coordenada Inv�lida, reporte ao respons�vel!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), "ETP com coordenada Inválida, reporte ao responsável!", Toast.LENGTH_SHORT).show();
 						}
 			        }else{
 			        	// can't get location
@@ -82,7 +82,7 @@ public class ListOSFragment extends Fragment{
 					//-22.2270778, -45.9393716 - Pouso alegre
 				} catch (Exception e) {
 					LogErrorBLL.LogError(e.getMessage(), "Problemas com a Cerca Digital",getActivity());
-					Toast.makeText(getActivity(), "Aguarde a inicializa��o do GPS...", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Aguarde a inicialização do GPS...", Toast.LENGTH_SHORT).show();
 				}
 			}
 			

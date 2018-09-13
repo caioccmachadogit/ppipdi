@@ -1,21 +1,6 @@
 package base.htcom.com.br.ppipdiapp.main;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -40,6 +25,7 @@ import base.htcom.com.br.ppipdiapp.async.AsyncReceberModeloAntena;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberOS;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberSite;
 import base.htcom.com.br.ppipdiapp.async.TarefaInterface;
+import base.htcom.com.br.ppipdiapp.base.BaseActivity;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoPlantaBLL;
 import base.htcom.com.br.ppipdiapp.bll.ComboBLL;
 import base.htcom.com.br.ppipdiapp.bll.ControleUploadBLL;
@@ -49,7 +35,8 @@ import base.htcom.com.br.ppipdiapp.bll.OsBLL;
 import base.htcom.com.br.ppipdiapp.bll.SiteBLL;
 import base.htcom.com.br.ppipdiapp.bll.StatusControleUploadBLL;
 import base.htcom.com.br.ppipdiapp.bll.StatusOsBLL;
-import base.htcom.com.br.ppipdiapp.login.LogoutUtills;
+import base.htcom.com.br.ppipdiapp.menu.MenuItemEnum;
+import base.htcom.com.br.ppipdiapp.menu.TipoMenu;
 import base.htcom.com.br.ppipdiapp.model.CarregamentoPlanta;
 import base.htcom.com.br.ppipdiapp.model.Combo;
 import base.htcom.com.br.ppipdiapp.model.ControleUpload;
@@ -57,19 +44,11 @@ import base.htcom.com.br.ppipdiapp.model.Insumos;
 import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.model.Site;
 import base.htcom.com.br.ppipdiapp.model.StatusControleUpload;
-import base.htcom.com.br.ppipdiapp.padrao.drawer.DrawerItem;
-import base.htcom.com.br.ppipdiapp.padrao.drawer.MenuUtills;
-import base.htcom.com.br.ppipdiapp.padrao.funcoes.ControleConexao;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 
-public class MainActivity extends AppCompatActivity implements TarefaInterface {
+public class MainActivity extends BaseActivity implements TarefaInterface {
 
-    MenuUtills menuUtills = new MenuUtills();
-    List<DrawerItem> dataList;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mTitle;
-    private CharSequence mDrawerTitle;
     private int POSITION;
     public static int COUNTOS=0; //var de controle precisa inicializar
     public static int COUNTSITE=0; //var de controle precisa inicializar
@@ -92,180 +71,40 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
     public static int contaConfEnvOs=0;
     public static int cEnvioConfEnvOs=0;
     private List<ControleUpload> lstUpArqPrefEnvio;
-    public static String USER;
-    public static String EMPRESA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu_view_main);
-        TextView tv_titulo = (TextView) findViewById(R.id.tv_titulo);
-        tv_titulo.setText("Usuário: "+ SharedPreferencesUtills.loadSavedPreferencesString("USER", this));
-        USER = SharedPreferencesUtills.loadSavedPreferencesString("USER", this);
-        EMPRESA = SharedPreferencesUtills.loadSavedPreferencesString("EMPRESA", this);
-        ConfigurarMenu();
+        setContentView(R.layout.activity_main);
+
+        setmActivity(this);
+        replaceFragment(new ListOSFragment());
+        setTitle("ETP");
+        setUpToolbar();
+        setupNavDrawer(MenuItemEnum.ETP, TipoMenu.PRINCIPAL);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.splash, menu);
-        return true;
-    }
+//    private void PreencherListMenu() {
+//        dataList = new ArrayList<DrawerItem>();
+//        // Add Drawer Item to dataList
+//        dataList.add(new DrawerItem("ETP", R.drawable.ic_registration_form_inverse));
+//        dataList.add(new DrawerItem("ETP Finalizada", R.drawable.ic_registration_form_inverse));
+//        dataList.add(new DrawerItem("Verificar ETP", R.drawable.ic_sincronizacao));
+//        dataList.add(new DrawerItem("Verificar Rev. ETP", R.drawable.ic_sincronizacao));
+//        dataList.add(new DrawerItem("Enviar ETP", R.drawable.ic_upload_inverse));
+//        dataList.add(new DrawerItem("Enviar Fotos", R.drawable.ic_upload_inverse));
+//        dataList.add(new DrawerItem("Sair", R.mipmap.ic_cancelar));
+//    }
 
-    // ==========PADR�O PARA CRIAR MENU===============================
-
-    @SuppressLint("NewApi")
-    private void ConfigurarMenu() {
-        PreencherListMenu();
-        mTitle = mDrawerTitle = getTitle();
-        menuUtills.Inicializar((DrawerLayout) findViewById(R.id.drawer_layout),
-                (ListView) findViewById(R.id.left_drawer), this, dataList);
-        menuUtills.mDrawerList
-                .setOnItemClickListener(new DrawerItemClickListener());
-
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
-//        getActionBar().setHomeButtonEnabled(true);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this,
-                menuUtills.mDrawerLayout, R.drawable.ic_drawer,
-                R.string.drawer_open, R.string.drawer_close) {
-            public void onDrawerClosed(View view) {
-//                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
-            }
-
-            public void onDrawerOpened(View drawerView) {
-//                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
-            }
-        };
-
-        menuUtills.mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-    private void PreencherListMenu() {
-        dataList = new ArrayList<DrawerItem>();
-        // Add Drawer Item to dataList
-        dataList.add(new DrawerItem("ETP", R.drawable.ic_registration_form_inverse));
-        dataList.add(new DrawerItem("ETP Finalizada", R.drawable.ic_registration_form_inverse));
-        dataList.add(new DrawerItem("Verificar ETP", R.drawable.ic_sincronizacao));
-        dataList.add(new DrawerItem("Verificar Rev. ETP", R.drawable.ic_sincronizacao));
-        dataList.add(new DrawerItem("Enviar ETP", R.drawable.ic_upload_inverse));
-        dataList.add(new DrawerItem("Enviar Fotos", R.drawable.ic_upload_inverse));
-        dataList.add(new DrawerItem("Sair", R.mipmap.ic_cancelar));
-    }
-
-    @SuppressLint("NewApi")
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-//        getActionBar().setTitle(mTitle);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private class DrawerItemClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            SelectItem(position);
-
-        }
-    }
-
-    // ==========PADR�O PARA CRIAR MENU===============================
-
-    @SuppressLint("NewApi")
-    public void SelectItem(int possition) {
-        Fragment fragment = null;
-        FragmentManager frgManager = getSupportFragmentManager();
-        switch (possition) {
-            case 0: // LISTAGEM OSs
-                fragment = new ListOSFragment();
-                frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                break;
-            case 1: // LISTAGEM OSs Finalizada
-                fragment = new ListOSFinalizadaFragment();
-                frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                break;
-            case 2:// RECEBIMENTO OSs
-                if(!ControleConexao.checkNetworkInterface(this).equals("none")){
-                    POSITION = 0;
-                    Os pOs = new Os();
-                    pOs.setSOLIC_OV_SERV_NOME(SharedPreferencesUtills
-                            .loadSavedPreferencesString("USER", this));
-                    pOs.setSOLIC_VISTORIA_EMPRESA_COD(SharedPreferencesUtills
-                            .loadSavedPreferencesString("EMPRESA", this));
-                    pOs.setOS_SITUACAO("OS ABERTA");
-                    new AsyncReceberOS(this, this).execute(pOs);
-                }
-                else {
-                    Toast.makeText(this, "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case 3: // RECEBIMENTO OSs - REVISAO
-                if(!ControleConexao.checkNetworkInterface(this).equals("none")){
-                    fragment = new ReceberOSRevFragment();
-                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                }
-                else {
-                    Toast.makeText(this, "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case 4: // ENVIO OSs
-                if(!ControleConexao.checkNetworkInterface(this).equals("none")){
-                    fragment = new EnviarOSFragment();
-                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                }
-                else {
-                    Toast.makeText(this, "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case 5: // ENVIO Fotos
-                if(!ControleConexao.checkNetworkInterface(this).equals("none")){
-                    EnviarUpload();
-                }
-                else {
-                    Toast.makeText(this, "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case 6: // SAIR
-                startActivity(new Intent(this, LogoutUtills.class));
-                break;
-            default:
-                break;
-        }
-
-        menuUtills.mDrawerList.setItemChecked(possition, true);
-        setTitle(dataList.get(possition).getItemName());
-        menuUtills.mDrawerLayout.closeDrawer(menuUtills.mDrawerList);
+    public void verificarOS(){
+            POSITION = 0;
+            Os pOs = new Os();
+            pOs.setSOLIC_OV_SERV_NOME(SharedPreferencesUtills
+                    .loadSavedPreferencesString("USER", this));
+            pOs.setSOLIC_VISTORIA_EMPRESA_COD(SharedPreferencesUtills
+                    .loadSavedPreferencesString("EMPRESA", this));
+            pOs.setOS_SITUACAO("OS ABERTA");
+            new AsyncReceberOS(this, this).execute(pOs);
     }
 
     //==================RECEBIMENTO OS=====================================================
@@ -455,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements TarefaInterface {
 
 
     //==================ENVIO UPLOAD=====================================================
-    private void EnviarUpload() {
+    public void enviarUpload() {
         //======ENVIO UPLOAD ARQ PREF============================
         StatusOsBLL statusOsBLL = new StatusOsBLL();
         ControleUploadBLL controleUploadBLL;

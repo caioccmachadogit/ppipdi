@@ -161,7 +161,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
 					}
 				};
 				
-				lstOsFinalizada = statusOsBLL.listarRegistros(getActivity(),MainActivity.USER,MainActivity.EMPRESA);
+				lstOsFinalizada = statusOsBLL.listarRegistros(getActivity(),"MainActivity.USER","MainActivity.EMPRESA");
 				if(lstOsFinalizada.size() > 0){
 					for(int i=0; i < lstOsFinalizada.size();i++){
 						//============ARQ PREFS =================================

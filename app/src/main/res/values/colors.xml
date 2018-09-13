@@ -6,4 +6,7 @@
     <color name="cor_padrao_textView">#FFFFFF</color>
     <color name="cor_padrao2_textView">#000000</color>
     <color name="cor_semi_transparente">#3fff</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="cinzaTopo">#f0eceb</color>
+    <color name="cinza"> #bcbec0</color>
 </resources>

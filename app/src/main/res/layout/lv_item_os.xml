@@ -118,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/cor_padrao_textView"
-            android:src="@mipmap/ic_compose_inverse" />
+            android:src="@drawable/ic_compose_inverse" />
 
 
         <TextView

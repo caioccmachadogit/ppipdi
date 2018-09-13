@@ -23,4 +23,11 @@
     <string name="prompt_Notas">Digite aqui suas Notas!</string>
     <string name="prompt_Passw">Digite Aqui sua Senha!</string>
     <string name="action_sign_in_register"><b>Entrar</b> </string>
+    <string name="menu_etp">ETP</string>
+    <string name="menu_etp_finalizada">ETP Finalizada</string>
+    <string name="menu_verifica_etp">Verificar ETP</string>
+    <string name="menu_verificar_rev">Verificar Rev. ETP</string>
+    <string name="menu_enviar_etp">Enviar ETP</string>
+    <string name="menu_enviar_fotos">Enviar Fotos</string>
+    <string name="menu_sair">Sair</string>
 </resources>
