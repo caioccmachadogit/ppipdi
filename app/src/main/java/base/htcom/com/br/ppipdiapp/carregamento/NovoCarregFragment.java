@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -71,6 +70,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
         }
         return f;
     }
+
 	public static String tipoCarregamento;
 	private String IDCAR;
 	private CarregamentoBLL carregamentoBLL = new CarregamentoBLL();
@@ -220,7 +220,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 	String CA = "";
 	String AEV_FATOR = "";
 	//==========CALCULAR AEV==============================================
-	
+	private final String TAG = NovoCarregFragment.class.getSimpleName();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -247,6 +247,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 			}
 		}
 		catch (Exception e) {
+			Log.e(TAG, "ERROR ONCREATE FRAGMENT NOVOCARREGAMENTO",e);
 			LogErrorBLL.LogError(e.getMessage(), "ERROR ONCREATE FRAGMENT NOVOCARREGAMENTO",getActivity());
 		}
 		return view;
@@ -506,8 +507,6 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 	
 	private void BtnGravar(boolean retornar) {
 		try {
-			Fragment fragment = null;
-			FragmentManager frgManager;
 			if(validarEditTxt(lstValidade)){
 				//=======FAZER CALCULO DE AEV=============
 				requisitarCalcAEV();
@@ -521,10 +520,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 						if(Long.valueOf(IDCAR) > 0){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados gravados com sucesso!", Toast.LENGTH_LONG).show();
-								fragment = new ListCarregFragment(); 
-								frgManager = getFragmentManager();
-								// TODO: 22/08/2018 rever
-//								frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+								((OsMenuActitivity) getActivity()).setReplaceFragment(new ListCarregFragment());
 							}
 						}
 						else {
@@ -538,10 +534,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 						if(carregamentoBLL.update(getActivity(), PrepararCarregamento(IDCAR)) == 1){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
-								fragment = new ListCarregFragment(); 
-								frgManager = getFragmentManager();
-								// TODO: 22/08/2018 rever
-//								frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+								((OsMenuActitivity) getActivity()).setReplaceFragment(new ListCarregFragment());
 							}
 						}
 						else {
@@ -557,10 +550,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 						if(carregamentoBLL.update(getActivity(), PrepararCarregamento(IDCAR)) == 1){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
-								fragment = new ListCarregPlantaFragment();
-								frgManager = getFragmentManager();
-								// TODO: 22/08/2018 rever
-//								frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+								((OsMenuActitivity) getActivity()).setReplaceFragment(new ListCarregPlantaFragment());
 							}
 						}
 						else {
@@ -577,10 +567,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 							if(carregamentoPlantaBLL.update(getActivity(), carregamentoPlanta) == 1){
 								if(retornar){
 									Toast.makeText(getActivity(), "Dados gravados com sucesso!", Toast.LENGTH_LONG).show();
-									fragment = new ListCarregPlantaFragment(); 
-									frgManager = getFragmentManager();
-									// TODO: 22/08/2018 rever
-//									frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+									((OsMenuActitivity) getActivity()).setReplaceFragment(new ListCarregPlantaFragment());
 								}
 							}
 							else {
@@ -596,7 +583,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 		}
 		catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR GRAVAR CARREGAMENTO",getActivity());
-			Toast.makeText(getActivity(), "A��o N�o Realizada!", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Ação Não Realizada!", Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -697,7 +684,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 				startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 			}
 			else {
-				Toast.makeText(getActivity(), "N�o habilitado para capturar foto, problemas com a mem�ria Interna!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Não habilitado para capturar foto, problemas com a memória Interna!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -800,10 +787,10 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 			if(LATITUDE != null && LONGITUDE != null){
 				controleUpload.setCOLUNA_REF_latitude(LATITUDE.replace(".", ","));
 				controleUpload.setCOLUNA_REF_longitude(LONGITUDE.replace(".", ","));
-				Toast.makeText(getActivity(), "Localiza��o Recebida!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Localização Recebida!", Toast.LENGTH_SHORT).show();
 			}
 			else {
-				Toast.makeText(getActivity(), "N�o foi poss�vel receber a Localiza��o!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Não foi possível receber a Localização!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -1104,7 +1091,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 					//ERROR Dimens�es da Antena
 					Toast.makeText(
 							getActivity(),
-							"N�o foi possivel calcular o AEV devido algumas caracter�sticas do site n�o serem preenchidas!",
+							"Não foi possivel calcular o AEV devido algumas características do site não serem preenchidas!",
 							Toast.LENGTH_LONG).show();
 				}
 			}
@@ -1143,15 +1130,15 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 						DialogImg(controleUpload);
 					}
 					else {
-						Toast.makeText(getActivity(), "Ainda n�o existe foto!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
 					}
 				}
 				else {
-					Toast.makeText(getActivity(), "Ainda n�o existe foto!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
 				}
 			}
 			else {
-				Toast.makeText(getActivity(), "Ainda n�o existe foto!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -1643,16 +1630,20 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 			
 			IMG_DT = "dt_"+IMG_DT;
 			String uriDt = IMG_DT;
-			imageResource = getResources().getIdentifier(uriDt, "drawable", getActivity().getPackageName());
-			res = getResources().getDrawable(imageResource);
-			ivDt.setImageDrawable(res);
-			
+			imageResource = getActivity().getResources().getIdentifier(uriDt, "drawable", getActivity().getPackageName());
+			if(imageResource != 0){
+				res = getActivity().getResources().getDrawable(imageResource);
+				ivDt.setImageDrawable(res);
+			}
+
 			IMG_DM = "dm_"+IMG_DM;
 			String uriDm = IMG_DM;
-			imageResource = getResources().getIdentifier(uriDm, "drawable", getActivity().getPackageName());
-			res = getResources().getDrawable(imageResource);
-			ivDm.setImageDrawable(res);
-			
+			imageResource = getActivity().getResources().getIdentifier(uriDm, "drawable", getActivity().getPackageName());
+			if(imageResource != 0){
+				res = getActivity().getResources().getDrawable(imageResource);
+				ivDm.setImageDrawable(res);
+			}
+
 			HabilitarCamposDim(IMG_DT, IMG_DM);
 		}
 		catch (Exception e) {

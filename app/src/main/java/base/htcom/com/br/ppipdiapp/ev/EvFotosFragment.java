@@ -209,7 +209,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 			foto6.setLINHA("22006");
 			lst.add(foto6);
 			Combo foto7 = new Combo();
-			foto7.setTITULO("7) Placa identifica��o EV");
+			foto7.setTITULO("7) Placa identificação EV");
 			foto7.setLINHA("22011");
 			lst.add(foto7);
 			Combo foto8 = new Combo();
@@ -248,7 +248,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 				DialogImg(controleUpload);
 			}
 			else {
-				Toast.makeText(getActivity(), "Ainda n�o existe foto!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -293,7 +293,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 				startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 			}
 			else {
-				Toast.makeText(getActivity(), "N�o habilitado para capturar foto, problemas com a mem�ria Interna!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Não habilitado para capturar foto, problemas com a memória Interna!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {
@@ -437,10 +437,10 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 			if(LATITUDE != null && LONGITUDE != null){
 				controleUpload.setCOLUNA_REF_latitude(LATITUDE.replace(".", ","));
 				controleUpload.setCOLUNA_REF_longitude(LONGITUDE.replace(".", ","));
-				Toast.makeText(getActivity(), "Localiza��o Recebida!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Localização Recebida!", Toast.LENGTH_SHORT).show();
 			}
 			else {
-				Toast.makeText(getActivity(), "N�o foi poss�vel receber a Localiza��o!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Não foi possível receber a Localização!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		catch (Exception e) {

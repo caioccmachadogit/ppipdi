@@ -22,7 +22,6 @@ import base.htcom.com.br.ppipdiapp.model.Carregamento;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
 public class ListCarregFragment extends Fragment {
-	private FragmentManager frgManager;
 	Bundle arguments;
 	private ListView lv;
 	public static String _ID = "_ID";
@@ -42,10 +41,8 @@ public class ListCarregFragment extends Fragment {
 				arguments = new Bundle();
 		        arguments.putString(_ID, (String)edit.getTag());
 		        NovoCarregFragment.tipoCarregamento = "NOVA";
-				NovoCarregFragment fragment = NovoCarregFragment.newInstance(arguments); 
-				frgManager = getFragmentManager();
-				// TODO: 22/08/2018 rever
-//				frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+				NovoCarregFragment fragment = NovoCarregFragment.newInstance(arguments);
+				((OsMenuActitivity) getActivity()).setReplaceFragment(fragment);
 	        }
 	    });
 		final Button btnNovo = (Button) view.findViewById(R.id.btn_novo_car);
@@ -59,12 +56,10 @@ public class ListCarregFragment extends Fragment {
 					        arguments.putString(_ID, "0");
 					        NovoCarregFragment.tipoCarregamento = "NOVA";
 					        NovoCarregFragment fragment = NovoCarregFragment.newInstance(arguments);
-							frgManager = getFragmentManager();
-							// TODO: 22/08/2018 rever
-//							frgManager.beginTransaction().replace(R.id.content_frame_os, fragment).commit();
+							((OsMenuActitivity) getActivity()).setReplaceFragment(fragment);
 						}
 						else {
-							Toast.makeText(getActivity(), "Necess�rio cadastrar Estrutura Vertical!", Toast.LENGTH_LONG).show();
+							Toast.makeText(getActivity(), "Necessário cadastrar Estrutura Vertical!", Toast.LENGTH_LONG).show();
 						}
 					}
 					catch (Exception e) {
