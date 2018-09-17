@@ -1,6 +1,7 @@
 package base.htcom.com.br.ppipdiapp.carregamento;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +21,8 @@ import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
 import base.htcom.com.br.ppipdiapp.model.Carregamento;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
+import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
+import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
 
 public class ListCarregFragment extends BaseFragment {
 	Bundle arguments;
@@ -29,6 +32,7 @@ public class ListCarregFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.d(getClass().getSimpleName(),"onCreateView");
 		View view = inflater.inflate(R.layout.list_car_view_fragment, container, false);
 		
 		lv = (ListView) view.findViewById(R.id.lv_carregamento);
@@ -71,10 +75,12 @@ public class ListCarregFragment extends BaseFragment {
 		else if (OsMenuActitivity._OS.getOS_SITUACAO().equals("CAMPO REVISAO")) {
 			btnNovo.setEnabled(false);
 		}
+
+		setupNavDrawer();
 		
 		return view;
 	}
-	
+
 	private void AtualizarListViewCarregamento() {
 		try {
 			List<Carregamento> lst = carregamentoBLL.listarByCodigo(getActivity(), OsMenuActitivity._OV_CHAMADO);

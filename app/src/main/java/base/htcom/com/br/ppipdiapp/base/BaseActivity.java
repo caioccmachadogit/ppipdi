@@ -59,6 +59,11 @@ public class BaseActivity extends AppCompatActivity {
 
     private String mTagName;
 
+    private NavigationView navigationView;
+
+    private Toolbar toolbar;
+    private ActionBar actionBar;
+
     protected void setmActivity(Activity activity){
         this.mActivity = activity;
 
@@ -134,7 +139,7 @@ public class BaseActivity extends AppCompatActivity {
 
     // Configura a Toolbar
     protected void setUpToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -142,24 +147,43 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        log("onSupportNavigateUp");
-//        onBackPressed();
-//        return true;
-//    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        log("onSupportNavigateUp");
+        onBackPressed();
+        return true;
+    }
+
+    protected void setupBackButton(){
+        drawerLayout.setEnabled(false);
+
+        if (toolbar != null && actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_voltar);
+        }
+    }
+
+    protected void setupNavDrawer(){
+        drawerLayout.setEnabled(true);
+
+        if (toolbar != null && actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.mipmap.ic_menu);
+        }
+    }
 
     // Configura o Nav Drawer
     protected void setupNavDrawer(MenuItemEnum menuItemChecked, TipoMenu tipoMenu) {
         menuItemChecked.itemIsChecked(menuItemChecked);
         // Drawer Layout
-        final ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         // Ícone do menu do nav drawer
         actionBar.setHomeAsUpIndicator(R.mipmap.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null && drawerLayout != null) {
             // Atualiza a imagem e textos do header
              NavDrawerUtil.setHeaderValues(navigationView, USER, EMPRESA);
@@ -250,7 +274,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-
     protected boolean verificaConexao(){
         if(!ControleConexao.checkNetworkInterface(this).equals("none")){
             return true;
@@ -293,7 +316,7 @@ public class BaseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // Trata o clique no botão que abre o menu.
-                if (drawerLayout != null) {
+                if (drawerLayout != null && drawerLayout.isEnabled()) {
                     openDrawer();
                     return true;
                 }

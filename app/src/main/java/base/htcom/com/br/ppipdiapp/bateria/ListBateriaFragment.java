@@ -63,6 +63,7 @@ public class ListBateriaFragment extends BaseFragment {
 				}
 			}
 		});
+		setupNavDrawer();
 		return view;
 	}
 	

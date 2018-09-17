@@ -250,6 +250,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 			Log.e(TAG, "ERROR ONCREATE FRAGMENT NOVOCARREGAMENTO",e);
 			LogErrorBLL.LogError(e.getMessage(), "ERROR ONCREATE FRAGMENT NOVOCARREGAMENTO",getActivity());
 		}
+		setupBackButton();
 		return view;
 	}
 	

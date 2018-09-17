@@ -92,6 +92,7 @@ public class NovaBateriaFragment extends BaseFragment {
 		catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR ONCREATE FRAGMENT NovaBateria",getActivity());
 		}
+		setupBackButton();
 		return view;
 	}
 

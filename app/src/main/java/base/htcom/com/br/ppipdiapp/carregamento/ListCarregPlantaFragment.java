@@ -43,6 +43,7 @@ public class ListCarregPlantaFragment extends BaseFragment {
 				fragmentTransaction(NovoCarregFragment.class.getSimpleName(), fragment, false, 1);
 	        }
 	    });
+		setupNavDrawer();
 		return view;
 	}
 	
