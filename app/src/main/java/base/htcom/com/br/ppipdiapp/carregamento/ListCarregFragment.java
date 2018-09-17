@@ -1,8 +1,6 @@
 package base.htcom.com.br.ppipdiapp.carregamento;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,16 +10,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterCarregamento;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
 import base.htcom.com.br.ppipdiapp.model.Carregamento;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
-public class ListCarregFragment extends Fragment {
+public class ListCarregFragment extends BaseFragment {
 	Bundle arguments;
 	private ListView lv;
 	public static String _ID = "_ID";
@@ -42,7 +42,7 @@ public class ListCarregFragment extends Fragment {
 		        arguments.putString(_ID, (String)edit.getTag());
 		        NovoCarregFragment.tipoCarregamento = "NOVA";
 				NovoCarregFragment fragment = NovoCarregFragment.newInstance(arguments);
-				((OsMenuActitivity) getActivity()).setReplaceFragment(fragment);
+				fragmentTransaction(NovoCarregFragment.class.getSimpleName(), fragment, true, 1);
 	        }
 	    });
 		final Button btnNovo = (Button) view.findViewById(R.id.btn_novo_car);
@@ -56,7 +56,7 @@ public class ListCarregFragment extends Fragment {
 					        arguments.putString(_ID, "0");
 					        NovoCarregFragment.tipoCarregamento = "NOVA";
 					        NovoCarregFragment fragment = NovoCarregFragment.newInstance(arguments);
-							((OsMenuActitivity) getActivity()).setReplaceFragment(fragment);
+							fragmentTransaction(NovoCarregFragment.class.getSimpleName(), fragment, true, 1);
 						}
 						else {
 							Toast.makeText(getActivity(), "Necessário cadastrar Estrutura Vertical!", Toast.LENGTH_LONG).show();

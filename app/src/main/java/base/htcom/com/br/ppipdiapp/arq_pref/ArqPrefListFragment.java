@@ -2,7 +2,6 @@ package base.htcom.com.br.ppipdiapp.arq_pref;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,13 @@ import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterSelectedArqPref;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.ComboBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
 import base.htcom.com.br.ppipdiapp.model.Combo;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
-public class ArqPrefListFragment extends Fragment{
+public class ArqPrefListFragment extends BaseFragment{
 	
 	private GridView gridView;
 	private ComboBLL comboBLL = new ComboBLL();

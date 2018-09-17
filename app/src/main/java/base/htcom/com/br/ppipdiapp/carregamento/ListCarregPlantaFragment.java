@@ -1,7 +1,6 @@
 package base.htcom.com.br.ppipdiapp.carregamento;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,13 @@ import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterCarregamentoPlanta;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoPlantaBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
 import base.htcom.com.br.ppipdiapp.model.CarregamentoPlanta;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
-public class ListCarregPlantaFragment extends Fragment {
+public class ListCarregPlantaFragment extends BaseFragment {
 	Bundle arguments;
 	private ListView lv;
 	public static String _ID = "_ID";
@@ -40,7 +40,7 @@ public class ListCarregPlantaFragment extends Fragment {
 		        arguments.putString(_ID, (String)edit.getTag());
 		        NovoCarregFragment.tipoCarregamento = "PLANTA";
 				NovoCarregFragment fragment = NovoCarregFragment.newInstance(arguments);
-				((OsMenuActitivity) getActivity()).setReplaceFragment(fragment);
+				fragmentTransaction(NovoCarregFragment.class.getSimpleName(), fragment, false, 1);
 	        }
 	    });
 		return view;

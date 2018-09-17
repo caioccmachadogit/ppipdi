@@ -1,8 +1,6 @@
 package base.htcom.com.br.ppipdiapp.notas;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,13 +10,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
 import base.htcom.com.br.ppipdiapp.bll.OsBLL;
 import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
-public class NotasFragment extends Fragment{
-	private FragmentManager frgManager;
+public class NotasFragment extends BaseFragment{
 	private OsBLL osBLL = new OsBLL();
 	private Button btnGravar;
 	private EditText edtNotas;
@@ -51,7 +49,7 @@ public class NotasFragment extends Fragment{
 		}
 		catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR CARREGAR NOTAS",getActivity());
-			Toast.makeText(getActivity(),"Notas n�o carregadas!",Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(),"Notas não carregadas!",Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		}
 		
@@ -65,7 +63,7 @@ public class NotasFragment extends Fragment{
 					Toast.makeText(getActivity(),"Notas Gravadas!",Toast.LENGTH_LONG).show();
 				}
 				else {
-					Toast.makeText(getActivity(),"Notas n�o gravadas!",Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(),"Notas não gravadas!",Toast.LENGTH_LONG).show();
 				}
 			}
 			else {
@@ -74,7 +72,7 @@ public class NotasFragment extends Fragment{
 		}
 		catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR GRAVAR NOTAS",getActivity());
-			Toast.makeText(getActivity(),"Notas n�o gravadas!",Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(),"Notas não gravadas!",Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		}
 		

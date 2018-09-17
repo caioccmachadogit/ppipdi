@@ -3,7 +3,6 @@ package base.htcom.com.br.ppipdiapp.main;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.Toast;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterOS;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
 import base.htcom.com.br.ppipdiapp.bll.OsBLL;
 import base.htcom.com.br.ppipdiapp.bll.SiteBLL;
@@ -23,7 +23,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.GPSTracker;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 
-public class ListOSFragment extends Fragment{
+public class ListOSFragment extends BaseFragment{
 	private ListView lv;
 	private SiteBLL siteBLL;
 	private OsBLL osBLL;

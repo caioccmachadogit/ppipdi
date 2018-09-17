@@ -1,8 +1,6 @@
 package base.htcom.com.br.ppipdiapp.main;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +19,7 @@ import base.htcom.com.br.ppipdiapp.async.AsyncEnviarArqPref;
 import base.htcom.com.br.ppipdiapp.async.AsyncEnviarBateria;
 import base.htcom.com.br.ppipdiapp.async.AsyncEnviarCarregamento;
 import base.htcom.com.br.ppipdiapp.async.TarefaInterfaceEnviar;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.ArqPrefBLL;
 import base.htcom.com.br.ppipdiapp.bll.BateriaBLL;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
@@ -35,7 +34,7 @@ import base.htcom.com.br.ppipdiapp.model.Carregamento;
 import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
 
-@SuppressLint("NewApi") public class EnviarOSFragment extends Fragment {
+public class EnviarOSFragment extends BaseFragment {
 	
 	//=======ENVIO============================
 		public static int cEnvioArqPref=0;
@@ -149,7 +148,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
 									for(int i=0; i < lstOsFinalizada.size();i++){
 										statusOsBLL.updateStatus(getActivity(), lstOsFinalizada.get(i).getLINHA(), "arqpref");
 									}
-									new AlertaDialog(getActivity()).showDialogAviso("Confirma��o Envio", "ETP Confirmada: "+contaConfEnvOs+" | Arquivos Preferenciais: "+contaEnvArqPref+" | Carregamentos: "+contaEnvCarregamento+" | Baterias: "+contaEnvBateria+" ");
+									new AlertaDialog(getActivity()).showDialogAviso("Confirmação Envio", "ETP Confirmada: "+contaConfEnvOs+" | Arquivos Preferenciais: "+contaEnvArqPref+" | Carregamentos: "+contaEnvCarregamento+" | Baterias: "+contaEnvBateria+" ");
 								}
 								ZerarCounts();
 							}

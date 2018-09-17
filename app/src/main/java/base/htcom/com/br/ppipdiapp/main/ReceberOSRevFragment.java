@@ -1,14 +1,12 @@
 package base.htcom.com.br.ppipdiapp.main;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -19,6 +17,7 @@ import base.htcom.com.br.ppipdiapp.async.AsyncReceberRevArqPref;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberRevCarregamento;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberRevOS;
 import base.htcom.com.br.ppipdiapp.async.TarefaInterfaceRev;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.ArqPrefBLL;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
 import base.htcom.com.br.ppipdiapp.bll.ControleUploadBLL;
@@ -31,10 +30,9 @@ import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 
-public class ReceberOSRevFragment extends Fragment{
+public class ReceberOSRevFragment extends BaseFragment{
 	
 	private Gson gson = new Gson();
-	private GsonBuilder builder = new GsonBuilder();
 	
 	private List<Os> listOsRecRev;
 	private List<Carregamento> listCarRecRev;
@@ -99,7 +97,7 @@ public class ReceberOSRevFragment extends Fragment{
 								}	
 							}
 							else {
-								new AlertaDialog(getActivity()).showDialogAviso("Problemas de Persist�ncia","ETP n�o registrada!");
+								new AlertaDialog(getActivity()).showDialogAviso("Problemas de Persistencia","ETP não registrada!");
 								LogErrorBLL.LogError("", "ERROR DE PERSISTENCIA NO RECEBIMENTO REV OS",getActivity());
 							}
 							//=========ARMAZENA NOVA OS DE REV===============================================================
@@ -109,7 +107,7 @@ public class ReceberOSRevFragment extends Fragment{
 								new AlertaDialog(getActivity()).showDialogAviso("Recebimento ETP","Nenhuma ETP Recebida!");
 							}
 							else
-								new AlertaDialog(getActivity()).showDialogAviso("Servidor Inacess�vel","Tente mais tarde!");
+								new AlertaDialog(getActivity()).showDialogAviso("Servidor Inacessível","Tente mais tarde!");
 						}
 					}
 					catch (Exception e) {
@@ -193,7 +191,7 @@ public class ReceberOSRevFragment extends Fragment{
 							COUNTCONFIR++;
 							Toast.makeText(getActivity(), COUNTCONFIR+" ETP Confirmada!", Toast.LENGTH_SHORT).show();
 							if(listOsRecRev.size() == COUNTCONFIR){
-								new AlertaDialog(getActivity()).showDialogAviso("ETP Rev. Recebida", "ETP Revis�o: "+COUNTCONFIR+"");
+								new AlertaDialog(getActivity()).showDialogAviso("ETP Rev. Recebida", "ETP Revisão: "+COUNTCONFIR+"");
 								//ClearCounts();
 							}
 						}

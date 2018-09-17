@@ -35,8 +35,6 @@ import base.htcom.com.br.ppipdiapp.bll.OsBLL;
 import base.htcom.com.br.ppipdiapp.bll.SiteBLL;
 import base.htcom.com.br.ppipdiapp.bll.StatusControleUploadBLL;
 import base.htcom.com.br.ppipdiapp.bll.StatusOsBLL;
-import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
-import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
 import base.htcom.com.br.ppipdiapp.model.CarregamentoPlanta;
 import base.htcom.com.br.ppipdiapp.model.Combo;
 import base.htcom.com.br.ppipdiapp.model.ControleUpload;
@@ -44,6 +42,8 @@ import base.htcom.com.br.ppipdiapp.model.Insumos;
 import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.model.Site;
 import base.htcom.com.br.ppipdiapp.model.StatusControleUpload;
+import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
+import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 
@@ -78,13 +78,19 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
         setContentView(R.layout.activity_main);
 
         setmActivity(this);
-        replaceFragment(new ListOSFragment());
+        setTAG(getClass().getSimpleName());
         setTitleTela("ETP");
         setUpToolbar();
         setupNavDrawer(MenuItemEnum.ETP, TipoMenu.PRINCIPAL);
+        fragmentTransaction(ListOSFragment.class.getSimpleName(), new ListOSFragment(), false, 1);
     }
 
-//    private void PreencherListMenu() {
+    @Override
+    public void onBackPressed() {
+        abrirAlertLogout();
+    }
+
+    //    private void PreencherListMenu() {
 //        dataList = new ArrayList<DrawerItem>();
 //        // Add Drawer Item to dataList
 //        dataList.add(new DrawerItem("ETP", R.drawable.ic_registration_form_inverse));
@@ -202,7 +208,7 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
                     }
                     //====VERIFICAR SE EST� NO MOMENTO DE PERSISTIR O RECEBIMENTO================================
                     if(COUNTCAR == listOsRec.size()){
-                        PersistirRecebimento();
+                        persistirRecebimento();
                     }
                     //====VERIFICAR SE EST� NO MOMENTO DE PERSISTIR O RECEBIMENTO================================
                     break;
@@ -222,7 +228,7 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
         }
     }
 
-    private void PersistirRecebimento() throws Exception{
+    private void persistirRecebimento() throws Exception{
 
         try {
             OsBLL osBLL = new OsBLL();
@@ -385,15 +391,15 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
                     }
                     new AlertaDialog(this).showDialogAviso("Confirmação Envio", "ETP Confirmada: "+contaConfEnvOs+" | Imagens: "+contaEnvUpArqPref+"");
                 }
-                ZerarCounts();
+                zerarCounts();
             }
         }
         catch (Exception e) {
-            ZerarCounts();
+            zerarCounts();
         }
     }
 
-    private void ZerarCounts(){
+    private void zerarCounts(){
         contaConfEnvOs = 0;
         cEnvioConfEnvOs = 0;
 

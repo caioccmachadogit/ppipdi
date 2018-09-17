@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.BateriaBLL;
 import base.htcom.com.br.ppipdiapp.bll.ControleUploadBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
@@ -39,7 +40,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.BitmapUtills;
 import base.htcom.com.br.ppipdiapp.padrao.utils.CriarDirExterno;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSTracker;
 
-public class NovaBateriaFragment extends Fragment {
+public class NovaBateriaFragment extends BaseFragment {
 	public static NovaBateriaFragment newInstance(Bundle arguments){
 		NovaBateriaFragment f = new NovaBateriaFragment();
         if(arguments != null){
@@ -159,7 +160,7 @@ public class NovaBateriaFragment extends Fragment {
 					if(Long.valueOf(ID) > 0){
 						Toast.makeText(getActivity(), "Dados gravados com sucesso!", Toast.LENGTH_LONG).show();
 						fragment = new ListBateriaFragment();
-						((OsMenuActitivity)getActivity()).setReplaceFragment(fragment);
+						fragmentTransaction(ListBateriaFragment.class.getSimpleName(), fragment, false, 1);
 					}
 					else {
 						Toast.makeText(getActivity(),"Ocorreu um erro ao gravar o registro!",Toast.LENGTH_LONG).show();
@@ -170,7 +171,7 @@ public class NovaBateriaFragment extends Fragment {
 					if(bateriaBLL.Update(getActivity(), Preparar(ID)) == 1){
 						Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
 						fragment = new ListBateriaFragment();
-						((OsMenuActitivity)getActivity()).setReplaceFragment(fragment);
+						fragmentTransaction(ListBateriaFragment.class.getSimpleName(), fragment, false, 1);
 					}
 					else {
 						Toast.makeText(getActivity(),"Ocorreu um erro ao alterar o registro!",Toast.LENGTH_LONG).show();

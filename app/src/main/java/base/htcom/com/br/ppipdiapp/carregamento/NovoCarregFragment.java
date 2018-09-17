@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -41,6 +40,7 @@ import java.util.Date;
 import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoPlantaBLL;
 import base.htcom.com.br.ppipdiapp.bll.ComboBLL;
@@ -61,7 +61,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.CriarDirExterno;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSTracker;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 
-public class NovoCarregFragment extends Fragment implements OnMenuItemClickListener{
+public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickListener{
 	
 	public static NovoCarregFragment newInstance(Bundle arguments){
 		NovoCarregFragment f = new NovoCarregFragment();
@@ -501,10 +501,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 			break;
 		}
 	}
-	
-	
 
-	
 	private void BtnGravar(boolean retornar) {
 		try {
 			if(validarEditTxt(lstValidade)){
@@ -520,7 +517,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 						if(Long.valueOf(IDCAR) > 0){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados gravados com sucesso!", Toast.LENGTH_LONG).show();
-								((OsMenuActitivity) getActivity()).setReplaceFragment(new ListCarregFragment());
+								fragmentTransaction(ListCarregFragment.class.getSimpleName(), new ListCarregFragment(), false, 1);
 							}
 						}
 						else {
@@ -534,7 +531,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 						if(carregamentoBLL.update(getActivity(), PrepararCarregamento(IDCAR)) == 1){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
-								((OsMenuActitivity) getActivity()).setReplaceFragment(new ListCarregFragment());
+								fragmentTransaction(ListCarregFragment.class.getSimpleName(), new ListCarregFragment(), false, 1);
 							}
 						}
 						else {
@@ -550,7 +547,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 						if(carregamentoBLL.update(getActivity(), PrepararCarregamento(IDCAR)) == 1){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
-								((OsMenuActitivity) getActivity()).setReplaceFragment(new ListCarregPlantaFragment());
+								fragmentTransaction(ListCarregPlantaFragment.class.getSimpleName(), new ListCarregPlantaFragment(), false, 1);
 							}
 						}
 						else {
@@ -567,7 +564,7 @@ public class NovoCarregFragment extends Fragment implements OnMenuItemClickListe
 							if(carregamentoPlantaBLL.update(getActivity(), carregamentoPlanta) == 1){
 								if(retornar){
 									Toast.makeText(getActivity(), "Dados gravados com sucesso!", Toast.LENGTH_LONG).show();
-									((OsMenuActitivity) getActivity()).setReplaceFragment(new ListCarregPlantaFragment());
+									fragmentTransaction(ListCarregPlantaFragment.class.getSimpleName(), new ListCarregPlantaFragment(), false, 1);
 								}
 							}
 							else {

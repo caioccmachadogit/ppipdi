@@ -1,7 +1,6 @@
 package base.htcom.com.br.ppipdiapp.main;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import base.htcom.com.br.ppipdiapp.async.AsyncReenviarBateria;
 import base.htcom.com.br.ppipdiapp.async.AsyncReenviarCarregamento;
 import base.htcom.com.br.ppipdiapp.async.AsyncReenviarUploadArqPref;
 import base.htcom.com.br.ppipdiapp.async.TarefaInterfaceReenv;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.ArqPrefBLL;
 import base.htcom.com.br.ppipdiapp.bll.BateriaBLL;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
@@ -41,7 +41,7 @@ import base.htcom.com.br.ppipdiapp.model.StatusControleUpload;
 import base.htcom.com.br.ppipdiapp.padrao.funcoes.ControleConexao;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
 
-public class ReenviarOSFragment extends Fragment{
+public class ReenviarOSFragment extends BaseFragment{
 	
 	public static ReenviarOSFragment newInstance(Bundle arguments){
 		ReenviarOSFragment f = new ReenviarOSFragment();
@@ -105,7 +105,7 @@ public class ReenviarOSFragment extends Fragment{
 								Toast.makeText(getActivity(), "Arq pref enviado: "+(cEnvioArqPref)+"", Toast.LENGTH_SHORT).show();
 							}
 						}
-						else Toast.makeText(getActivity(), "Arq pref � enviado: "+(cEnvioArqPref)+"", Toast.LENGTH_SHORT).show();
+						else Toast.makeText(getActivity(), "Arq pref enviado: "+(cEnvioArqPref)+"", Toast.LENGTH_SHORT).show();
 					}
 					catch (Exception e) {
 						LogErrorBLL.LogError(e.getMessage(), "ERROR respostaAsyncEnvioArqPref Reenv", getActivity());
@@ -122,7 +122,7 @@ public class ReenviarOSFragment extends Fragment{
 								Toast.makeText(getActivity(), "Carregamento enviado: "+(cEnvioCarregamento)+"", Toast.LENGTH_SHORT).show();
 							}
 						}
-						else Toast.makeText(getActivity(), "Carregamento � enviado: "+(cEnvioCarregamento)+"", Toast.LENGTH_SHORT).show();
+						else Toast.makeText(getActivity(), "Carregamento enviado: "+(cEnvioCarregamento)+"", Toast.LENGTH_SHORT).show();
 					}
 					catch (Exception e) {
 						LogErrorBLL.LogError(e.getMessage(), "ERROR respostaAsyncEnvioCarregamento Reenv", getActivity());
@@ -139,7 +139,7 @@ public class ReenviarOSFragment extends Fragment{
 								Toast.makeText(getActivity(), "Bateria enviada: "+(cEnvioBateria)+"", Toast.LENGTH_SHORT).show();
 							}
 						}
-						else Toast.makeText(getActivity(), "Bateria � enviada: "+(cEnvioBateria)+"", Toast.LENGTH_SHORT).show();
+						else Toast.makeText(getActivity(), "Bateria enviada: "+(cEnvioBateria)+"", Toast.LENGTH_SHORT).show();
 					}
 					catch (Exception e) {
 						LogErrorBLL.LogError(e.getMessage(), "ERROR respostaAsyncEnvioBateria Reenv", getActivity());
@@ -161,10 +161,10 @@ public class ReenviarOSFragment extends Fragment{
 								Toast.makeText(getActivity(), "Imagem enviada: "+(cEnvioUpArqPref)+"", Toast.LENGTH_SHORT).show();
 							}
 						}
-						else Toast.makeText(getActivity(), "Imagem � enviada: "+(cEnvioUpArqPref)+"", Toast.LENGTH_SHORT).show();
+						else Toast.makeText(getActivity(), "Imagem enviada: "+(cEnvioUpArqPref)+"", Toast.LENGTH_SHORT).show();
 						
 						if(countConfirmacao == lstControleUploads.size())
-							new AlertaDialog(getActivity()).showDialogAviso("Confirma��o", "ETP Reenviada!");
+							new AlertaDialog(getActivity()).showDialogAviso("Confirmação", "ETP Reenviada!");
 					}
 					catch (Exception e) {
 						LogErrorBLL.LogError(e.getMessage(), "ERROR respostaAsyncEnvioUpload Reenv", getActivity());
@@ -228,7 +228,7 @@ public class ReenviarOSFragment extends Fragment{
 					}
 				}
 				else {
-					Toast.makeText(getActivity(), "Verifique sua Conex�o com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Verifique sua Conexão com a Internet e tente novamente!", Toast.LENGTH_SHORT).show();
 				}
 			}
 //=======ENVIAR LIST DE NAO ENVIADOS=====================

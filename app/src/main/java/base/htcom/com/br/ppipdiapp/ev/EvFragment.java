@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
 import base.htcom.com.br.ppipdiapp.bll.ComboBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
@@ -30,7 +31,7 @@ import base.htcom.com.br.ppipdiapp.model.Carregamento;
 import base.htcom.com.br.ppipdiapp.model.Combo;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
-public class EvFragment extends Fragment {
+public class EvFragment extends BaseFragment {
 	
 	private ComboBLL comboBLL = new ComboBLL();
 	private CarregamentoBLL carregamentoBLL = new CarregamentoBLL();

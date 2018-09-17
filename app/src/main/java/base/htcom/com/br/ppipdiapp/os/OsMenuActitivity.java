@@ -51,16 +51,22 @@ public class OsMenuActitivity extends BaseActivity{
 		tv_titulo.setText("Site: "+_OS.getCOD_ENTIDADE().replace("0", "")+" | ETP: "+lstOS.get(0).getCODIGO());
 
 		setmActivity(this);
-		replaceFragment(new EvFragment());
+		setTAG(getClass().getSimpleName());
 		setTitleTela(MenuItemEnum.Est_Vert.getItem());
 		setUpToolbar();
 		setupNavDrawer(MenuItemEnum.Est_Vert, TipoMenu.OS);
+		fragmentTransaction(EvFragment.class.getSimpleName(), new EvFragment(), false, 1);
 
     }
 
-    public void setReplaceFragment(Fragment fragment){
-        replaceFragment(fragment);
-    }
+//	@Override
+//	public void onBackPressed() {
+//		if (getFragmentManager().getBackStackEntryCount() == 0) {
+//			this.finish();
+//		} else {
+//			getFragmentManager().popBackStack();
+//		}
+//	}
 
 //    private void PreencherListMenu() {
 //		// Add Drawer Item to dataList

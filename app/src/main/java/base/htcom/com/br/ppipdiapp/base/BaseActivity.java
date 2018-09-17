@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -35,13 +36,13 @@ import base.htcom.com.br.ppipdiapp.main.ListOSFinalizadaFragment;
 import base.htcom.com.br.ppipdiapp.main.ListOSFragment;
 import base.htcom.com.br.ppipdiapp.main.MainActivity;
 import base.htcom.com.br.ppipdiapp.main.ReceberOSRevFragment;
+import base.htcom.com.br.ppipdiapp.notas.NotasFragment;
+import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
+import base.htcom.com.br.ppipdiapp.padrao.funcoes.ControleConexao;
 import base.htcom.com.br.ppipdiapp.padrao.menu.MenuCreator;
 import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
 import base.htcom.com.br.ppipdiapp.padrao.menu.NavDrawerUtil;
 import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
-import base.htcom.com.br.ppipdiapp.notas.NotasFragment;
-import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
-import base.htcom.com.br.ppipdiapp.padrao.funcoes.ControleConexao;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 
 public class BaseActivity extends AppCompatActivity {
@@ -56,8 +57,17 @@ public class BaseActivity extends AppCompatActivity {
 
     protected Activity mActivity;
 
+    private String mTagName;
+
     protected void setmActivity(Activity activity){
         this.mActivity = activity;
+
+        USER = SharedPreferencesUtills.loadSavedPreferencesString("USER", this);
+        EMPRESA = SharedPreferencesUtills.loadSavedPreferencesString("EMPRESA", this);
+    }
+
+    protected void setTAG(String tag){
+        this.TAG = tag;
     }
 
     protected Context getContext() {
@@ -78,12 +88,38 @@ public class BaseActivity extends AppCompatActivity {
         this.view = inflater.inflate(view, container);
     }
 
-    // Adiciona o fragment no centro da tela
-    protected void replaceFragment(Fragment frag) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, frag, "TAG").commit();
+    /**
+     * Fragement  navigation method
+     *
+     * @param tagName        : identifying the fragment with tagname
+     * @param fragment       ; navigate to screen
+     * @param addToBackStack : adding the the backstack
+     * @param style          : animation style
+     */
+    public void fragmentTransaction(String tagName, Fragment fragment, boolean addToBackStack, int style) {
+        log("tagName->"+tagName+"|addToBackStack->"+addToBackStack);
+        if (fragment != null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            mTagName = tagName;
+            switch (style) {
+                case 1:
+                    transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                    transaction.replace(R.id.container, fragment, tagName);
+                    break;
 
-        USER = SharedPreferencesUtills.loadSavedPreferencesString("USER", this);
-        EMPRESA = SharedPreferencesUtills.loadSavedPreferencesString("EMPRESA", this);
+                case 2:
+                    transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    transaction.replace(R.id.container, fragment, tagName);
+                    break;
+                default:
+                    transaction.replace(R.id.container, fragment, tagName);
+                    break;
+            }
+            if (addToBackStack) {
+                transaction.addToBackStack(tagName);
+            }
+            transaction.commit();
+        }
     }
 
     //=========================MENU LATERAL E TOOLBAR==========================
@@ -102,8 +138,16 @@ public class BaseActivity extends AppCompatActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
+
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        log("onSupportNavigateUp");
+//        onBackPressed();
+//        return true;
+//    }
 
     // Configura o Nav Drawer
     protected void setupNavDrawer(MenuItemEnum menuItemChecked, TipoMenu tipoMenu) {
@@ -113,6 +157,7 @@ public class BaseActivity extends AppCompatActivity {
         // Ícone do menu do nav drawer
         actionBar.setHomeAsUpIndicator(R.mipmap.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null && drawerLayout != null) {
@@ -142,12 +187,13 @@ public class BaseActivity extends AppCompatActivity {
     // Trata o evento do menu lateral
     private void onNavDrawerItemSelected(MenuItem menuItem) {
         setTitleTela(menuItem.toString());
+        log("onNavDrawerItemSelected->"+menuItem.toString());
         switch (menuItem.getItemId()) {
             case R.string.menu_etp:
-                replaceFragment(new ListOSFragment());
+                fragmentTransaction(ListOSFragment.class.getSimpleName(), new ListOSFragment(), false, 1);
                 break;
             case R.string.menu_etp_finalizada:
-                replaceFragment(new ListOSFinalizadaFragment());
+                fragmentTransaction(ListOSFinalizadaFragment.class.getSimpleName(), new ListOSFinalizadaFragment(), false, 1);
                 break;
             case R.string.menu_verifica_etp:
                 if(verificaConexao())
@@ -155,12 +201,12 @@ public class BaseActivity extends AppCompatActivity {
                 break;
             case R.string.menu_verificar_rev:
                 if(verificaConexao()){
-                    replaceFragment(new ReceberOSRevFragment());
+                    fragmentTransaction(ReceberOSRevFragment.class.getSimpleName(), new ReceberOSRevFragment(), false, 1);
                 }
                 break;
             case R.string.menu_enviar_etp:
                 if(verificaConexao()){
-                    replaceFragment(new EnviarOSFragment());
+                    fragmentTransaction(EnviarOSFragment.class.getSimpleName(), new EnviarOSFragment(), false, 1);
                 }
                 break;
             case R.string.menu_enviar_fotos:
@@ -172,27 +218,27 @@ public class BaseActivity extends AppCompatActivity {
                 break;
 
             case R.string.menu_est_vert:
-                replaceFragment(new EvFragment());
+                fragmentTransaction(EvFragment.class.getSimpleName(), new EvFragment(), false, 1);
                 break;
             case R.string.menu_est_vert_fotos:
-                replaceFragment(new EvFotosFragment());
+                fragmentTransaction(EvFotosFragment.class.getSimpleName(), new EvFotosFragment(), false, 1);
                 break;
             case R.string.menu_carregamento:
-                replaceFragment(new ListCarregFragment());
+                fragmentTransaction(ListCarregFragment.class.getSimpleName(), new ListCarregFragment(), false, 1);
                 break;
             case R.string.menu_carreg_exist:
                 if(((OsMenuActitivity)mActivity).verificaOsAberta())
-                    replaceFragment(new ListCarregPlantaFragment());
+                    fragmentTransaction(ListCarregPlantaFragment.class.getSimpleName(), new ListCarregPlantaFragment(), false, 1);
                 break;
             case R.string.menu_arq_pref:
-                replaceFragment(new ArqPrefListFragment());
+                fragmentTransaction(ArqPrefListFragment.class.getSimpleName(), new ArqPrefListFragment(), false, 1);
                 break;
             case R.string.menu_baterias:
                 if(((OsMenuActitivity)mActivity).verificaOsAberta())
-                    replaceFragment(new ListBateriaFragment());
+                    fragmentTransaction(ListBateriaFragment.class.getSimpleName(), new ListBateriaFragment(), false, 1);
                 break;
             case R.string.menu_notas:
-                replaceFragment(new NotasFragment());
+                fragmentTransaction(NotasFragment.class.getSimpleName(), new NotasFragment(), false, 1);
                 break;
             case R.string.menu_finalizar:
                 ((OsMenuActitivity)mActivity).finalizarOs();
@@ -202,6 +248,8 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
 
     protected boolean verificaConexao(){
         if(!ControleConexao.checkNetworkInterface(this).equals("none")){
@@ -213,7 +261,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private void abrirAlertLogout() {
+    protected void abrirAlertLogout() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Sair");
         alertDialogBuilder.setMessage("Deseja realmente Sair da aplicação?");
@@ -270,6 +318,8 @@ public class BaseActivity extends AppCompatActivity {
     //=========================MENU LATERAL E TOOLBAR==========================
 
     protected void log(String msg) {
+        if(TAG == null)
+            TAG = "BaseActivity";
         Log.d(TAG, msg);
     }
 

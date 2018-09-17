@@ -1,7 +1,6 @@
 package base.htcom.com.br.ppipdiapp.bateria;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,12 +14,13 @@ import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterBateria;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.BateriaBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
 import base.htcom.com.br.ppipdiapp.model.Bateria;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 
-public class ListBateriaFragment extends Fragment {
+public class ListBateriaFragment extends BaseFragment {
 	private Bundle arguments;
 	private NovaBateriaFragment fragment;
 	private ListView lv;
@@ -43,8 +43,8 @@ public class ListBateriaFragment extends Fragment {
 				ImageView edit = (ImageView) view.findViewById(R.id.imgEditBat);				
 				arguments = new Bundle();
 		        arguments.putString(_ID, (String)edit.getTag());
-				fragment = NovaBateriaFragment.newInstance(arguments); 
-				((OsMenuActitivity)getActivity()).setReplaceFragment(fragment);
+				fragment = NovaBateriaFragment.newInstance(arguments);
+                fragmentTransaction(NovaBateriaFragment.class.getSimpleName(), fragment, true, 1);
 	        }
 	    });
 		
@@ -56,7 +56,7 @@ public class ListBateriaFragment extends Fragment {
 					arguments = new Bundle();
 			        arguments.putString(_ID, "0");
 			        fragment = NovaBateriaFragment.newInstance(arguments);
-					((OsMenuActitivity)getActivity()).setReplaceFragment(fragment);
+					fragmentTransaction(NovaBateriaFragment.class.getSimpleName(), fragment, true, 1);
 				}
 				catch (Exception e) {
 					e.printStackTrace();
