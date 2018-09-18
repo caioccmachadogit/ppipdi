@@ -106,11 +106,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            //o m�todo abaixo est� relacionado a thread de splash
          synchronized(mSplashThread){
           mblnClicou = true;
-           
-             //o m�todo abaixo finaliza o comando wait
              //mesmo que ele n�o tenha terminado sua espera
                 mSplashThread.notifyAll();
             }            

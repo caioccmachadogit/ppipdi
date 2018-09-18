@@ -1,120 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".login.LoginActivity" >
-
-<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
-    
-    <!-- Login progress -->
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context=".login.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/login_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
-        >
-        
-        <ImageView
-                android:id="@+id/imageLoading"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:src="@drawable/logo" />
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/login_status_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/login_progress_signing_in"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    	</LinearLayout>
-	</LinearLayout>
-	
-<!-- Login form -->
-
-    <ScrollView
-        android:id="@+id/login_form"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:gravity="center_horizontal" >
+        android:layout_height="match_parent">
 
         <LinearLayout
-            style="@style/LoginFormContainer"
-            android:layout_gravity="center"
-            android:background="@drawable/fundo_padrao_cinza"
+            android:layout_marginTop="@dimen/dimens_100"
             android:gravity="center_horizontal"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imageView1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:src="@drawable/logo_ppi_pdi"
-                android:paddingBottom="3dp" />
-
-            <EditText
-                android:id="@+id/edtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/edit_text"
-                android:textColorHint="#000"
-                android:textColor="#000"
-                android:gravity="center"
-                android:hint="@string/prompt_Email"
-                android:inputType="textEmailAddress"
-                android:singleLine="true"
-                android:text="campo@htcom.com.br" />
-            <EditText
-                android:id="@+id/edtPassw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/edit_text"
-                android:textColorHint="#000"
-                android:textColor="#000"
-                android:gravity="center"
-                android:hint="@string/prompt_Passw"
-                android:inputType="textPassword"
-        		android:maxLength="10"
-                android:singleLine="true"
-                android:text="htcom2018" />
+                android:layout_width="@dimen/dimens_350"
+                android:layout_height="@dimen/dimens_200"
+                android:layout_marginTop="@dimen/dimens_25"
+                android:src="@drawable/logo_ppi_pdi" />
 
             <LinearLayout
-                style="@style/LoginFormContainer"
-                android:orientation="horizontal" >
+                android:background="@color/cinzaTopo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimens_25"
+                android:orientation="vertical"
+                android:padding="@dimen/dimens_25">
 
-                <Button
-                    android:id="@+id/btn_entrar"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_below="@+id/edtSenha"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="3dp"
-                    android:onClick="BtnEntrar"
-                    android:background="@drawable/botao_padrao"
-                    android:text="@string/action_sign_in_register"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/edit_text"
+                    android:gravity="center"
+                    android:hint="@string/prompt_Email"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:text="campo@htcom.com.br"
+                    android:textColor="#000"
+                    android:textColorHint="#000" />
+
+                <EditText
+                    android:id="@+id/edtPassw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimens_20"
+                    android:background="@android:drawable/edit_text"
+                    android:gravity="center"
+                    android:hint="@string/prompt_Passw"
+                    android:inputType="textPassword"
+                    android:maxLength="10"
+                    android:singleLine="true"
+                    android:text="htcom2018"
+                    android:textColor="#000"
+                    android:textColorHint="#000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimens_15">
+
+                    <Button
+                        android:id="@+id/btn_entrar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/edtSenha"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/botao_padrao"
+                        android:onClick="BtnEntrar"
+                        android:text="@string/action_sign_in_register"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
-    </ScrollView>
-</merge>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

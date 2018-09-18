@@ -192,7 +192,6 @@ public class DatabaseConverter {
                 // tempField.set(obj, cursor.getInt(columnIndex));
             }
 
-            // FIXME Add for byte[] column
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -227,7 +226,6 @@ public class DatabaseConverter {
         } else if (tempFieldType == byte.class || tempFieldType == Byte.class) {
             contentValues.put(tempColumn, (Byte) tempValueObj);
         }
-        // FIXME Add for byte[] column
     }
 
 }

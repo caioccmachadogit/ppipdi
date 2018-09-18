@@ -2,7 +2,6 @@ package base.htcom.com.br.ppipdiapp.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.base.BaseActivity;
 import base.htcom.com.br.ppipdiapp.main.MainActivity;
 import base.htcom.com.br.ppipdiapp.model.Colaborador;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
@@ -20,7 +20,7 @@ import base.htcom.com.br.ppipdiapp.padrao.utils.FormUtills;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 import base.htcom.com.br.ppipdiapp.splash.SplashActivity;
 
-public class LoginActivity extends AppCompatActivity implements AsyncLogin.AsyncResponse {
+public class LoginActivity extends BaseActivity implements AsyncLogin.AsyncResponse {
 	private EditText edtEmail;
 	private EditText edtPassw;
 	ArrayList<EditText> lstValidade = new ArrayList<EditText>();
@@ -33,8 +33,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncLogin.Async
 		}
 		else {
 			setContentView(R.layout.form_view_login);
-			edtEmail = (EditText) findViewById(R.id.edtEmail);
-			edtPassw = (EditText) findViewById(R.id.edtPassw);
+			edtEmail = findViewById(R.id.edtEmail);
+			edtPassw = findViewById(R.id.edtPassw);
 			lstValidade.add(edtEmail);
 			lstValidade.add(edtPassw);
 		}
@@ -62,10 +62,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncLogin.Async
 			else{
 			//Problema de conex�o ou Usuario n�o valido
 				if(output.equals("false")){
-					new AlertaDialog(this).showDialogAviso("Aten��o!", "Usu�rio inv�lido, por favor verifique!");
+					new AlertaDialog(this).showDialogAviso("Atenção!", "Usuário inválido, por favor verifique!");
 				}
 				else {
-					new AlertaDialog(this).showDialogAviso("Aten��o!", "Tente novamente mais tarde! Se esta situa��o persistir, entre em contato com a HTCOM!");
+					new AlertaDialog(this).showDialogAviso("Atenção!", "Tente novamente mais tarde! Se esta situação persistir, entre em contato com a HTCOM!");
 				}
 			}
 		}
@@ -86,12 +86,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncLogin.Async
 				startActivity(new Intent(this, MainActivity.class));
 			}
 			else{
-				new AlertaDialog(this).showDialogAviso("Aten��o!", "Usu�rio inv�lido, por favor verifique! #cod1");
+				new AlertaDialog(this).showDialogAviso("Atenção!", "Usuário inválido, por favor verifique! #cod1");
 			}	
 		}
 		catch (Exception e) {
 			Log.e("ERROR CONVERTERJSON", e.getMessage());
-			new AlertaDialog(this).showDialogAviso("Aten��o!", "Usu�rio inv�lido, por favor verifique! #cod2");
+			new AlertaDialog(this).showDialogAviso("Atenção!", "Usuário inválido, por favor verifique! #cod2");
 		}
 	}
 	

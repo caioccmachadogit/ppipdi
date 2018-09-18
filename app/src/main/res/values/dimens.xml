@@ -38,7 +38,6 @@
     <dimen name="dimens_200">200dp</dimen>
     <dimen name="dimens_300">300dp</dimen>
     <dimen name="dimens_350">350dp</dimen>
-    <dimen name="dimens_400">400dp</dimen>
     <dimen name="dimens_500">500dp</dimen>
     <dimen name="dimens_8">8dp</dimen>
     <dimen name="dimens_80">80dp</dimen>
@@ -53,5 +52,6 @@
     <dimen name="dimens_650">650dp</dimen>
     <dimen name="dimens_750">750dp</dimen>
     <dimen name="dimens_450">450dp</dimen>
+    <dimen name="dimens_400">400dp</dimen>
 
 </resources>
