@@ -88,6 +88,7 @@ public class BaseActivity extends AppCompatActivity {
     public String EMPRESA;
 
     protected void replaceLinear(int view) {
+        findViewById(R.id.container).setVisibility(View.GONE);
         LayoutInflater inflater = getLayoutInflater();
         LinearLayout container =  findViewById(R.id.content_view);
         this.view = inflater.inflate(view, container);

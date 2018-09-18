@@ -39,6 +39,8 @@ import base.htcom.com.br.ppipdiapp.model.Combo;
 import base.htcom.com.br.ppipdiapp.model.ControleUpload;
 import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
+import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
+import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
 import base.htcom.com.br.ppipdiapp.padrao.utils.BitmapUtills;
 import base.htcom.com.br.ppipdiapp.padrao.utils.CriarDirExterno;
@@ -66,16 +68,23 @@ public class ArqPrefActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list_arq_pref);
+
 		_TIPOREL = getIntent().getStringExtra("_TIPOREL");
-		TextView titCat = (TextView) findViewById(R.id.tvTitCat);
-		titCat.setText("Categoria - "+_TIPOREL);
-		TextView tvVersao = (TextView) findViewById(R.id.tvVersao);
-		tvVersao.setText(getContext().getResources().getString(R.string.action_settings));
-		TextView tit = (TextView) findViewById(R.id.tvTitSite);
+		setContentView(R.layout.activity_main);
+
+		setmActivity(this);
+		setTAG(getClass().getSimpleName());
+		setTitleTela("Categoria - "+_TIPOREL);
+		setUpToolbar();
+		setupNavDrawer(MenuItemEnum.Arq_Pref, TipoMenu.OS);
+		setupBackButton();
+		replaceLinear(R.layout.list_arq_pref);
+
+		TextView tit = findViewById(R.id.tvTitSite);
 		tit.setText("Site: "+ OsMenuActitivity._OS.getCOD_ENTIDADE().replace("0", "")+ " | ETP: "+OsMenuActitivity._CODIGO);
-		lv = (ListView) findViewById(R.id.lv_arq_pref);
+		lv = findViewById(R.id.lv_arq_pref);
 		lv.setItemsCanFocus(true);
+
 		AtualizarListViewArqs();
 	}
 

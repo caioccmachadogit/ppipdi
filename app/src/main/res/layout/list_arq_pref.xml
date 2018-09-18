@@ -6,41 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:padding="@dimen/dimens_10"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_marginLeft="@dimen/dimens_80"
-            android:textSize="@dimen/dimens_25"
-            android:id="@+id/tvTitCat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:textColor="@color/colorWhite"
-            android:textStyle="italic|bold" />
-
-        <LinearLayout
-            android:gravity="right|bottom"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:gravity="right"
-                android:id="@+id/tvVersao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="versao app 1231233"
-                android:textColor="@color/colorWhite"
-                android:textStyle="italic|bold" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-
     <TextView
         android:id="@+id/tvTitSite"
         android:layout_width="match_parent"
