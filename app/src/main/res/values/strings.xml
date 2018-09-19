@@ -4,7 +4,7 @@
     <string name="geral_RegistroSalvo">Registro salvo com sucesso!</string>
 
     <string name="app_name">PPI PDI</string>
-    <string name="action_settings">V.060415</string> <!-- ATUALIZACAO: NOVA FUNC BATERIAS -->
+    <string name="action_settings">V.270918</string> <!-- ATUALIZACAO: CONVERSAO ECLIPSE PARA AND STUDIO -->
 
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
