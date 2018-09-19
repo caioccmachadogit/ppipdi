@@ -2,7 +2,6 @@ package base.htcom.com.br.ppipdiapp.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -17,13 +16,15 @@ import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterOSFinalizada;
+import base.htcom.com.br.ppipdiapp.base.BaseFragment;
+import base.htcom.com.br.ppipdiapp.base.BaseListFragment;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
 import base.htcom.com.br.ppipdiapp.bll.OsBLL;
 import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 
-public class ListOSFinalizadaFragment extends ListFragment{
+public class ListOSFinalizadaFragment extends BaseListFragment{
 	
 	public static String _TAGLINHA = "TAGLINHA";
 	private String _linhaOs = "0";
@@ -101,12 +102,10 @@ public class ListOSFinalizadaFragment extends ListFragment{
 			startActivity(i);
 		}
 		else if (item.getTitle() == "Reenviar ETP") {
-			// TODO: 13/09/2018 rever
-//			Bundle arguments = new Bundle();
-//	        arguments.putString(_TAGLINHA, _linhaOs);
-//	        ReenviarOSFragment reenviarOSFragment = ReenviarOSFragment.newInstance(arguments);
-//	        android.support.v4.app.FragmentManager frgManager = getFragmentManager();
-//			frgManager.beginTransaction().replace(R.id.content_frame, reenviarOSFragment).commit();
+			Bundle arguments = new Bundle();
+	        arguments.putString(_TAGLINHA, _linhaOs);
+	        ReenviarOSFragment fragment = ReenviarOSFragment.newInstance(arguments);
+			fragmentTransaction(ReenviarOSFragment.class.getSimpleName(), fragment, false, 1);
 		}
 		else {
 			return false;

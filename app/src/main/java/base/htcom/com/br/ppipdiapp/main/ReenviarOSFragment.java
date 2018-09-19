@@ -183,6 +183,7 @@ public class ReenviarOSFragment extends BaseFragment{
 //=======ENVIAR LIST DE NAO ENVIADOS=====================
 			if(lsArqPrefs == null && lsCarregamentos == null && lsBaterias == null && lstControleUploads == null){
 				Toast.makeText(getActivity(), "Nenhum registro a ser Reenviado!", Toast.LENGTH_SHORT).show();
+				fragmentTransaction(ListOSFinalizadaFragment.class.getSimpleName(), new ListOSFinalizadaFragment(), false, 1);
 			}
 			else {
 				if(!ControleConexao.checkNetworkInterface(getActivity()).equals("none")){

@@ -121,10 +121,10 @@ public class AdapterOSFinalizada extends ArrayAdapter<Os>{
 		holder.codEntidade.setText(holder.os.getCOD_ENTIDADE().replace("0",""));
 		holder.pontaDist.setText(holder.os.getPONTA_DISTANTE().replace("0",""));
 		holder.finalizado.setTag(holder.os.getLINHA());
-		holder.info.setImageResource(R.mipmap.ic_cancelar);
-		holder.car.setImageResource(R.mipmap.ic_cancelar);
-		holder.bat.setImageResource(R.mipmap.ic_cancelar);
-		holder.imagem.setImageResource(R.mipmap.ic_cancelar);
+		holder.info.setImageResource(R.drawable.ic_cancelar);
+		holder.car.setImageResource(R.drawable.ic_cancelar);
+		holder.bat.setImageResource(R.drawable.ic_cancelar);
+		holder.imagem.setImageResource(R.drawable.ic_cancelar);
 		
 		//VERIFICA SE TODAS AS INFORMACOES E IMAGENS J� FORAM ENVIADAS
 		try {
@@ -142,7 +142,7 @@ public class AdapterOSFinalizada extends ArrayAdapter<Os>{
 					}
 				}
 				if(contaArqPrefEnviado == totalArqPrefRealizado){
-					holder.info.setImageResource(R.mipmap.ic_confirmar);
+					holder.info.setImageResource(R.drawable.ic_confirmar);
 				}
 				holder.qtdInfo.setText(totalArqPrefRealizado+" de "+contaArqPrefEnviado);
 			}
@@ -160,7 +160,7 @@ public class AdapterOSFinalizada extends ArrayAdapter<Os>{
 					}
 				}
 				if(contaCarEnviado == totalCarRealizado){
-					holder.car.setImageResource(R.mipmap.ic_confirmar);
+					holder.car.setImageResource(R.drawable.ic_confirmar);
 				}
 				holder.qtdCar.setText(totalCarRealizado+" de "+contaCarEnviado);
 			}
@@ -178,7 +178,7 @@ public class AdapterOSFinalizada extends ArrayAdapter<Os>{
 					}
 				}
 				if(contaBatEnviado == totalBatRealizado){
-					holder.bat.setImageResource(R.mipmap.ic_confirmar);
+					holder.bat.setImageResource(R.drawable.ic_confirmar);
 				}
 				holder.qtdBat.setText(totalBatRealizado+" de "+contaBatEnviado);
 			}
@@ -196,7 +196,7 @@ public class AdapterOSFinalizada extends ArrayAdapter<Os>{
 					}
 				}
 				if(contaUpEnviado == totalUpRealizado){
-					holder.imagem.setImageResource(R.mipmap.ic_confirmar);
+					holder.imagem.setImageResource(R.drawable.ic_confirmar);
 				}
 				holder.qtdImage.setText(totalUpRealizado+" de "+contaUpEnviado);
 			}

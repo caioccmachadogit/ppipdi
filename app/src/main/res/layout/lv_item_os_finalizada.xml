@@ -132,7 +132,7 @@
             android:id="@+id/img_finalizado"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:src="@mipmap/ic_action_good" />
+            android:src="@drawable/ic_action_good" />
     </LinearLayout>
 
     <LinearLayout
