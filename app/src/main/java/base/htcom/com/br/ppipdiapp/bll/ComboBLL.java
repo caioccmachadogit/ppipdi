@@ -13,6 +13,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class ComboBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "combo";
 	public static String createTable = "CREATE TABLE 'combo' ("+
 			  "LINHA INTEGER NOT NULL,"+
@@ -111,7 +112,7 @@ public class ComboBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByFiltro->"+dump);
 		return lst;
 	}
 	
@@ -130,7 +131,7 @@ public class ComboBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByFiltro_tipoRel->"+dump);
 		return lst;
 	}
 	
@@ -149,7 +150,7 @@ public class ComboBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarById->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 		
 	}
@@ -169,7 +170,7 @@ public class ComboBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarBySigla->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 		
 	}
@@ -189,7 +190,7 @@ public class ComboBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByTipo->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 		
 	}
@@ -209,7 +210,7 @@ public class ComboBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByOrdem->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 }

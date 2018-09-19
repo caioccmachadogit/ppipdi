@@ -14,6 +14,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class ControleUploadBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "controle_upload";
 	public static String createTable = "CREATE TABLE 'controle_upload' ("+
 			"LINHA INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -112,7 +113,7 @@ public class ControleUploadBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR UPDATE TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByArqCarregado->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 
@@ -148,7 +149,7 @@ public class ControleUploadBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByOvChamado->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	
@@ -167,7 +168,7 @@ public class ControleUploadBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores tab "+NomeTabela,  dump);
+		Log.d(TAG,"listarRealizadosByOvChamado->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	

@@ -13,7 +13,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class CarregamentoBLL {
-	
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "carregamento";
 	public static String createTable = "CREATE TABLE 'carregamento' ("+
 			  "LINHA INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -150,7 +150,7 @@ public class CarregamentoBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listar->"+dump);
 		return lst;
 	}
 	
@@ -170,7 +170,7 @@ public class CarregamentoBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR LISTBYID TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarById->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 	
@@ -190,7 +190,7 @@ public class CarregamentoBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR LISTBYID TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarEv->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 
@@ -210,7 +210,7 @@ public class CarregamentoBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR LISTBYCODIGO TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByCodigo->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	
@@ -230,7 +230,7 @@ public class CarregamentoBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR LISTBYCODIGO TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByCodigoAll->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	
@@ -250,7 +250,7 @@ public class CarregamentoBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR LISTBYCODIGO TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByCodigoAllNotEv->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	
@@ -271,7 +271,7 @@ public class CarregamentoBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "listarNaoEnviados TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarNaoEnviados->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	

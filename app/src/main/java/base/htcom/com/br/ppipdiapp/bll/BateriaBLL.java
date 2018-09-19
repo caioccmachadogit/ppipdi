@@ -14,6 +14,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class BateriaBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "baterias";
 	public static String createTable = "CREATE TABLE 'baterias' ("+
 			  "Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -56,7 +57,7 @@ public class BateriaBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarById->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 
@@ -90,7 +91,7 @@ public class BateriaBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByOvChamado->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	
@@ -111,7 +112,7 @@ public class BateriaBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "listarNaoEnviados TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarNaoEnviados->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	

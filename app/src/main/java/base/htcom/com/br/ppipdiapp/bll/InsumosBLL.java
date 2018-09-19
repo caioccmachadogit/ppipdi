@@ -13,6 +13,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class InsumosBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "insumos";
 	public static String createTable = "CREATE TABLE 'insumos' ("+
 			  "LINHA INTEGER NOT NULL,"+
@@ -125,7 +126,7 @@ public class InsumosBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarById->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 
@@ -145,7 +146,7 @@ public class InsumosBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Tab "+NomeTabela,  dump);
+		Log.d(TAG,"listarAntena->"+dump);
 		return lst;
 	}
 
@@ -164,7 +165,7 @@ public class InsumosBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByInfo02->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 		
 	}

@@ -13,6 +13,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class OsBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "cad_os_vs3b";
 	public static String createTable = "CREATE TABLE 'cad_os_vs3b' ("+
 			"LINHA INTEGER NOT NULL,"+
@@ -136,7 +137,7 @@ public class OsBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.d("Valores CursorCrud",  dump);
+		Log.d(TAG,"listar->"+dump);
 		return retorno;
 	}
 	
@@ -157,7 +158,7 @@ public class OsBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores ListOSFinalizada",  dump);
+		Log.d(TAG,"listarFinalizada->"+dump);
 		return lstOs;
 	}
 	
@@ -176,7 +177,7 @@ public class OsBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores CursorCrud",  dump);
+		Log.d(TAG,"listarById->"+dump);
 		return lstOs;
 	}
 	

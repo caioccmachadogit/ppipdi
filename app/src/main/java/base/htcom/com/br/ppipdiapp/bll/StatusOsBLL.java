@@ -16,6 +16,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class StatusOsBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "status_os";
 	public static String createTable = "CREATE TABLE 'status_os' ("+
 			"_id INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -67,7 +68,7 @@ public class StatusOsBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores CursorCrud",  dump);
+		Log.d(TAG,"listarFotos->"+dump);
 		return lstOs;
 	}
 	
@@ -87,7 +88,7 @@ public class StatusOsBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores CursorCrud",  dump);
+		Log.d(TAG,"listarRegistros->"+dump);
 		return lstOs;
 	}
 	
@@ -106,7 +107,7 @@ public class StatusOsBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores "+NomeTabela,  dump);
+		Log.d(TAG,"listarByLinha->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 	

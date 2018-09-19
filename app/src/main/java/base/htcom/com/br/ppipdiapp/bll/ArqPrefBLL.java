@@ -18,6 +18,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class ArqPrefBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "cad_os_arq_pref";
 	public static String createTable = "CREATE TABLE 'cad_os_arq_pref' ("+
 			  "LINHA INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -120,7 +121,7 @@ public class ArqPrefBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByArqCarregado->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 
@@ -156,7 +157,7 @@ public class ArqPrefBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByOvChamado->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	
@@ -176,7 +177,7 @@ public class ArqPrefBLL {
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarRealizadosByOvChamado->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 	

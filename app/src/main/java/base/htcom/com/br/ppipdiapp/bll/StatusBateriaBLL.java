@@ -14,6 +14,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class StatusBateriaBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "status_bateria";
 	public static String createTable = "CREATE TABLE 'status_bateria' ("+
 			"_id INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -54,7 +55,7 @@ GerenciadorDB gerDB = new GerenciadorDB();
 		catch(Exception ex){
 			throw ex;
 		}
-		Log.v("Valores: "+NomeTabela,  dump);
+		Log.d(TAG,"listarByLinha->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 	

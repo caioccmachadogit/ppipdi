@@ -13,6 +13,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class SiteBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "cad_pontos";
 	public static String createTable = "CREATE TABLE 'cad_pontos' ("+
 			  "LINHA INTEGER NOT NULL,"+  
@@ -168,7 +169,7 @@ public class SiteBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR LISTBYID TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByCodigo->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 

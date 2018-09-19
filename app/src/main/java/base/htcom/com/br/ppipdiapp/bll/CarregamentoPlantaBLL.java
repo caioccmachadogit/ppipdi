@@ -13,6 +13,7 @@ import base.htcom.com.br.ppipdiapp.padrao.convert_sqlite_object.DatabaseConverte
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class CarregamentoPlantaBLL {
+	private final String TAG = getClass().getSimpleName();
 	private final String NomeTabela = "carregamento_planta";
 	public static String createTable = "CREATE TABLE 'carregamento_planta' ("+
 			  "LINHA INTEGER NOT NULL,"+
@@ -137,7 +138,7 @@ public class CarregamentoPlantaBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR LISTBYCODIGO TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarByCodEntidade->"+dump);
 		return (lst.size() > 0 ? lst : null);
 	}
 
@@ -157,7 +158,7 @@ public class CarregamentoPlantaBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR LISTBYID TAB: "+NomeTabela,context);
 			throw ex;
 		}
-		Log.v("Valores Cursor",  dump);
+		Log.d(TAG,"listarById->"+dump);
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 

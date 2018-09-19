@@ -2,6 +2,7 @@ package base.htcom.com.br.ppipdiapp.bll;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 public class LogErrorBLL {
+	private static final String TAG = "LogErrorBLL";
 	private final String NomeTabela = "log_error";
 	public static String createTable = "CREATE TABLE 'log_error' ("+
 			"TAG varchar(255) DEFAULT NULL,"+
@@ -35,5 +37,6 @@ public class LogErrorBLL {
 		valores.put("ERROR", error);
 		valores.put("DATA", format.format(new Date()));
 		new LogErrorBLL().Insert(context, valores);
+		Log.e(TAG,tag+"->"+error);
 	}
 }
