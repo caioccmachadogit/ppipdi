@@ -1635,6 +1635,8 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 			}
 
 			IMG_DM = "dm_"+IMG_DM;
+			if(IMG_DM.equals("dm_DETERMINAR"))
+				IMG_DM = "dm_ze0_0";
 			String uriDm = IMG_DM;
 			imageResource = getActivity().getResources().getIdentifier(uriDm, "drawable", getActivity().getPackageName());
 			if(imageResource != 0){
