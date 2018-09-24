@@ -160,7 +160,7 @@ public class EnviarOSFragment extends BaseFragment {
 					}
 				};
 				
-				lstOsFinalizada = statusOsBLL.listarRegistros(getActivity(),"MainActivity.USER","MainActivity.EMPRESA");
+				lstOsFinalizada = statusOsBLL.listarRegistros(getActivity(),getUser(),getEmpresa());
 				if(lstOsFinalizada.size() > 0){
 					for(int i=0; i < lstOsFinalizada.size();i++){
 						//============ARQ PREFS =================================
@@ -175,7 +175,7 @@ public class EnviarOSFragment extends BaseFragment {
 							Toast.makeText(getActivity(), "Nenhum Arquivo Preferencial para a ETP: "+lstOsFinalizada.get(i).getOV_CHAMADO_NUM()+"", Toast.LENGTH_SHORT).show();
 						}
 						//============ARQ PREFS =================================
-						
+
 						//============CARREGAMENTOS =================================
 						//VERIFICA SE TEM CARREGAMENTOS A SEREM ENVIADOS
 						List<Carregamento> lstCarregamentos = new ArrayList<Carregamento>();
@@ -188,7 +188,7 @@ public class EnviarOSFragment extends BaseFragment {
 							Toast.makeText(getActivity(), "Nenhum Carregamento para a ETP: "+lstOsFinalizada.get(i).getOV_CHAMADO_NUM()+"", Toast.LENGTH_SHORT).show();
 						}
 						//============CARREGAMENTOS =================================
-						
+
 						//============BATERIAS =================================
 						//VERIFICA SE TEM BATERIAS A SEREM ENVIADAS
 						List<Bateria> lstBaterias = new ArrayList<Bateria>();
@@ -202,7 +202,7 @@ public class EnviarOSFragment extends BaseFragment {
 						}
 						//============BATERIAS =================================
 					}
-					
+
 					//======ENVIO ARQ PREF============================
 					jsonArqPrefsEnviados = new ArrayList<String>();
 					if(lstArqPrefEnvio.size() > 0){
@@ -214,7 +214,7 @@ public class EnviarOSFragment extends BaseFragment {
 						}
 					}
 					else Toast.makeText(getActivity(), "Nenhum Arquivo Preferencial a ser enviado!", Toast.LENGTH_SHORT).show();
-					
+
 					//======ENVIO CARREGAMENTOS============================
 					jsonCarregamentosEnviados = new ArrayList<String>();
 					if(lstCarregamentoEnvio.size() > 0){
@@ -226,7 +226,7 @@ public class EnviarOSFragment extends BaseFragment {
 						}
 					}
 					else Toast.makeText(getActivity(), "Nenhum Carregamento a ser enviado!", Toast.LENGTH_SHORT).show();
-					
+
 					//======ENVIO BATERIAS============================
 					jsonBateriasEnviados = new ArrayList<String>();
 					if(lstBateriasEnvio.size() > 0){

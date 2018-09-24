@@ -19,4 +19,12 @@ public class BaseFragment extends Fragment {
     public void setupNavDrawer(){
         ((BaseActivity) getActivity()).setupNavDrawer();
     }
+
+    public String getUser(){
+        return ((BaseActivity) getActivity()).USER;
+    }
+
+    public String getEmpresa(){
+        return ((BaseActivity) getActivity()).EMPRESA;
+    }
 }
