@@ -1,14 +1,18 @@
 package base.htcom.com.br.ppipdiapp.base;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -62,7 +66,10 @@ public class BaseActivity extends AppCompatActivity {
     private NavigationView navigationView;
 
     private Toolbar toolbar;
+
     private ActionBar actionBar;
+
+    protected final int PERMISSIONS_APP = 2;
 
     protected void setmActivity(Activity activity){
         this.mActivity = activity;
@@ -376,5 +383,43 @@ public class BaseActivity extends AppCompatActivity {
 
             }
         }).show();
+    }
+
+    protected boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    protected void requestPermission() {
+        String permissions[] = new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE};
+        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_APP);
+        Log.d("requestPermission", "REQUERIR PERMISSAO");
+    }
+
+    protected boolean verifyGrantResults(int[] grantResults){
+        boolean resultOk = true;
+        for (int grant:grantResults) {
+            if(grant != PackageManager.PERMISSION_GRANTED){
+                resultOk = false;
+                break;
+            }
+        }
+        Log.d("verifyGrantResults", String.valueOf(resultOk));
+        return resultOk;
     }
 }

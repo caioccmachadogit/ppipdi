@@ -1,11 +1,12 @@
 package base.htcom.com.br.ppipdiapp.splash;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
+import android.util.Log;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.base.BaseActivity;
 import base.htcom.com.br.ppipdiapp.bll.ArqPrefBLL;
 import base.htcom.com.br.ppipdiapp.bll.BateriaBLL;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
@@ -25,17 +26,35 @@ import base.htcom.com.br.ppipdiapp.login.LoginActivity;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GerenciadorDB;
 
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
-	private Thread mSplashThread; 
+	private Thread mSplashThread;
+
     private boolean mblnClicou = false;
- 
-    /** Evento chamado quando a activity � executada pela primeira vez */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_view);
-    
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkPermission()) {
+                Log.d("checkPermission", "PERMITIDO");
+                startSplash();
+            }
+            else {
+                Log.d("checkPermission", "NAO PERMITIDO");
+                requestPermission();
+            }
+        }
+        else {
+            Log.d("checkPermission", "PERMISSAO NAO REQUERIDA. VERSAO ANDROID < 23");
+            startSplash();
+        }
+    }
+
+    private void startSplash() {
+        toast("Dispositivo habilitado, carregando aguarde!");
         //thread para mostrar uma tela de Splash
         mSplashThread = new Thread() {
             @Override
@@ -48,12 +67,12 @@ public class SplashActivity extends AppCompatActivity {
                         mblnClicou = true;
                     }
                 }
-                catch(InterruptedException ex){                    
+                catch(InterruptedException ex){
                 }
-                 
+
                 if (mblnClicou){
                 	try {
-                		/*----------------------------------------------------------------------------------------------------------------------------------------*/  
+                		/*----------------------------------------------------------------------------------------------------------------------------------------*/
                 		// **** CARREGA UM ARRAY DE QUERYS PARA EXECU��O NO MOMENTO DE CRIA��O DO BANCO DE DADOS
                 		GerenciadorDB.QUERY_CREATE_BANCO_DE_DADOS.add(LogErrorBLL.createTable);
                 		GerenciadorDB.QUERY_CREATE_BANCO_DE_DADOS.add(OsBLL.createTable);
@@ -76,45 +95,46 @@ public class SplashActivity extends AppCompatActivity {
                 		/*----------------------------------------------------------------------------------------------------------------------------------------*/
                      //fechar a tela de Splash
                         finish();
-                         
+
                      //Carrega a Activity Principal
                      Intent i = new Intent();
                      i.setClass(SplashActivity.this, LoginActivity.class);
                      startActivity(i);
 					}
                 	catch (Exception e) {
-						
+
 					}
-                	
+
                 }
             }
         };
-         
+
         mSplashThread.start();
     }
-     
+
     @Override
     public void onPause()
     {
         super.onPause();
-         
         //garante que quando o usu�rio clicar no bot�o
         //"Voltar" o sistema deve finalizar a thread
-        mSplashThread.interrupt();
+        if(mSplashThread != null)
+            mSplashThread.interrupt();
     }
-     
+
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-         synchronized(mSplashThread){
-          mblnClicou = true;
-             //mesmo que ele n�o tenha terminado sua espera
-                mSplashThread.notifyAll();
-            }            
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_APP:
+                if (grantResults.length > 0 && verifyGrantResults(grantResults)) {
+                    Log.d("PermissionResult", "PERMISSAO CONCEDIDA");
+                    startSplash();
+                }
+                else {
+                    Log.d("PermissionResult", "PERMISSAO NAO CONCEDIDA");
+                    toast("Permissão não concedida!");
+                }
+                break;
         }
-        return true;
     }
-
-
-    
 }
