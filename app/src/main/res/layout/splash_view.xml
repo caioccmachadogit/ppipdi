@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_gravity="center"
-        android:layout_width="@dimen/dimens_400"
+        android:layout_width="@dimen/dimens_300"
         android:layout_height="match_parent"
         android:src="@drawable/logo_ppi_pdi" >
     </ImageView>
