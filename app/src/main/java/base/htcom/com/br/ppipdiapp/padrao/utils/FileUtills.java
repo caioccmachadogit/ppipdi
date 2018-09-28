@@ -1,6 +1,7 @@
 package base.htcom.com.br.ppipdiapp.padrao.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -53,7 +54,9 @@ public class FileUtills {
 	public static void deleteFile(String pathName){
 		File file = new File(pathName);
 		if(file.exists()){
-			if(file.delete()){}
+			if(file.delete()){
+				Log.d("FileUtills","deleteFile->"+pathName);
+			}
 		}
 	}
 

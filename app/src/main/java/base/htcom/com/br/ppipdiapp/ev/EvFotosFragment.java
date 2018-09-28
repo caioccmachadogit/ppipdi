@@ -54,9 +54,7 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 	private ControleUploadBLL controleUploadBLL = new ControleUploadBLL();
 	private CarregamentoBLL carregamentoBLL = new CarregamentoBLL();
     //============OBJS VIEW ===========================================
-	
 
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -150,7 +148,7 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 	            retorno = true;
 	            break;
 	        case R.id.visu_foto:
-	            BtnImg();
+	            btnImg();
 	        	retorno = true;
 	        	break;
 	        default:
@@ -223,11 +221,11 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 		}
 	}
 	
-	private void BtnImg() throws Exception {
+	private void btnImg(){
 		try {
 			ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), _ID, OsMenuActitivity._OV_CHAMADO);
 			if(controleUpload != null){
-				DialogImg(controleUpload);
+				dialogImg(controleUpload);
 			}
 			else {
 				Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
@@ -238,11 +236,11 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 		}
 	}
 	
-	private void DialogImg(final ControleUpload controleUpload) {
+	private void dialogImg(final ControleUpload controleUpload) {
 		LayoutInflater li = getActivity().getLayoutInflater();
 		
 		View view = li.inflate(R.layout.dialog_img, null);
-		File file = new File(getExternalFilesDir(), controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());;
+		File file = new File(getExternalFilesDir(), controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
 	  	if (file.exists())
 	  	{
 			new BitmapFactory();
@@ -321,7 +319,7 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 		return nomeArquivo[0];
 	}
 
-	private ControleUpload PrepararControleUpload(Bitmap bitmap, String linhaControleUp) {
+	private ControleUpload prepararControleUpload(Bitmap bitmap, String linhaControleUp) {
 		ControleUpload controleUpload = new ControleUpload();
 		try {
 			if(linhaControleUp != null){
@@ -397,17 +395,17 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 					if(controleUpload != null){
 						//JA EXISTE FOTO PARA O ARQPREF, ENT�O DEVE EDITAR
 						FileUtills.deleteFile(getExternalFilesDir()+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
-						controleUploadBLL.update(getActivity(), PrepararControleUpload(finalBitmap, controleUpload.getLinha()));
+						controleUploadBLL.update(getActivity(), prepararControleUpload(finalBitmap, controleUpload.getLinha()));
 					}
 					else { //AINDA N�O EXISTE FOTO PARA O ARQPREF, ENT�O DEVE CRIAR
-						controleUploadBLL.Insert(getActivity(), PrepararControleUpload(finalBitmap, null));
+						controleUploadBLL.Insert(getActivity(), prepararControleUpload(finalBitmap, null));
 					}
 					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
 				}
 			}
 		}
 		catch (Exception e) {
-			LogErrorBLL.LogError(e.getMessage(), "ERROR COMPRESS",getActivity());
+			LogErrorBLL.LogError(e.getMessage(), "onActivityResult",getActivity());
 		}
 		showDialog(msgDialog);
 	}

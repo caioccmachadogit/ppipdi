@@ -3,14 +3,11 @@ package base.htcom.com.br.ppipdiapp.bateria;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +24,9 @@ import java.util.Date;
 import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.base.ActivityResult;
 import base.htcom.com.br.ppipdiapp.base.BaseFragment;
+import base.htcom.com.br.ppipdiapp.base.Result;
 import base.htcom.com.br.ppipdiapp.bll.BateriaBLL;
 import base.htcom.com.br.ppipdiapp.bll.ControleUploadBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
@@ -36,11 +35,9 @@ import base.htcom.com.br.ppipdiapp.model.ControleUpload;
 import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
-import base.htcom.com.br.ppipdiapp.padrao.utils.BitmapUtills;
-import base.htcom.com.br.ppipdiapp.padrao.utils.CriarDirExterno;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSTracker;
 
-public class NovaBateriaFragment extends BaseFragment {
+public class NovaBateriaFragment extends BaseFragment implements ActivityResult {
 	public static NovaBateriaFragment newInstance(Bundle arguments){
 		NovaBateriaFragment f = new NovaBateriaFragment();
         if(arguments != null){
@@ -62,16 +59,10 @@ public class NovaBateriaFragment extends BaseFragment {
 	private String LONGITUDE = null;
 	private Bateria _bateria;
 	private AlertDialog alerta;
-	//==========CAPTURARFOTO===============================================
 	private String photoFile = new String();
-	CriarDirExterno criarDirExterno = new CriarDirExterno();
-	private File file;
-	private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1777;
-	private String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/PPI_PDI/Fotos/";
 	private String[] nomeArquivo = new String[3];
 	@SuppressLint("SimpleDateFormat") private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
 	private String date = dateFormat.format(new Date());
-	//==========CAPTURARFOTO===============================================
 	
 	private ArrayList<EditText> lstValidade = new ArrayList<EditText>();
 	private BateriaBLL bateriaBLL = new BateriaBLL();
@@ -84,9 +75,9 @@ public class NovaBateriaFragment extends BaseFragment {
 		try {
 			ID = getArguments().getString(ListBateriaFragment._ID);
 
-			FindElementosView(view);
+			findElementosView(view);
 			if(!ID.equals("0")){
-				CarregarForm();
+				carregarForm();
 			}
 		}
 		catch (Exception e) {
@@ -96,7 +87,7 @@ public class NovaBateriaFragment extends BaseFragment {
 		return view;
 	}
 
-	private void FindElementosView(View view) {
+	private void findElementosView(View view) {
 		edtMarca = (EditText) view.findViewById(R.id.edtMarca);
 		lstValidade.add(edtMarca);
 		edtModelo = (EditText) view.findViewById(R.id.edtModelo);
@@ -111,7 +102,7 @@ public class NovaBateriaFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				try {
-					BtnFoto();
+					btnFoto();
 				}
 				catch (Exception e) {
 					LogErrorBLL.LogError(e.getMessage(), "ERROR BtnFoto",getActivity());
@@ -123,20 +114,20 @@ public class NovaBateriaFragment extends BaseFragment {
 		btnVisualizar.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				BtnViewFoto();
+				btnViewFoto();
 			}
 		});
 		btnGravar = (Button) view.findViewById(R.id.btnGravarBat);
 		btnGravar.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				BtnGravar();
+				btnGravar();
 			}
 		});
 		
 	}
 
-	private void CarregarForm() throws Exception {
+	private void carregarForm() throws Exception {
 		try {
 			Bateria bateria = bateriaBLL.listarById(getActivity(), Integer.valueOf(ID));
 			if(bateria != null){
@@ -151,13 +142,13 @@ public class NovaBateriaFragment extends BaseFragment {
 		}
 	}
 	
-	private void BtnGravar() {
+	private void btnGravar() {
 		try {
 			Fragment fragment = null;
 			if(validarEditTxt(lstValidade)){
 				//=======CRIA��O ===========
 				if(ID.equals("0")){
-					ID = String.valueOf(bateriaBLL.Insert(getActivity(), Preparar(ID)));
+					ID = String.valueOf(bateriaBLL.Insert(getActivity(), preparar(ID)));
 					if(Long.valueOf(ID) > 0){
 						Toast.makeText(getActivity(), "Dados gravados com sucesso!", Toast.LENGTH_LONG).show();
 						fragment = new ListBateriaFragment();
@@ -169,7 +160,7 @@ public class NovaBateriaFragment extends BaseFragment {
 				}
 				//=======EDICAO ===========
 				else {
-					if(bateriaBLL.Update(getActivity(), Preparar(ID)) == 1){
+					if(bateriaBLL.Update(getActivity(), preparar(ID)) == 1){
 						Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
 						fragment = new ListBateriaFragment();
 						fragmentTransaction(ListBateriaFragment.class.getSimpleName(), fragment, false, 1);
@@ -181,12 +172,13 @@ public class NovaBateriaFragment extends BaseFragment {
 			}
 		}
 		catch (Exception e) {
+			Log.e(getClass().getSimpleName(),"btnGravar",e);
 			LogErrorBLL.LogError(e.getMessage(), "ERROR BtnGravar",getActivity());
 			Toast.makeText(getActivity(),"Ocorreu um erro com o registro!",Toast.LENGTH_LONG).show();
 		}
 	}
 	
-	private Bateria Preparar(String idLinha) throws Exception {
+	private Bateria preparar(String idLinha) throws Exception {
 		_bateria = new Bateria();
 		try {
 			if(!idLinha.equals("0")){
@@ -196,7 +188,7 @@ public class NovaBateriaFragment extends BaseFragment {
 				_bateria.setORDEM(bateria.getORDEM());
 			}
 			else {
-				_bateria.setORDEM(Ordenador());
+				_bateria.setORDEM(ordenador());
 			}
 			//===========NOVO===============
 			_bateria.setOV_CHAMADO_NUM(OsMenuActitivity._OV_CHAMADO);
@@ -211,7 +203,7 @@ public class NovaBateriaFragment extends BaseFragment {
 		return _bateria;
 	}
 	
-	private void BtnFoto() throws Exception {
+	private void btnFoto(){
 		try {
 			if(validarEditTxt(lstValidade)){
 				//=========VERIFICAR GPS==========
@@ -219,7 +211,7 @@ public class NovaBateriaFragment extends BaseFragment {
 				if(GPS.canGetLocation()){
 		        	LATITUDE = GPS.getLatitude();
 		        	LONGITUDE = GPS.getLongitude();
-		        	Capturar();
+		        	startCamera(this);
 		        }else{
 		        	// can't get location
 		        	// GPS or Network is not enabled
@@ -234,34 +226,14 @@ public class NovaBateriaFragment extends BaseFragment {
 		}
 	}
 	
-	private void Capturar() {
-		try {
-			if(criarDirExterno.CriarDirDB("/PPI_PDI/Fotos/")){
-				photoFile = GerarNomeFoto(Preparar(ID)) + ".jpg";
-				file = new File(criarDirExterno.PATHDIR);
-				File foto = new File(criarDirExterno.PATHDIR, photoFile);
-				Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
-				intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-				startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
-			}
-			else {
-				Toast.makeText(getActivity(), "Não habilitado para capturar foto, problemas com a memória Interna!", Toast.LENGTH_SHORT).show();
-			}
-		}
-		catch (Exception e) {
-			LogErrorBLL.LogError(e.getMessage(), "ERROR BTN CAPTURAR",getActivity());
-		}
-	}
-	
-	private String GerarNomeFoto(Bateria bateria){
+	private String gerarNomeFoto(Bateria bateria){
 		nomeArquivo[0] = ("OV_"+bateria.getOV_CHAMADO_NUM()+"_"+OsMenuActitivity._OS.getCOD_ENTIDADE()+"_"+date.substring(8)+"_BATER_"+"21"+bateria.getORDEM()+"_E_"+bateria.getORDEM()+"_");
 		nomeArquivo[1] = ("OV_"+bateria.getOV_CHAMADO_NUM()+"_"+OsMenuActitivity._OS.getCOD_ENTIDADE()+"_BATER_"+"21"+bateria.getORDEM()+"_E_"+bateria.getORDEM()+"_");
 		nomeArquivo[2] = ("BATER_"+"21"+bateria.getORDEM()+"_E_"+bateria.getORDEM()+"_");
 		return nomeArquivo[0];
 	}
 	
-	private String Ordenador(){
+	private String ordenador(){
 		int order = 1;
 		try {
 			List<Bateria> lst = bateriaBLL.listarByOvChamado(getActivity(), OsMenuActitivity._OV_CHAMADO);
@@ -281,50 +253,9 @@ public class NovaBateriaFragment extends BaseFragment {
 		}
 		return format;
 	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		try {
-			if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {
-				if (!file.exists()) {
-					file.mkdirs();
-				}
-				File foto = new File(criarDirExterno.PATHDIR, photoFile);
-				if (foto != null) 
-				{
-					Bitmap bitmap = BitmapUtills.salvarFotoPasta(foto); //METODO NOVO
-					
-					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), "21"+_bateria.getORDEM(), _bateria.getOV_CHAMADO_NUM());
-					if(controleUpload != null){
-						//JA EXISTE FOTO PARA O CAR, ENT�O DEVE EDITAR
-						File file = new File(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
-						if(file.exists()){
-							if(file.delete()){}					
-						}
-						controleUploadBLL.update(getActivity(), PrepararControleUpload(bitmap, controleUpload.getLinha()));
-					}
-					else { //AINDA N�O EXISTE FOTO PARA O CAR, ENT�O DEVE CRIAR
-						controleUploadBLL.Insert(getActivity(), PrepararControleUpload(bitmap, null));
-					}
-					//ARMAZENA CARREGAMENTO
-					BtnGravar();
-					new AlertaDialog(getActivity()).showDialogAviso(getResources().getString(R.string.geral_Atencao), getResources().getString(R.string.geral_RegistroSalvo));
-					new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,int which) {
-						
-						}
-					};
-				}
-			}
-		}
-		catch (Exception e) {
-			LogErrorBLL.LogError(e.getMessage(), "ERROR COMPRESS",getActivity());
-		}
-	}
-	
+
 	//===============VISUALIZAR FOTO =============================
-		private void BtnViewFoto() {
+		private void btnViewFoto() {
 			try {
 				if(!ID.equals("0")){
 					
@@ -332,7 +263,7 @@ public class NovaBateriaFragment extends BaseFragment {
 					if(bateria != null){
 						ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), "21"+bateria.getORDEM(), bateria.getOV_CHAMADO_NUM());
 						if(controleUpload != null){
-							DialogImg(controleUpload);
+							dialogImg(controleUpload);
 						}
 						else {
 							Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
@@ -352,11 +283,11 @@ public class NovaBateriaFragment extends BaseFragment {
 			
 		}
 		
-		private void DialogImg(final ControleUpload controleUpload) {
+		private void dialogImg(final ControleUpload controleUpload) {
 			LayoutInflater li = getActivity().getLayoutInflater();
 			
 			View view = li.inflate(R.layout.dialog_img, null);
-			File file = new File(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
+			File file = new File(getExternalFilesDir(),controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
 		  	if (file.exists())
 		  	{
 				new BitmapFactory();
@@ -378,7 +309,7 @@ public class NovaBateriaFragment extends BaseFragment {
 		}
 		//===============VISUALIZAR FOTO =============================
 	
-	private ControleUpload PrepararControleUpload(Bitmap bitmap, String linhaControleUp) {
+	private ControleUpload prepararControleUpload(Bitmap bitmap, String linhaControleUp) {
 		ControleUpload controleUpload = new ControleUpload();
 		try {
 			if(linhaControleUp != null){
@@ -445,6 +376,39 @@ public class NovaBateriaFragment extends BaseFragment {
 		return validadeOk;
 	}
 
-	
+	@Override
+	public void onActivityResult(Result result) {
+		String msgDialog = getResources().getString(R.string.geral_RegistroNSalvo);
+		try {
+			if (result.getRequestCode() == getImageCapture() && result.getResultCode() == getActivity().RESULT_OK) {
+				Bitmap finalBitmap = savePicture(gerarNomeFoto(preparar(ID)));
+				if(finalBitmap != null){
+					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), "21"+_bateria.getORDEM(), _bateria.getOV_CHAMADO_NUM());
+					if(controleUpload != null){
+						//JA EXISTE FOTO PARA O CAR, ENT�O DEVE EDITAR
+//						FileUtills.deleteFile(getExternalFilesDir()+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
+						controleUploadBLL.update(getActivity(), prepararControleUpload(finalBitmap, controleUpload.getLinha()));
+					}
+					else { //AINDA N�O EXISTE FOTO PARA O CAR, ENT�O DEVE CRIAR
+						controleUploadBLL.Insert(getActivity(), prepararControleUpload(finalBitmap, null));
+					}
+					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
+				}
+			}
+		}
+		catch (Exception e) {
+			LogErrorBLL.LogError(e.getMessage(), "onActivityResult",getActivity());
+		}
+		showDialog(msgDialog);
+	}
 
+	private void showDialog(String msgDialog) {
+		new AlertaDialog(getActivity()).showDialogAviso(getResources().getString(R.string.geral_Atencao), msgDialog);
+		new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog,int which) {
+
+			}
+		};
+	}
 }

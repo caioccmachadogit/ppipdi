@@ -1,6 +1,9 @@
 package base.htcom.com.br.ppipdiapp.base;
 
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
+
+import java.io.File;
 
 /**
  * BaseFragment for All application fragments
@@ -26,5 +29,21 @@ public class BaseFragment extends Fragment {
 
     public String getEmpresa(){
         return ((BaseActivity) getActivity()).EMPRESA;
+    }
+
+    public void startCamera(ActivityResult activityResult){
+        ((BaseActivity) getActivity()).startCamera(activityResult);
+    }
+
+    public Bitmap savePicture(String nameImage){
+        return ((BaseActivity) getActivity()).savePicture(nameImage);
+    }
+
+    public int getImageCapture(){
+        return ((BaseActivity) getActivity()).IMAGE_CAPTURE;
+    }
+
+    public File getExternalFilesDir(){
+        return ((BaseActivity) getActivity()).externalFilesDir;
     }
 }
