@@ -3,15 +3,11 @@ package base.htcom.com.br.ppipdiapp.arq_pref;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,7 +24,9 @@ import java.util.Random;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterArqPref;
+import base.htcom.com.br.ppipdiapp.base.ActivityResult;
 import base.htcom.com.br.ppipdiapp.base.BaseActivity;
+import base.htcom.com.br.ppipdiapp.base.Result;
 import base.htcom.com.br.ppipdiapp.bll.ArqPrefBLL;
 import base.htcom.com.br.ppipdiapp.bll.ComboBLL;
 import base.htcom.com.br.ppipdiapp.bll.ControleUploadBLL;
@@ -42,28 +40,24 @@ import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
 import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
-import base.htcom.com.br.ppipdiapp.padrao.utils.BitmapUtills;
-import base.htcom.com.br.ppipdiapp.padrao.utils.CriarDirExterno;
+import base.htcom.com.br.ppipdiapp.padrao.utils.FileUtills;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSTracker;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 
-public class ArqPrefActivity extends BaseActivity {
+public class ArqPrefActivity extends BaseActivity implements ActivityResult {
 	private ListView lv;
 	private AlertDialog alerta;
 	GPSUtills gpsUtills = new GPSUtills();
 	@SuppressLint("SimpleDateFormat") private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
 	private String date = dateFormat.format(new Date());
 	private static String photoFile = new String();
-	CriarDirExterno criarDirExterno = new CriarDirExterno();
-	private static File file;
 	private static ArqPref arqPref;
-	private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1777;
-	private static String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/PPI_PDI/Fotos/";
 	private static String[] nomeArquivo = new String[3];
 	private static GPSTracker GPS;
 	private static String LATITUDE = null;
 	private static String LONGITUDE = null;
 	private String _TIPOREL;
+	private ControleUploadBLL controleUploadBLL = new ControleUploadBLL();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +79,10 @@ public class ArqPrefActivity extends BaseActivity {
 		lv = findViewById(R.id.lv_arq_pref);
 		lv.setItemsCanFocus(true);
 
-		AtualizarListViewArqs();
+		atualizarListViewArqs();
 	}
 
-	private void AtualizarListViewArqs() {
+	private void atualizarListViewArqs() {
 		try {
 			String tipo =""; 
 			if(OsMenuActitivity._OV_CHAMADO.subSequence(8, 9).equals("1")){
@@ -146,7 +140,7 @@ public class ArqPrefActivity extends BaseActivity {
 			        	LONGITUDE = GPS.getLongitude();
 			        	
 			        	arqPref = Pref;
-						btn_capturar();
+						startCamera(this);
 			        }else{
 			        	// can't get location
 			        	// GPS or Network is not enabled
@@ -168,73 +162,18 @@ public class ArqPrefActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 	}
-	
-	public void btn_capturar() {
-		if(criarDirExterno.CriarDirDB("/PPI_PDI/Fotos/")){
-			photoFile = GerarNomeFoto(arqPref) + ".jpg";
-			file = new File(criarDirExterno.PATHDIR);
-			File foto = new File(criarDirExterno.PATHDIR, photoFile);
-			Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto)); 
-			intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-			startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
-		}
-		else {
-			Toast.makeText(ArqPrefActivity.this, "Não habilitado para capturar foto, problemas com a memória Interna!", Toast.LENGTH_SHORT).show();
-		}
-	}
-	
-	private String GerarNomeFoto(ArqPref arqPref){
+
+	private String gerarNomeFoto(ArqPref arqPref){
 		Random random = new Random();
 		String num = String.valueOf(random.nextInt(100000));
 		nomeArquivo[0] = (arqPref.getCODIGO()+"_"+date.substring(0, 6)+"_PREFE_"+arqPref.getArquivo_Carregado()+"_D_"+"mobipref_"+num).replace(".", "_");
 		nomeArquivo[1] = (arqPref.getCODIGO()+"_PREFE_"+arqPref.getArquivo_Carregado()+"_D_"+"mobipref_"+num).replace(".", "_");
 		nomeArquivo[2] = ("PREFE_"+arqPref.getArquivo_Carregado()+"_D_"+"mobipref_"+num).replace(".", "_");
+		Log.d(TAG,"gerarNomeFoto->"+nomeArquivo[0]);
 		return nomeArquivo[0];
 	}
-
-	@SuppressWarnings("static-access")
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		try {
-			if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE && resultCode == this.RESULT_OK) {
-				if (!file.exists()) {
-					file.mkdirs();
-				}
-				File foto = new File(criarDirExterno.PATHDIR, photoFile);
-				if (foto != null) 
-				{
-					Bitmap bitmap = BitmapUtills.salvarFotoPasta(foto); //METODO NOVO
-					
-					ControleUploadBLL controleUploadBLL = new ControleUploadBLL();
-					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(this, arqPref.getArquivo_Carregado(), arqPref.getOV_CHAMADO_NUM());
-					if(controleUpload != null){
-						//JA EXISTE FOTO PARA O ARQPREF, ENT�O DEVE EDITAR
-						File file = new File(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
-						if(file.exists()){
-							if(file.delete()){}					
-						}
-						controleUploadBLL.update(this, PrepararControleUpload(bitmap, controleUpload.getLinha()));
-					}
-					else { //AINDA N�O EXISTE FOTO PARA O ARQPREF, ENT�O DEVE CRIAR
-						controleUploadBLL.insert(this, PrepararControleUpload(bitmap, null));
-					}
-					new AlertaDialog(this).showDialogAviso(getResources().getString(R.string.geral_Atencao), getResources().getString(R.string.geral_RegistroSalvo));
-					new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,int which) {
-						finish();
-						}
-					};
-				}
-			}
-		}
-		catch (Exception e) {
-			LogErrorBLL.LogError(e.getMessage(), "ERROR COMPRESS",this);
-		}
-	}
 	
-	private ControleUpload PrepararControleUpload(Bitmap bitmap, String linhaControleUp) {
+	private ControleUpload prepararControleUpload(Bitmap bitmap, String linhaControleUp) {
 		ControleUpload controleUpload = new ControleUpload();
 		try {
 			if(linhaControleUp != null){
@@ -292,7 +231,6 @@ public class ArqPrefActivity extends BaseActivity {
 		return controleUpload;
 	}
 
-	
 	public void imgBtn_obs(View v) {
 		String linhaCombo = (String) v.getTag();
 		ComboBLL comboBLL = new ComboBLL();
@@ -300,7 +238,7 @@ public class ArqPrefActivity extends BaseActivity {
 		try {
 			ArqPref Pref = arqPrefBLL.listarByArqCarregado(this, "20"+comboBLL.listarById(this, linhaCombo).getORDEM(), OsMenuActitivity._OV_CHAMADO);
 			if(Pref != null){
-				DialogObs(Pref);
+				dialogObs(Pref);
 			}
 			else {
 				Toast.makeText(ArqPrefActivity.this, "Marque uma Opção!", Toast.LENGTH_SHORT).show();
@@ -312,7 +250,7 @@ public class ArqPrefActivity extends BaseActivity {
 		}
 	}
 	
-	private void DialogObs(final ArqPref arqPref) {
+	private void dialogObs(final ArqPref arqPref) {
 		LayoutInflater li = getLayoutInflater();
 		
 		View view = li.inflate(R.layout.dialog_obs, null);
@@ -358,7 +296,7 @@ public class ArqPrefActivity extends BaseActivity {
 					ControleUploadBLL controleUploadBLL = new ControleUploadBLL();
 					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(this, Pref.getArquivo_Carregado(), Pref.getOV_CHAMADO_NUM());
 					if(controleUpload != null){
-						DialogImg(controleUpload);
+						dialogImg(controleUpload);
 					}
 					else {
 						Toast.makeText(ArqPrefActivity.this, "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
@@ -378,11 +316,11 @@ public class ArqPrefActivity extends BaseActivity {
 		}
 	}
 	
-	private void DialogImg(final ControleUpload controleUpload) {
+	private void dialogImg(final ControleUpload controleUpload) {
 		LayoutInflater li = getLayoutInflater();
 		
 		View view = li.inflate(R.layout.dialog_img, null);
-		File file = new File(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
+		File file = new File(externalFilesDir+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
 	  	if (file.exists())
 	  	{
 			new BitmapFactory();
@@ -403,11 +341,10 @@ public class ArqPrefActivity extends BaseActivity {
         alerta.show();
 	}
 
-
 	public void rBtn_ok(View v){
 		String linhaCombo = (String) v.getTag();
 		try {
-			InserirMarcacao(linhaCombo, "OK", null);
+			inserirMarcacao(linhaCombo, "OK", null);
 		} catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR INSERIR RABDIOBUTTON",ArqPrefActivity.this);
 			e.printStackTrace();
@@ -417,7 +354,7 @@ public class ArqPrefActivity extends BaseActivity {
 	public void rBtn_nt(View v) {
 		String linhaCombo = (String) v.getTag();
 		try {
-			InserirMarcacao(linhaCombo, "NT", null);
+			inserirMarcacao(linhaCombo, "NT", null);
 		} catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR INSERIR RABDIOBUTTON",ArqPrefActivity.this);
 			e.printStackTrace();
@@ -427,14 +364,14 @@ public class ArqPrefActivity extends BaseActivity {
 	public void rBtn_na(View v) {
 		String linhaCombo = (String) v.getTag();
 		try {
-			InserirMarcacao(linhaCombo, "NA", null);
+			inserirMarcacao(linhaCombo, "NA", null);
 		} catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR INSERIR RABDIOBUTTON",ArqPrefActivity.this);
 			e.printStackTrace();
 		}
 	}
 	
-	private void InserirMarcacao(String linhaCombo, String tipo, String obs) throws Exception{
+	private void inserirMarcacao(String linhaCombo, String tipo, String obs) throws Exception{
 		String resp = null;
 		ArqPrefBLL arqPrefBLL = new ArqPrefBLL();
 		ComboBLL comboBLL = new ComboBLL();
@@ -469,6 +406,40 @@ public class ArqPrefActivity extends BaseActivity {
 		
 		
 	}
-	
 
+	@Override
+	public void onActivityResult(Result result) {
+		String msgDialog = getResources().getString(R.string.geral_RegistroNSalvo);
+		try {
+			if (result.getRequestCode() == IMAGE_CAPTURE && result.getResultCode() == this.RESULT_OK) {
+				Bitmap finalBitmap = savePicture(gerarNomeFoto(arqPref));
+				if(finalBitmap != null){
+					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(this, arqPref.getArquivo_Carregado(), arqPref.getOV_CHAMADO_NUM());
+					if(controleUpload != null){
+						//JA EXISTE FOTO PARA O ARQPREF, ENT�O DEVE EDITAR
+						FileUtills.deleteFile(externalFilesDir+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
+						controleUploadBLL.update(this, prepararControleUpload(finalBitmap, controleUpload.getLinha()));
+					}
+					else { //AINDA N�O EXISTE FOTO PARA O ARQPREF, ENT�O DEVE CRIAR
+						controleUploadBLL.insert(this, prepararControleUpload(finalBitmap, null));
+					}
+					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
+				}
+			}
+		}
+		catch (Exception e) {
+			LogErrorBLL.LogError(e.getMessage(), "onActivityResult",this);
+		}
+		showDialog(msgDialog);
+	}
+
+	private void showDialog(String msgDialog) {
+		new AlertaDialog(this).showDialogAviso(getResources().getString(R.string.geral_Atencao), msgDialog);
+		new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog,int which) {
+				finish();
+			}
+		};
+	}
 }

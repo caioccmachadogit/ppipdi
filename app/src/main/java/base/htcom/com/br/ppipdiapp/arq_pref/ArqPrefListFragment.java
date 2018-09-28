@@ -30,7 +30,7 @@ public class ArqPrefListFragment extends BaseFragment{
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.selected_arq_pref, null);
 		gridView = (GridView) view.findViewById(R.id.gv_arqPref);
-		AtualizarGridViewArqs();
+		atualizarGridViewArqs();
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
@@ -45,7 +45,7 @@ public class ArqPrefListFragment extends BaseFragment{
 		});
 		return view;
 	}
-	private void AtualizarGridViewArqs() {
+	private void atualizarGridViewArqs() {
 		try {
 			String tipo =""; 
 			if(OsMenuActitivity._OV_CHAMADO.subSequence(8, 9).equals("1")){
