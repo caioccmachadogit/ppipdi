@@ -7,12 +7,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -26,6 +30,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.arq_pref.ArqPrefListFragment;
@@ -47,6 +55,8 @@ import base.htcom.com.br.ppipdiapp.padrao.menu.MenuCreator;
 import base.htcom.com.br.ppipdiapp.padrao.menu.MenuItemEnum;
 import base.htcom.com.br.ppipdiapp.padrao.menu.NavDrawerUtil;
 import base.htcom.com.br.ppipdiapp.padrao.menu.TipoMenu;
+import base.htcom.com.br.ppipdiapp.padrao.utils.BitmapUtills;
+import base.htcom.com.br.ppipdiapp.padrao.utils.FileUtills;
 import base.htcom.com.br.ppipdiapp.padrao.utils.SharedPreferencesUtills;
 
 public class BaseActivity extends AppCompatActivity {
@@ -71,11 +81,21 @@ public class BaseActivity extends AppCompatActivity {
 
     protected final int PERMISSIONS_APP = 2;
 
+    protected File externalFilesDir;
+
+    protected File tempImageFile;
+
+    protected final int IMAGE_CAPTURE = 4;
+
+    protected ActivityResult mActivityResult;
+
     protected void setmActivity(Activity activity){
         this.mActivity = activity;
 
         USER = SharedPreferencesUtills.loadSavedPreferencesString("USER", this);
         EMPRESA = SharedPreferencesUtills.loadSavedPreferencesString("EMPRESA", this);
+
+        externalFilesDir = getExternalFilesDir("images");
     }
 
     protected void setTAG(String tag){
@@ -421,5 +441,59 @@ public class BaseActivity extends AppCompatActivity {
         }
         Log.d("verifyGrantResults", String.valueOf(resultOk));
         return resultOk;
+    }
+
+    protected void startCamera(ActivityResult activityResult) {
+        mActivityResult = activityResult;
+        File tempFile = FileUtills.createTempImageFile(externalFilesDir);
+        if (tempFile != null) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if ((intent.resolveActivity(getContext().getPackageManager()) != null)) {
+                tempImageFile = tempFile;
+                Uri photoURI = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".ppipdiimagem.fileprovider", tempFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(intent, IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    protected Bitmap savePicture(String nameImage){
+        final File imageFile = new File(externalFilesDir, nameImage+".jpg");
+        if (imageFile.exists()) {
+            imageFile.delete();
+        }
+
+        FileOutputStream out = null;
+        Bitmap finalBitmap = null;
+        String tempPath = tempImageFile.getAbsolutePath();
+        Bitmap bitmapOrg = BitmapUtills.createOriginalBitmap(tempPath);
+        try {
+            bitmapOrg = BitmapUtills.rotateImage(tempPath, bitmapOrg);
+            finalBitmap = BitmapUtills.resizeBitmap(bitmapOrg);
+            out = new FileOutputStream(imageFile);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (final IOException e) {
+            }
+        }
+        try {
+            tempImageFile.delete();
+        }
+        catch (final Exception e) {
+        }
+        return finalBitmap;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mActivityResult.onActivityResult(new Result(requestCode,resultCode,data));
     }
 }

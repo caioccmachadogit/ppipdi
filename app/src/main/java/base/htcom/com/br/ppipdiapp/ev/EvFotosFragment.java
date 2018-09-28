@@ -2,14 +2,9 @@ package base.htcom.com.br.ppipdiapp.ev;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,6 +16,7 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -31,6 +27,9 @@ import java.util.Random;
 
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.adapter.AdapterEvFotos;
+import base.htcom.com.br.ppipdiapp.base.ActivityResult;
+import base.htcom.com.br.ppipdiapp.base.BaseListFragment;
+import base.htcom.com.br.ppipdiapp.base.Result;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
 import base.htcom.com.br.ppipdiapp.bll.ControleUploadBLL;
 import base.htcom.com.br.ppipdiapp.bll.LogErrorBLL;
@@ -39,30 +38,22 @@ import base.htcom.com.br.ppipdiapp.model.Combo;
 import base.htcom.com.br.ppipdiapp.model.ControleUpload;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
-import base.htcom.com.br.ppipdiapp.padrao.utils.BitmapUtills;
-import base.htcom.com.br.ppipdiapp.padrao.utils.CriarDirExterno;
+import base.htcom.com.br.ppipdiapp.padrao.utils.FileUtills;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSTracker;
 
+public class EvFotosFragment extends BaseListFragment implements OnMenuItemClickListener, ActivityResult {
 
-public class EvFotosFragment extends ListFragment implements OnMenuItemClickListener{
-	
 	private List<Combo> lst;
 	private String _ID = "0";
 	private GPSTracker GPS;
 	private String LATITUDE = null;
 	private String LONGITUDE = null;
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
-	private String date = dateFormat.format(new Date());
 	private String photoFile = new String();
-	CriarDirExterno criarDirExterno = new CriarDirExterno();
-	private File file;
-	private final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1777;
-	private String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/PPI_PDI/Fotos/";
 	private String[] nomeArquivo = new String[3];
 	private AlertDialog alerta;
 	private ControleUploadBLL controleUploadBLL = new ControleUploadBLL();
 	private CarregamentoBLL carregamentoBLL = new CarregamentoBLL();
-	//============OBJS VIEW ===========================================
+    //============OBJS VIEW ===========================================
 	
 
 	
@@ -87,8 +78,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		try {
-			//FindElementosView(view);
-			AtualizarListView();
+			atualizarListView();
 		}
 		catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR ONCREATE FRAGMENT EV Fotos",getActivity());
@@ -130,15 +120,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 			argTypes = new Class[] { boolean.class };
 			menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
 		} catch (Exception e) {
-			// Possible exceptions are NoSuchMethodError and NoSuchFieldError
-			//
-			// In either case, an exception indicates something is wrong with the reflection code, or the 
-			// structure of the PopupMenu class or its dependencies has changed.
-			//
-			// These exceptions should never happen since we're shipping the AppCompat library in our own apk, 
-			// but in the case that they do, we simply can't force icons to display, so log the error and
-			// show the menu normally.
-			Log.w("Error", "error forcing menu icons to show", e);
+			Log.d("Error", "error forcing menu icons to show", e);
 			popup.show();
 			return;
 		}
@@ -157,7 +139,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 				if(GPS.canGetLocation()){
 		        	LATITUDE = GPS.getLatitude();
 		        	LONGITUDE = GPS.getLongitude();
-		        	BtnCapturar();
+		        	btnCapturar();
 		        }else{
 		        	// can't get location
 		        	// GPS or Network is not enabled
@@ -181,7 +163,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 	    return retorno;
 	}
 	
-	private void AtualizarListView() {
+	private void atualizarListView() {
 		try {
 			lst = new ArrayList<Combo>();
 			Combo foto1 = new Combo();
@@ -260,7 +242,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 		LayoutInflater li = getActivity().getLayoutInflater();
 		
 		View view = li.inflate(R.layout.dialog_img, null);
-		File file = new File(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
+		File file = new File(getExternalFilesDir(), controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());;
 	  	if (file.exists())
 	  	{
 			new BitmapFactory();
@@ -281,27 +263,11 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
         alerta.show();
 	}
 	
-	private void BtnCapturar() throws Exception {
-		try {
-			if(criarDirExterno.CriarDirDB("/PPI_PDI/Fotos/")){
-				photoFile = GerarNomeFoto() + ".jpg";
-				file = new File(criarDirExterno.PATHDIR);
-				File foto = new File(criarDirExterno.PATHDIR, photoFile);
-				Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto)); 
-				intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-				startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
-			}
-			else {
-				Toast.makeText(getActivity(), "Não habilitado para capturar foto, problemas com a memória Interna!", Toast.LENGTH_SHORT).show();
-			}
-		}
-		catch (Exception e) {
-			throw e;
-		}
+	private void btnCapturar(){
+		startCamera(this);
 	}
 
-	private String GerarNomeFoto() {
+	private String gerarNomeFoto() {
 		Random random = new Random();
 		String num = String.valueOf(random.nextInt(1000000));
 		String nome1 = ("OV_"+OsMenuActitivity._OV_CHAMADO+"."+OsMenuActitivity._OS.getCOD_ENTIDADE()+"."+num+".").replace(".", "_");
@@ -354,47 +320,7 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 		nomeArquivo[2] = nome;
 		return nomeArquivo[0];
 	}
-	
-	@SuppressWarnings("static-access")
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		try {
-			if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {
-				if (!file.exists()) {
-					file.mkdirs();
-				}
-				File foto = new File(criarDirExterno.PATHDIR, photoFile);
-				if (foto != null) 
-				{
-					Bitmap bitmap = BitmapUtills.salvarFotoPasta(foto); //METODO NOVO
-					
-					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), _ID, OsMenuActitivity._OV_CHAMADO);
-					if(controleUpload != null){
-						//JA EXISTE FOTO PARA O ARQPREF, ENT�O DEVE EDITAR
-						File file = new File(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
-						if(file.exists()){
-							if(file.delete()){}					
-						}
-						controleUploadBLL.update(getActivity(), PrepararControleUpload(bitmap, controleUpload.getLinha()));
-					}
-					else { //AINDA N�O EXISTE FOTO PARA O ARQPREF, ENT�O DEVE CRIAR
-						controleUploadBLL.Insert(getActivity(), PrepararControleUpload(bitmap, null));
-					}
-					new AlertaDialog(getActivity()).showDialogAviso(getResources().getString(R.string.geral_Atencao), getResources().getString(R.string.geral_RegistroSalvo));
-					new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,int which) {
-						getActivity().finish();
-						}
-					};
-				}
-			}
-		}
-		catch (Exception e) {
-			LogErrorBLL.LogError(e.getMessage(), "ERROR COMPRESS",getActivity());
-		}
-	}
-	
+
 	private ControleUpload PrepararControleUpload(Bitmap bitmap, String linhaControleUp) {
 		ControleUpload controleUpload = new ControleUpload();
 		try {
@@ -448,6 +374,41 @@ public class EvFotosFragment extends ListFragment implements OnMenuItemClickList
 		}
 		return controleUpload;
 	}
-	
 
+	private void showDialog(String msg){
+		new AlertaDialog(getActivity()).showDialogAviso(getResources().getString(R.string.geral_Atencao), msg);
+		new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog,int which) {
+				getActivity().finish();
+			}
+		};
+	}
+
+	@Override
+	public void onActivityResult(Result result) {
+		String msgDialog = getResources().getString(R.string.geral_RegistroNSalvo);
+		try {
+			if (result.getRequestCode() == getImageCapture() && result.getResultCode() == getActivity().RESULT_OK) {
+				Bitmap finalBitmap = savePicture(gerarNomeFoto());
+				if(finalBitmap != null){
+					ControleUpload controleUpload;
+					controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), _ID, OsMenuActitivity._OV_CHAMADO);
+					if(controleUpload != null){
+						//JA EXISTE FOTO PARA O ARQPREF, ENT�O DEVE EDITAR
+						FileUtills.deleteFile(getExternalFilesDir()+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
+						controleUploadBLL.update(getActivity(), PrepararControleUpload(finalBitmap, controleUpload.getLinha()));
+					}
+					else { //AINDA N�O EXISTE FOTO PARA O ARQPREF, ENT�O DEVE CRIAR
+						controleUploadBLL.Insert(getActivity(), PrepararControleUpload(finalBitmap, null));
+					}
+					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
+				}
+			}
+		}
+		catch (Exception e) {
+			LogErrorBLL.LogError(e.getMessage(), "ERROR COMPRESS",getActivity());
+		}
+		showDialog(msgDialog);
+	}
 }

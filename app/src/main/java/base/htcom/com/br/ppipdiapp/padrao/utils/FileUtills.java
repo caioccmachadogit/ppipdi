@@ -38,4 +38,23 @@ public class FileUtills {
 		out.close();
 	}
 
+	public static File createTempImageFile(File externalFilesDir) {
+		try {
+			return File.createTempFile(
+					"TEMP_IMAGE",
+					".jpg",
+					externalFilesDir
+			);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	public static void deleteFile(String pathName){
+		File file = new File(pathName);
+		if(file.exists()){
+			if(file.delete()){}
+		}
+	}
+
 }

@@ -2,6 +2,7 @@
     <string name="geral_Ok">OK</string>
     <string name="geral_Atencao">Atenção!</string>
     <string name="geral_RegistroSalvo">Registro salvo com sucesso!</string>
+    <string name="geral_RegistroNSalvo">Registro não salvo!</string>
 
     <string name="app_name">PPI PDI</string>
     <string name="action_settings">V.270918</string> <!-- ATUALIZACAO: CONVERSAO ECLIPSE PARA AND STUDIO -->

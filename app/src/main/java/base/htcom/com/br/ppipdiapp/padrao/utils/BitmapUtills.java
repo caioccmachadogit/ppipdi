@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -230,6 +231,58 @@ public class BitmapUtills {
 		bitmap = null;
 
 		return newBitmap;
+	}
+
+	public static Bitmap createOriginalBitmap(final String imagePath) {
+		final Bitmap bitmapOrg;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			bitmapOrg = BitmapFactory.decodeFile(imagePath);
+		} else {
+			final BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = false;
+			options.inPreferredConfig = Bitmap.Config.RGB_565;
+			options.inDither = true;
+			bitmapOrg = BitmapFactory.decodeFile(imagePath, options);
+		}
+		return bitmapOrg;
+	}
+
+	public static Bitmap resizeBitmap(Bitmap source) {
+		final int heightOrg = source.getHeight();
+		final int heightNew = 800;
+		if (heightNew < heightOrg) {
+			final int widthOrg = source.getWidth();
+			final int widthNew = (heightNew * widthOrg) / heightOrg;
+
+			final Matrix matrix = new Matrix();
+			matrix.postScale(((float) widthNew) / widthOrg, ((float) heightNew) / heightOrg);
+			source = Bitmap.createBitmap(source, 0, 0, widthOrg, heightOrg, matrix, false);
+		}
+		return source;
+	}
+
+	public static Bitmap rotateImage(final String imagePath, Bitmap source) throws IOException {
+		final ExifInterface ei = new ExifInterface(imagePath);
+		final int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+		switch (orientation) {
+			case ExifInterface.ORIENTATION_ROTATE_90:
+				source = rotateImageByAngle(source, 90);
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_180:
+				source = rotateImageByAngle(source, 180);
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_270:
+				source = rotateImageByAngle(source, 270);
+				break;
+		}
+		return source;
+	}
+
+	public static Bitmap rotateImageByAngle(final Bitmap source, final float angle) {
+		final Matrix matrix = new Matrix();
+		matrix.postRotate(angle);
+		return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
 	}
 	
 }

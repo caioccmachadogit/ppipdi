@@ -47,6 +47,12 @@ public class AdapterOS extends CursorAdapter{
 	    else if (projeto.equals("4")) {
 	    	projeto = "RF-PDI";
 		}
+		else if (projeto.equals("7")) {
+			projeto = "DW-PPI";
+		}
+		else if (projeto.equals("8")) {
+			projeto = "DW-PDI";
+		}
 	    holder.projeto = (TextView)view.findViewById(R.id.tv_projeto);               
 	    holder.projeto.setText(projeto);
 	    holder.pre = (TextView)view.findViewById(R.id.tv_pre);               
