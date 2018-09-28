@@ -82,7 +82,7 @@ public class ControleUploadBLL {
 			  "EXCLUSAO_NOME varchar(50) DEFAULT NULL);";
 
 	GerenciadorDB gerDB = new GerenciadorDB();
-	public long Insert(Context context, ControleUpload controleUpload) throws Exception{
+	public long insert(Context context, ControleUpload controleUpload){
 		long resultadoInsercao = 0;
 		try{
 			ContentValues contentValues = DatabaseConverter.convertObjectToContentValue(controleUpload);
@@ -94,6 +94,7 @@ public class ControleUploadBLL {
 			LogErrorBLL.LogError(ex.getMessage(), "ERROR INSERT TAB: "+NomeTabela,context);
 			throw ex;
 		}
+		Log.d(TAG,"insert->"+resultadoInsercao);
 		return resultadoInsercao;
 	}
 	
@@ -117,7 +118,7 @@ public class ControleUploadBLL {
 		return (lst.size() == 1 ? lst.get(0) : null);
 	}
 
-	public long update(Context context, ControleUpload controleUpload) throws Exception{
+	public long update(Context context, ControleUpload controleUpload){
 		long resultadoEdicao = 0;
 		String[] argumentos = {controleUpload.getLinha()};
 		try{
@@ -129,6 +130,7 @@ public class ControleUploadBLL {
 		catch(Exception ex){
 			throw ex;
 		}
+		Log.d(TAG,"update->"+resultadoEdicao);
 		return resultadoEdicao;
 	}
 

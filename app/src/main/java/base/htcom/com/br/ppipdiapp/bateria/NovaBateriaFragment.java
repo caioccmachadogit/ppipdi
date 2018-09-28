@@ -390,7 +390,7 @@ public class NovaBateriaFragment extends BaseFragment implements ActivityResult 
 						controleUploadBLL.update(getActivity(), prepararControleUpload(finalBitmap, controleUpload.getLinha()));
 					}
 					else { //AINDA N�O EXISTE FOTO PARA O CAR, ENT�O DEVE CRIAR
-						controleUploadBLL.Insert(getActivity(), prepararControleUpload(finalBitmap, null));
+						controleUploadBLL.insert(getActivity(), prepararControleUpload(finalBitmap, null));
 					}
 					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
 				}

@@ -2,14 +2,11 @@ package base.htcom.com.br.ppipdiapp.carregamento;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.support.annotation.UiThread;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -40,7 +37,9 @@ import java.util.Date;
 import java.util.List;
 
 import base.htcom.com.br.ppipdiapp.R;
+import base.htcom.com.br.ppipdiapp.base.ActivityResult;
 import base.htcom.com.br.ppipdiapp.base.BaseFragment;
+import base.htcom.com.br.ppipdiapp.base.Result;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoBLL;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoPlantaBLL;
 import base.htcom.com.br.ppipdiapp.bll.ComboBLL;
@@ -56,12 +55,10 @@ import base.htcom.com.br.ppipdiapp.model.Insumos;
 import base.htcom.com.br.ppipdiapp.model.Os;
 import base.htcom.com.br.ppipdiapp.os.OsMenuActitivity;
 import base.htcom.com.br.ppipdiapp.padrao.utils.AlertaDialog;
-import base.htcom.com.br.ppipdiapp.padrao.utils.BitmapUtills;
-import base.htcom.com.br.ppipdiapp.padrao.utils.CriarDirExterno;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSTracker;
 import base.htcom.com.br.ppipdiapp.padrao.utils.GPSUtills;
 
-public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickListener{
+public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickListener, ActivityResult {
 	
 	public static NovoCarregFragment newInstance(Bundle arguments){
 		NovoCarregFragment f = new NovoCarregFragment();
@@ -206,10 +203,6 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 	private Carregamento _carregamentoRefPlanta = null;
 	//==========CAPTURARFOTO===============================================
 	private String photoFile = new String();
-	CriarDirExterno criarDirExterno = new CriarDirExterno();
-	private File file;
-	private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 1777;
-	private String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/PPI_PDI/Fotos/";
 	private String[] nomeArquivo = new String[3];
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
 	private String date = dateFormat.format(new Date());
@@ -236,14 +229,14 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 			spinnerFuncoes = (Spinner) view.findViewById(R.id.spinnerFuncoes);
 			spinnerFaceCanto = (Spinner) view.findViewById(R.id.spinnerFaceCanto);
 			spinnerOperadoras = (Spinner) view.findViewById(R.id.spinnerOperadora);
-			PopularSpinners();
+			popularSpinners();
 			//=======POPULAR SPINNER==========================================
 			
-			FindElementosView(view);
-			DesabilitarRbConfigImagens();
+			findElementosView(view);
+			desabilitarRbConfigImagens();
 			
 			if(!IDCAR.equals("0")){
-				CarregarForm();
+				carregarForm();
 			}
 		}
 		catch (Exception e) {
@@ -254,7 +247,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		return view;
 	}
 	
-	private void PopularSpinners() throws Exception {	
+	private void popularSpinners() throws Exception {
 		insumosBLL = new InsumosBLL();
 		lstInsumos = insumosBLL.listarAntena(getActivity());
 		comboModAntena = new String [lstInsumos.size()];
@@ -317,7 +310,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 
 	}
 	
-	private void CarregarForm() throws Exception {
+	private void carregarForm() throws Exception {
 		if (tipoCarregamento.equals("NOVA")) {
 			Carregamento carregamento = carregamentoBLL.listarById(getActivity(), IDCAR);
 			
@@ -421,8 +414,8 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					checkedRbRefNao = true;
 				}
 			}
-			EventConfigImagens();
-			CarregarCamposDim(carregamento);
+			eventConfigImagens();
+			carregarCamposDim(carregamento);
 			//=======FIGURA RELACIONADA EV==================
 			
 			edtCaboDim.setText(carregamento.getINFO_23());
@@ -434,7 +427,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 
 	}
 	
-	private void CarregarCamposDim(Carregamento carregamento) {
+	private void carregarCamposDim(Carregamento carregamento) {
 		switch (camposF) {
 		case 3:
 			edtFa.setText(carregamento.getINFO_41());
@@ -503,7 +496,8 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		}
 	}
 
-	private void BtnGravar(boolean retornar) {
+	@UiThread
+	private void btnGravar(boolean retornar) {
 		try {
 			if(validarEditTxt(lstValidade)){
 				//=======FAZER CALCULO DE AEV=============
@@ -514,7 +508,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					//=======CRIA��O CARREGAMENTO===========
 					if(IDCAR.equals("0")){
 						carregamentoBLL = new CarregamentoBLL();
-						IDCAR = String.valueOf(carregamentoBLL.Insert(getActivity(), PrepararCarregamento(IDCAR)));
+						IDCAR = String.valueOf(carregamentoBLL.Insert(getActivity(), prepararCarregamento(IDCAR)));
 						if(Long.valueOf(IDCAR) > 0){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados gravados com sucesso!", Toast.LENGTH_LONG).show();
@@ -529,7 +523,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					
 					//=======EDICAO CARREGAMENTO===========
 					else {
-						if(carregamentoBLL.update(getActivity(), PrepararCarregamento(IDCAR)) == 1){
+						if(carregamentoBLL.update(getActivity(), prepararCarregamento(IDCAR)) == 1){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
 								fragmentTransaction(ListCarregFragment.class.getSimpleName(), new ListCarregFragment(), false, 1);
@@ -545,7 +539,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					//VERIFICAR SE J� EXISTE REGISTRO NO CARREGAMENTO REFERENTE A PLANTA
 					if(_carregamentoRefPlanta != null){
 						//EXISTE CARREGAMENTO PARA O PLANTA - EDITAR
-						if(carregamentoBLL.update(getActivity(), PrepararCarregamento(IDCAR)) == 1){
+						if(carregamentoBLL.update(getActivity(), prepararCarregamento(IDCAR)) == 1){
 							if(retornar){
 								Toast.makeText(getActivity(), "Dados alterados com sucesso!", Toast.LENGTH_LONG).show();
 								fragmentTransaction(ListCarregPlantaFragment.class.getSimpleName(), new ListCarregPlantaFragment(), false, 1);
@@ -558,7 +552,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					else {
 						//� EXISTE CARREGAMENTO PARA O PLANTA - CRIAR
 						carregamentoBLL = new CarregamentoBLL();
-						long idCar = carregamentoBLL.Insert(getActivity(), PrepararCarregamento(IDCAR));
+						long idCar = carregamentoBLL.Insert(getActivity(), prepararCarregamento(IDCAR));
 						if(idCar > 0){
 							//REGISTRAR ID DO NOVO CARREGAMENTO NA TAB PLANTA
 							carregamentoPlanta.setINFO_50(String.valueOf(idCar));
@@ -584,9 +578,6 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 			Toast.makeText(getActivity(), "Ação Não Realizada!", Toast.LENGTH_LONG).show();
 		}
 	}
-	
-	
-	
 	
 	//=================CAPTURAR FOTO ============================================
 	public void showMenu(View v) {
@@ -626,11 +617,11 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		try {
 			switch (item.getItemId()) {
 	        case R.id.nova_foto:
-	        	BtnFoto();
+	        	btnFoto();
 	            retorno = true;
 	            break;
 	        case R.id.visu_foto:
-	        	BtnViewFoto();
+	        	btnViewFoto();
 	        	retorno = true;
 	        	break;
 	        default:
@@ -643,9 +634,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 	    return retorno;
 	}
 	
-	
-	
-	private void BtnFoto() {
+	private void btnFoto() {
 		try {
 			
 			if(validarEditTxt(lstValidade)){
@@ -655,7 +644,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		        	LATITUDE = GPS.getLatitude();
 		        	LONGITUDE = GPS.getLongitude();
 		        	
-		        	btn_capturar();
+					startCamera(this);
 		        }else{
 		        	// can't get location
 		        	// GPS or Network is not enabled
@@ -669,77 +658,16 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 			
 		}
 	}
-	
-	public void btn_capturar() {
-		try {
-			if(criarDirExterno.CriarDirDB("/PPI_PDI/Fotos/")){
-				photoFile = GerarNomeFoto(PrepararCarregamento(IDCAR)) + ".jpg";
-				file = new File(criarDirExterno.PATHDIR);
-				File foto = new File(criarDirExterno.PATHDIR, photoFile);
-				Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
-				intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-				startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
-			}
-			else {
-				Toast.makeText(getActivity(), "Não habilitado para capturar foto, problemas com a memória Interna!", Toast.LENGTH_SHORT).show();
-			}
-		}
-		catch (Exception e) {
-			LogErrorBLL.LogError(e.getMessage(), "ERROR BTN CAPTURAR",getActivity());
-		}
-	}
-	
-	private String GerarNomeFoto(Carregamento carregamento){
+
+	private String gerarNomeFoto(Carregamento carregamento){
 		nomeArquivo[0] = ("OV_"+carregamento.getCODIGO()+"_"+carregamento.getCOD_ENTIDADE()+"_"+date.substring(0, 6)+"_CARGA_"+"19"+carregamento.getCAMPO_TIPO().substring(2, 5)+CaptImg+"E_"+carregamento.getINFO_20()+"_"+modAntena).replace(".", "_");
 		nomeArquivo[1] = ("OV_"+carregamento.getCODIGO()+"_"+carregamento.getCOD_ENTIDADE()+"_CARGA_"+"19"+carregamento.getCAMPO_TIPO().substring(2, 5)+CaptImg+"E_"+carregamento.getINFO_20()+"_"+modAntena).replace(".", "_");
 		nomeArquivo[2] = ("CARGA_"+"19"+carregamento.getCAMPO_TIPO().substring(2, 5)+CaptImg+"E_"+carregamento.getINFO_20()+"_"+modAntena).replace(".", "_");
+		Log.d(TAG,"gerarNomeFoto->"+nomeArquivo[0]);
 		return nomeArquivo[0];
 	}
-	
-	@SuppressWarnings("static-access")
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		try {
-			if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {
-				if (!file.exists()) {
-					file.mkdirs();
-				}
-				File foto = new File(criarDirExterno.PATHDIR, photoFile);
-				if (foto != null) 
-				{
-					Bitmap bitmap = BitmapUtills.salvarFotoPasta(foto); //METODO NOVO
-					
-					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+CaptImg, carregamento.getCODIGO());
-					if(controleUpload != null){
-						//JA EXISTE FOTO PARA O CAR, ENT�O DEVE EDITAR
-						File file = new File(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
-						if(file.exists()){
-							if(file.delete()){}					
-						}
-						controleUploadBLL.update(getActivity(), PrepararControleUpload(bitmap, controleUpload.getLinha()));
-					}
-					else { //AINDA N�O EXISTE FOTO PARA O CAR, ENT�O DEVE CRIAR
-						controleUploadBLL.Insert(getActivity(), PrepararControleUpload(bitmap, null));
-					}
-					//ARMAZENA CARREGAMENTO
-					BtnGravar(false);
-					new AlertaDialog(getActivity()).showDialogAviso(getResources().getString(R.string.geral_Atencao), getResources().getString(R.string.geral_RegistroSalvo));
-					new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,int which) {
-						
-						}
-					};
-				}
-			}
-		}
-		catch (Exception e) {
-			LogErrorBLL.LogError(e.getMessage(), "ERROR COMPRESS",getActivity());
-		}
-	}
-	
-	private ControleUpload PrepararControleUpload(Bitmap bitmap, String linhaControleUp) {
+
+	private ControleUpload prepararControleUpload(Bitmap bitmap, String linhaControleUp) {
 		ControleUpload controleUpload = new ControleUpload();
 		try {
 			if(linhaControleUp != null){
@@ -799,7 +727,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 
 	//=================CAPTURAR FOTO ============================================
 	
-	private Carregamento PrepararCarregamento(String idLinha) throws Exception {
+	private Carregamento prepararCarregamento(String idLinha) throws Exception {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		carregamento = new Carregamento();
 
@@ -1111,7 +1039,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 	//===============CALCULO AEV =============================
 	
 	//===============VISUALIZAR FOTO =============================
-	private void BtnViewFoto() {
+	private void btnViewFoto() {
 		try {
 			if(!IDCAR.equals("0")){
 				String idCarr = "0";
@@ -1125,7 +1053,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 				if(carregamento != null){
 					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+CaptImg, carregamento.getCODIGO());
 					if(controleUpload != null){
-						DialogImg(controleUpload);
+						dialogImg(controleUpload);
 					}
 					else {
 						Toast.makeText(getActivity(), "Ainda não existe foto!", Toast.LENGTH_SHORT).show();
@@ -1145,11 +1073,10 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		
 	}
 	
-	private void DialogImg(final ControleUpload controleUpload) {
+	private void dialogImg(final ControleUpload controleUpload) {
 		LayoutInflater li = getActivity().getLayoutInflater();
-		
 		View view = li.inflate(R.layout.dialog_img, null);
-		File file = new File(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
+		File file = new File(getExternalFilesDir(), controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
 	  	if (file.exists())
 	  	{
 			new BitmapFactory();
@@ -1185,7 +1112,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		return validadeOk;
 	}
 	
-	private void FindElementosView(View view) {
+	private void findElementosView(View view) {
 		rgAcao = (RadioGroup) view.findViewById(R.id.rgAcao);
 		rbExistente = (RadioButton) view.findViewById(R.id.rbExistente);
 		rbRetirada = (RadioButton) view.findViewById(R.id.rbRetirada);
@@ -1256,7 +1183,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					rbSecReta.setEnabled(false);
 					rbRefSim.setEnabled(false);
 					rbRefNao.setEnabled(false);
-					DesabilitarRbConfigImagens();
+					desabilitarRbConfigImagens();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -1283,7 +1210,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					rbSecReta.setEnabled(true);
 					rbRefSim.setEnabled(true);
 					rbRefNao.setEnabled(true);
-					DesabilitarRbConfigImagens();
+					desabilitarRbConfigImagens();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -1307,7 +1234,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					default:
 						break;
 					}
-					DesabilitarRbConfigImagens();
+					desabilitarRbConfigImagens();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -1330,7 +1257,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					default:
 						break;
 					}
-					DesabilitarRbConfigImagens();
+					desabilitarRbConfigImagens();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -1354,7 +1281,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					default:
 						break;
 					}
-					DesabilitarRbConfigImagens();
+					desabilitarRbConfigImagens();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -1377,7 +1304,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					default:
 						break;
 					}
-					DesabilitarRbConfigImagens();
+					desabilitarRbConfigImagens();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -1451,7 +1378,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		btnGravar.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				BtnGravar(true);
+				btnGravar(true);
 				
 			}
 		});
@@ -1459,7 +1386,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 
 	//--------------------------- config imagens
 	
-	private void DesabilitarRbConfigImagens() throws Exception{
+	private void desabilitarRbConfigImagens() throws Exception{
 		try {
 			rgPlatTopoEnabled = true;
 			rgSecaoEnabled = true;
@@ -1497,7 +1424,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 				rbRefNao.setEnabled(false);
 				rgReforcoEnabled = false;
 			}
-			EventConfigImagens();
+			eventConfigImagens();
 		}
 		catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR Config Imagem",getActivity());
@@ -1505,7 +1432,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		}
 	}
 	
-	private void EventConfigImagens() throws Exception {
+	private void eventConfigImagens(){
 		IMG_DT = "ze0_0";
 		IMG_DM = "ze0_0";
 		try {
@@ -1644,7 +1571,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 				ivDm.setImageDrawable(res);
 			}
 
-			HabilitarCamposDim(IMG_DT, IMG_DM);
+			habilitarCamposDim(IMG_DT, IMG_DM);
 		}
 		catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "ERROR Config Imagem",getActivity());
@@ -1652,7 +1579,7 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		}
 	}
 
-	private void HabilitarCamposDim(String iMG_DT, String iMG_DM) {
+	private void habilitarCamposDim(String iMG_DT, String iMG_DM) {
 		camposF = Integer.valueOf(iMG_DT.substring(iMG_DT.length()-1, iMG_DT.length()));
 		camposM = Integer.valueOf(iMG_DM.substring(iMG_DM.length()-1, iMG_DM.length()));
 		switch (camposF) {
@@ -1863,34 +1790,40 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 			break;
 		}
 	}
-	
+
+	private void showDialog(String msg){
+		new AlertaDialog(getActivity()).showDialogAviso(getResources().getString(R.string.geral_Atencao), msg);
+		new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog,int which) {
+			}
+		};
+	}
+
+	@Override
+	public void onActivityResult(Result result) {
+		String msgDialog = getResources().getString(R.string.geral_RegistroNSalvo);
+		try {
+			if (result.getRequestCode() == getImageCapture() && result.getResultCode() == getActivity().RESULT_OK) {
+				Bitmap finalBitmap = savePicture(gerarNomeFoto(prepararCarregamento(IDCAR)));
+				if(finalBitmap != null){
+					ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+CaptImg, carregamento.getCODIGO());
+					if(controleUpload != null){
+						//JA EXISTE FOTO PARA O ARQPREF, ENT�O DEVE EDITAR
+//						FileUtills.deleteFile(getExternalFilesDir()+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO());
+						controleUploadBLL.update(getActivity(), prepararControleUpload(finalBitmap, controleUpload.getLinha()));
+					}
+					else { //AINDA N�O EXISTE FOTO PARA O ARQPREF, ENT�O DEVE CRIAR
+						controleUploadBLL.insert(getActivity(), prepararControleUpload(finalBitmap, null));
+					}
+					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
+					btnGravar(false);
+				}
+			}
+		}
+		catch (Exception e) {
+			LogErrorBLL.LogError(e.getMessage(), "onActivityResult",getActivity());
+		}
+		showDialog(msgDialog);
+	}
 }
-
-/*<RadioGroup
-android:id="@+id/rgEdific"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:orientation="horizontal" >
-
-<RadioButton
-    android:id="@+id/rbE"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:text="e" />
-
-<RadioButton
-    android:id="@+id/rbR"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:text="r" />
-
-<RadioButton
-    android:id="@+id/rbN"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:text="n" />
-</RadioGroup>*/
-

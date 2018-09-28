@@ -217,7 +217,7 @@ public class ArqPrefActivity extends BaseActivity {
 						controleUploadBLL.update(this, PrepararControleUpload(bitmap, controleUpload.getLinha()));
 					}
 					else { //AINDA N�O EXISTE FOTO PARA O ARQPREF, ENT�O DEVE CRIAR
-						controleUploadBLL.Insert(this, PrepararControleUpload(bitmap, null));
+						controleUploadBLL.insert(this, PrepararControleUpload(bitmap, null));
 					}
 					new AlertaDialog(this).showDialogAviso(getResources().getString(R.string.geral_Atencao), getResources().getString(R.string.geral_RegistroSalvo));
 					new DialogInterface.OnClickListener() {

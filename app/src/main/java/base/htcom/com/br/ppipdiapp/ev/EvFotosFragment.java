@@ -398,7 +398,7 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 						controleUploadBLL.update(getActivity(), prepararControleUpload(finalBitmap, controleUpload.getLinha()));
 					}
 					else { //AINDA N�O EXISTE FOTO PARA O ARQPREF, ENT�O DEVE CRIAR
-						controleUploadBLL.Insert(getActivity(), prepararControleUpload(finalBitmap, null));
+						controleUploadBLL.insert(getActivity(), prepararControleUpload(finalBitmap, null));
 					}
 					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
 				}
