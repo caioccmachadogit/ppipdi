@@ -81,7 +81,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected final int PERMISSIONS_APP = 2;
 
-    protected File externalFilesDir;
+    public File externalFilesDir;
 
     protected File tempImageFile;
 

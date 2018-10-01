@@ -161,6 +161,7 @@ public class FTPManager
         try
         {
             FileInputStream srcFileStream = new FileInputStream(pArqOrigem);
+
             if(mudarDiretorio(pDiretorioDestino))
                 status = mFtp.storeFile(pArqDestino, srcFileStream);
             srcFileStream.close();
@@ -168,6 +169,7 @@ public class FTPManager
         }
         catch(Exception e)
         {
+            Log.e(getClass().getSimpleName(),"upload->"+pArqOrigem,e);
             Log.e(TAG, (new StringBuilder("Erro: Falha ao efetuar Upload. ")).append(e.getMessage()).toString());
         }
         return status;

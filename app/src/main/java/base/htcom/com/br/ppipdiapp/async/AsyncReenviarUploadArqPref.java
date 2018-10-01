@@ -3,12 +3,12 @@ package base.htcom.com.br.ppipdiapp.async;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import base.htcom.com.br.ppipdiapp.main.MainActivity;
 import base.htcom.com.br.ppipdiapp.main.ReenviarOSFragment;
 import base.htcom.com.br.ppipdiapp.model.ControleUpload;
 import base.htcom.com.br.ppipdiapp.padrao.funcoes.FTPManager;
@@ -19,7 +19,6 @@ public class AsyncReenviarUploadArqPref extends AsyncTask<String, String, String
 	private ProgressDialog pd;
 	private Activity activity;
 	private TarefaInterfaceReenv ti;
-	private String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/PPI_PDI/Fotos/";
 	private String host = VarConfig.Ftphost;
 	private String user = VarConfig.Ftpuser;
 	private String passw = VarConfig.Ftppassw;
@@ -49,7 +48,7 @@ public class AsyncReenviarUploadArqPref extends AsyncTask<String, String, String
 			ControleUpload controleUpload = gson.fromJson(jsonEnvio, ControleUpload.class);
 			FTPManager ftpManager = new FTPManager();
 			if(ftpManager.conectar(host,user,passw,21)){
-				if (ftpManager.upload(PATH+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO(), 
+				if (ftpManager.upload(((MainActivity)activity).externalFilesDir+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO(),
 						controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO(),
 					dir+"OV_"+controleUpload.getOV_CHAMADO_NUM())) 
 				{
