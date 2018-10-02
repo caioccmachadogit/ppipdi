@@ -97,9 +97,7 @@ public class LoginActivity extends BaseActivity implements AsyncLogin.AsyncRespo
 	
 	@Override
 	public void onBackPressed() {
-		finish();
-		startActivity(new Intent(this, SplashActivity.class));
-		super.onBackPressed();
+		exitApplication();
 	}
 
 }

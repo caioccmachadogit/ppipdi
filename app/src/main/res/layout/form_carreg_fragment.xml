@@ -65,12 +65,13 @@
                     android:text="Nova" />
             </RadioGroup>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,9 +91,9 @@
                 android:layout_height="match_parent" >
 
                 <TableRow
+                    android:layout_marginLeft="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" >
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -106,20 +107,12 @@
                         android:layout_marginLeft="20dp"
                         android:text="Ativa"
                         android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/txtOperadora"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="Operadora"
-                        android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow
+                    android:layout_marginLeft="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" >
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/edtEtiqueta"
@@ -133,14 +126,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp" />
-
-                    <Spinner
-                        android:id="@+id/spinnerOperadora"
-                        android:layout_width="120dp"
-                        android:layout_height="35dp" >
-                    </Spinner>
                 </TableRow>
             </TableLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="@dimen/dimens_5"
+                android:orientation="vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtOperadora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Operadora"
+                    android:textSize="14sp" />
+                <Spinner
+                    android:id="@+id/spinnerOperadora"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimens_40" >
+                </Spinner>
+            </LinearLayout>
 
             <View
                 android:layout_width="wrap_content"
@@ -151,7 +157,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="8dp" >
@@ -162,53 +168,51 @@
                 android:text="Tipo/Modelo:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TableLayout
+            <LinearLayout
+                android:layout_marginLeft="@dimen/dimens_5"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="wrap_content">
 
-                <TableRow
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/txtModAntena"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center" >
+                    android:text="Modelo de Antena" />
 
-                    <TextView
-                        android:id="@+id/txtModAntena"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Modelo de Antena" />
-
-                    <TextView
-                        android:id="@+id/txtFuncao"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:text="Função"
-                        android:textSize="14sp" />
-                </TableRow>
-
-                <TableRow
+                <Spinner
+                    android:id="@+id/spinnerModAntena"
                     android:layout_width="match_parent"
+                    android:layout_height="35dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginLeft="@dimen/dimens_5"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtFuncao"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center" >
+                    android:text="Função"
+                    android:textSize="14sp" />
 
-                    <Spinner
-                        android:id="@+id/spinnerModAntena"
-                        android:layout_width="140dp"
-                        android:layout_height="35dp" />
+                <Spinner
+                    android:id="@+id/spinnerFuncoes"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp" />
 
-                    <Spinner
-                        android:id="@+id/spinnerFuncoes"
-                        android:layout_width="140dp"
-                        android:layout_height="35dp"
-                        android:layout_alignLeft="@+id/txtFuncao" />
-                </TableRow>
-            </TableLayout>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
+            </LinearLayout>
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -325,12 +329,13 @@
                 </TableRow>
             </TableLayout>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -419,12 +424,13 @@
                 </TableRow>
             </TableLayout>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -492,88 +498,94 @@
                 </TableRow>
             </TableLayout>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
         </LinearLayout>
 
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
+
         <LinearLayout
+            android:padding="@dimen/dimens_8"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8dp" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fixação:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TableLayout
+            <LinearLayout
+                android:layout_marginLeft="@dimen/dimens_5"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TableRow
+                <TextView
+                    android:id="@+id/txtFaceCanto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Face/Canto"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:layout_marginLeft="@dimen/dimens_5"
+                    android:id="@+id/spinnerFaceCanto"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginLeft="@dimen/dimens_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suporte peso(kg)"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:layout_marginLeft="@dimen/dimens_5"
+                    android:id="@+id/edtSupPeso"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center" >
+                    android:background="@android:drawable/editbox_background"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/txtFaceCanto"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:text="Face/Canto"
-                        android:textSize="14sp" />
+            <LinearLayout
+                android:layout_marginLeft="@dimen/dimens_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="110dp"
-                        android:layout_height="wrap_content"
-                        android:text="Suporte peso(kg)"
-                        android:textSize="14sp" />
-                </TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo de Fixação"
+                    android:textSize="14sp" />
 
-                <TableRow
+                <EditText
+                    android:id="@+id/edtTipoFix"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center" >
-
-                    <Spinner
-                        android:id="@+id/spinnerFaceCanto"
-                        android:layout_width="150dp"
-                        android:layout_height="35dp" />
-
-                    <EditText
-                        android:id="@+id/edtSupPeso"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:background="@android:drawable/editbox_background"
-                        android:inputType="numberDecimal" />
-                </TableRow>
-            </TableLayout>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Tipo de Fixação"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/edtTipoFix"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/editbox_background"
-                android:inputType="textCapSentences" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
+                    android:background="@android:drawable/editbox_background"
+                    android:inputType="textCapSentences" />
+            </LinearLayout>
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -962,12 +974,13 @@
                 </TableRow>
             </TableLayout>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1056,12 +1069,13 @@
                 android:background="@android:drawable/editbox_background"
                 android:inputType="textCapSentences" />
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1083,12 +1097,13 @@
                 android:background="@android:drawable/editbox_background"
                 android:inputType="textCapSentences" />
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_centerHorizontal="true"
-                android:background="#33B5E5" />
         </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_centerHorizontal="true"
+            android:background="#33B5E5" />
 
         <LinearLayout
             android:layout_width="match_parent"

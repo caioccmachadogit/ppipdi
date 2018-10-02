@@ -322,7 +322,7 @@ public class BaseActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         SharedPreferencesUtills.deletePreferences("USER", getContext());
                         SharedPreferencesUtills.deletePreferences("EMPRESA", getContext());
-                        startActivity(new Intent(mActivity, LoginActivity.class));
+                        exitApplication();
                     }
                 });
         // set negative button: No message
@@ -495,5 +495,10 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mActivityResult.onActivityResult(new Result(requestCode,resultCode,data));
+    }
+
+    protected void exitApplication(){
+        finish();
+        System.exit(0);
     }
 }
