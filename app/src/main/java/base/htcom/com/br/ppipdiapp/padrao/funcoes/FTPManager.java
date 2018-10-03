@@ -7,10 +7,12 @@ package base.htcom.com.br.ppipdiapp.padrao.funcoes;
 
 import android.util.Log;
 
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -160,34 +162,34 @@ public class FTPManager
         boolean status = false;
         try
         {
-            FileInputStream srcFileStream = new FileInputStream(pArqOrigem);
-
-            if(mudarDiretorio(pDiretorioDestino))
-                status = mFtp.storeFile(pArqDestino, srcFileStream);
-            srcFileStream.close();
-            return status;
+            if(mudarDiretorio(pDiretorioDestino)){
+                BufferedInputStream buffIn;
+                buffIn = new BufferedInputStream(new FileInputStream((pArqOrigem)));
+                status = mFtp.storeFile(pArqDestino, buffIn);
+                buffIn.close();
+            }
         }
         catch(Exception e)
         {
-            Log.e(getClass().getSimpleName(),"upload->"+pArqOrigem,e);
-            Log.e(TAG, (new StringBuilder("Erro: Falha ao efetuar Upload. ")).append(e.getMessage()).toString());
+            Log.e(TAG,"upload->"+pArqOrigem,e);
         }
         return status;
     }
 
-    public boolean desconectar()
-    {
-        try
-        {
-            mFtp.disconnect();
-            mFtp = null;
+    public boolean desconectar(){
+        boolean ok = true;
+        try{
+            if(mFtp != null){
+                mFtp.disconnect();
+                mFtp = null;
+            }
         }
-        catch(Exception e)
-        {
-            Log.e(TAG, (new StringBuilder("Erro: ao desconectar. ")).append(e.getMessage()).toString());
-            return false;
+        catch(Exception e){
+            Log.e(TAG, "Erro: ao desconectar.",e);
+            ok = false;
         }
-        return true;
+        Log.d(TAG,"desconectar->"+ok);
+        return ok;
     }
 
     public boolean conectar(String pHost, String pUsuario, String pSenha, int pPorta)

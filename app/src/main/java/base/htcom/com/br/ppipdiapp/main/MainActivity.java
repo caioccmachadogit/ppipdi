@@ -329,12 +329,13 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
                     JsonArray jsonArrayUpArq = gson.toJsonTree(lstUpArqPrefEnvio).getAsJsonArray();
                     for(int j=0;j< jsonArrayUpArq.size();j++){
                         JsonElement jsonUpArqPref = jsonArrayUpArq.get(j);
+                        // TODO: 03/10/2018 USAR AsyncControleUploads
                         new AsyncEnviarUploadArqPref(this, this).execute(jsonUpArqPref.toString());
                     }
                 }
             }
             else {
-                Toast.makeText(this, "Nenhuma ETP Finalizada!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Nenhuma foto encontrada!", Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception e) {
@@ -364,9 +365,10 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
                     new AsyncConfirmarEnvOS_Upload(this, this).execute(lstOsFinalizada.get(i));
                 }
             }
-            else {
+            else if(json.equals("FileNotFound"))
+                Toast.makeText(this, "Imagem não encontrada: "+(contaEnvUpArqPref)+"", Toast.LENGTH_SHORT).show();
+            else
                 Toast.makeText(this, contaEnvUpArqPref+" imagem enviada", Toast.LENGTH_SHORT).show();
-            }
         }
         catch (Exception e) {
             contaUpArqPref = 0;

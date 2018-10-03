@@ -8,6 +8,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
+
 import base.htcom.com.br.ppipdiapp.main.MainActivity;
 import base.htcom.com.br.ppipdiapp.model.ControleUpload;
 import base.htcom.com.br.ppipdiapp.padrao.funcoes.FTPManager;
@@ -22,6 +24,7 @@ public class AsyncEnviarUploadArqPref extends AsyncTask<String, String, String>{
 	private String user = VarConfig.Ftpuser;
 	private String passw = VarConfig.Ftppassw;
 	private String dir = VarConfig.Ftpdir;
+	private final String TAG = getClass().getSimpleName();
 	
 	public AsyncEnviarUploadArqPref(Activity activity, TarefaInterface ti){
 		this.activity = activity;
@@ -45,16 +48,22 @@ public class AsyncEnviarUploadArqPref extends AsyncTask<String, String, String>{
 			//ENVIAR FOTO - FTP
 			Gson gson = new GsonBuilder().create();
 			ControleUpload controleUpload = gson.fromJson(jsonEnvio, ControleUpload.class);
-			FTPManager ftpManager = new FTPManager();
-			if(ftpManager.conectar(host,user,passw,21)){
-				if (ftpManager.upload( ((MainActivity)activity).externalFilesDir+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO(),
-						controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO(),
-					dir+"OV_"+controleUpload.getOV_CHAMADO_NUM())) 
-				{
-					WSControleUpload ws = new WSControleUpload();
-					json = ws.EnviarUploadArqPref(jsonEnvio);
+			String arqOrigem = ((MainActivity)activity).externalFilesDir+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO();
+			Log.d(TAG,"Foto->"+arqOrigem);
+			if (new File(arqOrigem).exists()){
+				FTPManager ftpManager = new FTPManager();
+				if(ftpManager.conectar(host,user,passw,21)){
+					if (ftpManager.upload( ((MainActivity)activity).externalFilesDir+"/"+controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO(),
+							controleUpload.getARQ_NOME_SIST()+"."+controleUpload.getARQ_TIPO(),
+							dir+"OV_"+controleUpload.getOV_CHAMADO_NUM()))
+					{
+						WSControleUpload ws = new WSControleUpload();
+						json = ws.EnviarUploadArqPref(jsonEnvio);
+					}
 				}
 			}
+			else
+				json = "FileNotFound";
 		}
 		catch (Exception e) {
 			Log.e("ASYNCEnvioUpArqPref", e.getMessage());
@@ -71,7 +80,7 @@ public class AsyncEnviarUploadArqPref extends AsyncTask<String, String, String>{
 	@Override
 	protected void onPostExecute(String result) 
 	{
-		//---Executa a Pos-Requisi��o
+		Log.d(TAG,"Result->"+result);
 		MainActivity.cEnvioUpArqPref++;
 		ti.respostaAsyncEnvioUpload(result);
 		this.pd.dismiss();

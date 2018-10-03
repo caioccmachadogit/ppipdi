@@ -19,7 +19,7 @@ import java.util.List;
 import base.htcom.com.br.ppipdiapp.async.AsyncReenviarArqPref;
 import base.htcom.com.br.ppipdiapp.async.AsyncReenviarBateria;
 import base.htcom.com.br.ppipdiapp.async.AsyncReenviarCarregamento;
-import base.htcom.com.br.ppipdiapp.async.AsyncReenviarUploadArqPref;
+import base.htcom.com.br.ppipdiapp.async.AsyncControleUploads;
 import base.htcom.com.br.ppipdiapp.async.TarefaInterfaceReenv;
 import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.ArqPrefBLL;
@@ -71,17 +71,8 @@ public class ReenviarOSFragment extends BaseFragment{
 	
 	//=======ENVIO============================
 		public static int cEnvioArqPref=0;
-		public static int contaEnvArqPref=0;
 		public static int cEnvioCarregamento=0;
-		public static int contaEnvCarregamento=0;
 		public static int cEnvioBateria=0;
-		public static int contaEnvBateria=0;
-		public static int cEnvioUpArqPref=0;
-		public static int contaEnvUpArqPref=0;
-		public static int contaUpArqPref=0;
-		public static int contaConfEnvOs=0;
-		public static int cEnvioConfEnvOs=0;
-	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -148,28 +139,26 @@ public class ReenviarOSFragment extends BaseFragment{
 				}
 				
 				@Override
-				public void respostaAsyncEnvioUpload(String json) {
+				public void respostaAsyncEnvioUpload(List<ControleUpload> controleUploadsSucesso) {
 					try {
-						countConfirmacao++;
-						if(json.equals("true")){
+						if(controleUploadsSucesso.size()>0){
 							//REGISTRA CONFIRMACAO ENVIO
-							StatusControleUpload statusControleUpload = new StatusControleUpload();
-							statusControleUpload.setLINHA(lstControleUploads.get(cEnvioUpArqPref-1).getLinha());
-							SimpleDateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
-							statusControleUpload.setDATA_ENVIO(format.format(new Date()));
-							if(statusControleUploadBLL.Insert(getActivity(), statusControleUpload) != -1){
-								Toast.makeText(getActivity(), "Imagem enviada: "+(cEnvioUpArqPref)+"", Toast.LENGTH_SHORT).show();
+							for (ControleUpload c:controleUploadsSucesso) {
+								StatusControleUpload statusControleUpload = new StatusControleUpload();
+								statusControleUpload.setLINHA(c.getLinha());
+								SimpleDateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+								statusControleUpload.setDATA_ENVIO(format.format(new Date()));
+								statusControleUploadBLL.Insert(getActivity(), statusControleUpload);
 							}
-						}
-						else Toast.makeText(getActivity(), "Imagem enviada: "+(cEnvioUpArqPref)+"", Toast.LENGTH_SHORT).show();
-						
-						if(countConfirmacao == lstControleUploads.size())
 							new AlertaDialog(getActivity()).showDialogAviso("Confirmação", "ETP Reenviada!");
+							fragmentTransaction(ListOSFinalizadaFragment.class.getSimpleName(), new ListOSFinalizadaFragment(), false, 1);
+						}
+						else
+							Toast.makeText(getActivity(), "Nenhuma Imagem enviada!", Toast.LENGTH_SHORT).show();
 					}
 					catch (Exception e) {
 						LogErrorBLL.LogError(e.getMessage(), "ERROR respostaAsyncEnvioUpload Reenv", getActivity());
 					}
-					
 				}
 			};
 //=======INTERFACE DE RESPOSTA DOS ASYNC======================			
@@ -220,12 +209,7 @@ public class ReenviarOSFragment extends BaseFragment{
 					//CONTROLE UPLOADS
 					if(lstControleUploads != null)
 					if(lstControleUploads.size() > 0){
-						Gson gson = new GsonBuilder().create();
-						JsonArray jsonArrayUpArq = gson.toJsonTree(lstControleUploads).getAsJsonArray();
-						for(int j=0;j< jsonArrayUpArq.size();j++){
-							JsonElement jsonUpArqPref = jsonArrayUpArq.get(j);
-							new AsyncReenviarUploadArqPref(getActivity(), ti).execute(jsonUpArqPref.toString());
-						}
+						new AsyncControleUploads(getActivity(), ti,lstControleUploads).execute();
 					}
 				}
 				else {
@@ -244,8 +228,6 @@ public class ReenviarOSFragment extends BaseFragment{
 		cEnvioArqPref = 0;
 		cEnvioCarregamento = 0;
 		cEnvioBateria = 0;
-		contaUpArqPref = 0;
-		cEnvioUpArqPref = 0;
 	}
 
 }
