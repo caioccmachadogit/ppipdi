@@ -248,16 +248,33 @@ public class BitmapUtills {
 	}
 
 	public static Bitmap resizeBitmap(Bitmap source) {
+//		final int heightOrg = source.getHeight();
+//		final int heightNew = 800;
+//		if (heightNew < heightOrg) {
+//			final int widthOrg = source.getWidth();
+//			final int widthNew = (heightNew * widthOrg) / heightOrg;
+//
+//			final Matrix matrix = new Matrix();
+//			matrix.postScale(((float) widthNew) / widthOrg, ((float) heightNew) / heightOrg);
+//			source = Bitmap.createBitmap(source, 0, 0, widthOrg, heightOrg, matrix, false);
+//		}
 		final int heightOrg = source.getHeight();
-		final int heightNew = 800;
-		if (heightNew < heightOrg) {
-			final int widthOrg = source.getWidth();
-			final int widthNew = (heightNew * widthOrg) / heightOrg;
-
-			final Matrix matrix = new Matrix();
-			matrix.postScale(((float) widthNew) / widthOrg, ((float) heightNew) / heightOrg);
-			source = Bitmap.createBitmap(source, 0, 0, widthOrg, heightOrg, matrix, false);
+		final int widthOrg = source.getWidth();
+		final int heightNew,widthNew;
+		if(widthOrg > heightOrg){
+			//FOTO HORIZONTAL
+			widthNew = 800;
+			heightNew = 600;
 		}
+		else {
+			//FOTO VERTICAL
+			widthNew = 600;
+			heightNew = 800;
+		}
+
+		final Matrix matrix = new Matrix();
+		matrix.postScale(((float) widthNew) / widthOrg, ((float) heightNew) / heightOrg);
+		source = Bitmap.createBitmap(source, 0, 0, widthOrg, heightOrg, matrix, false);
 		return source;
 	}
 
