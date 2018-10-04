@@ -5,10 +5,8 @@
     <string name="geral_RegistroNSalvo">Registro não salvo!</string>
 
     <string name="app_name">PPI PDI</string>
-    <string name="action_settings">V.031018</string> <!-- ATUALIZACAO:
-    Fix:
-     - ao fechar o app - o botão voltar do celular não faz com saia da aplicação
-    - tela carregamento com fontes grandes quebra as palavras -->
+    <string name="action_settings">V.041018</string> <!-- ATUALIZACAO:
+    Refactor Controle upload FTP | Rezise foto camera -->
 
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
