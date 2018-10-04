@@ -20,6 +20,7 @@ import base.htcom.com.br.ppipdiapp.async.AsyncReenviarArqPref;
 import base.htcom.com.br.ppipdiapp.async.AsyncReenviarBateria;
 import base.htcom.com.br.ppipdiapp.async.AsyncReenviarCarregamento;
 import base.htcom.com.br.ppipdiapp.async.AsyncControleUploads;
+import base.htcom.com.br.ppipdiapp.async.CallBackGeneric;
 import base.htcom.com.br.ppipdiapp.async.TarefaInterfaceReenv;
 import base.htcom.com.br.ppipdiapp.base.BaseFragment;
 import base.htcom.com.br.ppipdiapp.bll.ArqPrefBLL;
@@ -137,31 +138,39 @@ public class ReenviarOSFragment extends BaseFragment{
 					}
 					
 				}
-				
-				@Override
-				public void respostaAsyncEnvioUpload(List<ControleUpload> controleUploadsSucesso) {
-					try {
-						if(controleUploadsSucesso.size()>0){
-							//REGISTRA CONFIRMACAO ENVIO
-							for (ControleUpload c:controleUploadsSucesso) {
-								StatusControleUpload statusControleUpload = new StatusControleUpload();
-								statusControleUpload.setLINHA(c.getLinha());
-								SimpleDateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
-								statusControleUpload.setDATA_ENVIO(format.format(new Date()));
-								statusControleUploadBLL.Insert(getActivity(), statusControleUpload);
-							}
-							new AlertaDialog(getActivity()).showDialogAviso("Confirmação", "ETP Reenviada!");
-							fragmentTransaction(ListOSFinalizadaFragment.class.getSimpleName(), new ListOSFinalizadaFragment(), false, 1);
-						}
-						else
-							Toast.makeText(getActivity(), "Nenhuma Imagem enviada!", Toast.LENGTH_SHORT).show();
-					}
-					catch (Exception e) {
-						LogErrorBLL.LogError(e.getMessage(), "ERROR respostaAsyncEnvioUpload Reenv", getActivity());
-					}
-				}
 			};
-//=======INTERFACE DE RESPOSTA DOS ASYNC======================			
+
+			CallBackGeneric callBackControleUpload = new CallBackGeneric() {
+                @Override
+                public void callBackSuccess(Object response) {
+                    try {
+                        List<ControleUpload> controleUploadsSucesso = (List<ControleUpload>) response;
+                        if(controleUploadsSucesso.size()>0){
+                            //REGISTRA CONFIRMACAO ENVIO
+                            for (ControleUpload c:controleUploadsSucesso) {
+                                StatusControleUpload statusControleUpload = new StatusControleUpload();
+                                statusControleUpload.setLINHA(c.getLinha());
+                                SimpleDateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+                                statusControleUpload.setDATA_ENVIO(format.format(new Date()));
+                                statusControleUploadBLL.insert(getActivity(), statusControleUpload);
+                            }
+                            new AlertaDialog(getActivity()).showDialogAviso("Confirmação", "ETP Reenviada!");
+                            fragmentTransaction(ListOSFinalizadaFragment.class.getSimpleName(), new ListOSFinalizadaFragment(), false, 1);
+                        }
+                        else
+                            Toast.makeText(getActivity(), "Nenhuma Imagem enviada!", Toast.LENGTH_SHORT).show();
+                    }
+                    catch (Exception e) {
+                        LogErrorBLL.LogError(e.getMessage(), "ERROR respostaAsyncEnvioUpload Reenv", getActivity());
+                    }
+                }
+
+                @Override
+                public void callBackError(Object response) {
+
+                }
+            };
+//=======INTERFACE DE RESPOSTA DOS ASYNC======================
 			ClearCounts();
 //=======OBTER LIST DE NAO ENVIADOS=====================
 			os = osBLL.listarById(getActivity(), linhaOS).get(0);
@@ -209,7 +218,7 @@ public class ReenviarOSFragment extends BaseFragment{
 					//CONTROLE UPLOADS
 					if(lstControleUploads != null)
 					if(lstControleUploads.size() > 0){
-						new AsyncControleUploads(getActivity(), ti,lstControleUploads).execute();
+						new AsyncControleUploads(getActivity(), callBackControleUpload,lstControleUploads).execute();
 					}
 				}
 				else {

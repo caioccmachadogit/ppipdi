@@ -5,8 +5,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -18,12 +16,13 @@ import java.util.List;
 import base.htcom.com.br.ppipdiapp.R;
 import base.htcom.com.br.ppipdiapp.async.AsyncConfirmarEnvOS_Upload;
 import base.htcom.com.br.ppipdiapp.async.AsyncConfirmarRecOS;
-import base.htcom.com.br.ppipdiapp.async.AsyncEnviarUploadArqPref;
+import base.htcom.com.br.ppipdiapp.async.AsyncControleUploads;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberCarPlanta;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberCombo;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberModeloAntena;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberOS;
 import base.htcom.com.br.ppipdiapp.async.AsyncReceberSite;
+import base.htcom.com.br.ppipdiapp.async.CallBackGeneric;
 import base.htcom.com.br.ppipdiapp.async.TarefaInterface;
 import base.htcom.com.br.ppipdiapp.base.BaseActivity;
 import base.htcom.com.br.ppipdiapp.bll.CarregamentoPlantaBLL;
@@ -65,12 +64,8 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
 
     //=======ENVIO UPLOAD============================
     private List<Os> lstOsFinalizada;
-    public static int cEnvioUpArqPref=0;
-    public static int contaEnvUpArqPref=0;
-    public static int contaUpArqPref=0;
-    public static int contaConfEnvOs=0;
-    public static int cEnvioConfEnvOs=0;
-    private List<ControleUpload> lstUpArqPrefEnvio;
+    private List<ControleUpload> controleUploadList;
+    private List<ControleUpload> controleUploadsSucesso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,18 +84,6 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
     public void onBackPressed() {
         abrirAlertLogout();
     }
-
-    //    private void PreencherListMenu() {
-//        dataList = new ArrayList<DrawerItem>();
-//        // Add Drawer Item to dataList
-//        dataList.add(new DrawerItem("ETP", R.drawable.ic_registration_form_inverse));
-//        dataList.add(new DrawerItem("ETP Finalizada", R.drawable.ic_registration_form_inverse));
-//        dataList.add(new DrawerItem("Verificar ETP", R.drawable.ic_sincronizacao));
-//        dataList.add(new DrawerItem("Verificar Rev. ETP", R.drawable.ic_sincronizacao));
-//        dataList.add(new DrawerItem("Enviar ETP", R.drawable.ic_upload_inverse));
-//        dataList.add(new DrawerItem("Enviar Fotos", R.drawable.ic_upload_inverse));
-//        dataList.add(new DrawerItem("Sair", R.mipmap.ic_cancelar));
-//    }
 
     public void verificarOS(){
             POSITION = 0;
@@ -303,19 +286,49 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
     public void enviarUpload() {
         //======ENVIO UPLOAD ARQ PREF============================
         StatusOsBLL statusOsBLL = new StatusOsBLL();
+        final StatusControleUploadBLL statusControleUploadBLL = new StatusControleUploadBLL();
         ControleUploadBLL controleUploadBLL;
-        Gson gson;
         try {
+            final CallBackGeneric callBackControleUpload = new CallBackGeneric() {
+                @Override
+                public void callBackSuccess(Object response) {
+                    try {
+                        controleUploadsSucesso = (List<ControleUpload>) response;
+                        if(controleUploadsSucesso.size()>0){
+                            //REGISTRA CONFIRMACAO ENVIO
+                            for (ControleUpload c:controleUploadsSucesso) {
+                                StatusControleUpload statusControleUpload = new StatusControleUpload();
+                                statusControleUpload.setLINHA(c.getLinha());
+                                SimpleDateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+                                statusControleUpload.setDATA_ENVIO(format.format(new Date()));
+                                statusControleUploadBLL.insert(getContext(), statusControleUpload);
+                            }
+                            //FINALIZA ROTINA DE ENVIO UPLOAD
+                            //INICIA CONFIRMACAO DE ENVIO DE OS FINALIZADA
+                            new AsyncConfirmarEnvOS_Upload(mActivity, callBackConfirmarEnvOS()).execute(lstOsFinalizada);
+                        }
+                    }
+                    catch (Exception e) {
+                    }
+
+                }
+
+                @Override
+                public void callBackError(Object response) {
+
+                }
+            };
+
             lstOsFinalizada = statusOsBLL.listarFotos(this, USER, EMPRESA);
             List<ControleUpload> lstControleUploads = new ArrayList<ControleUpload>();
             if(lstOsFinalizada.size() > 0 ){
-                lstUpArqPrefEnvio = new ArrayList<ControleUpload>();
+                controleUploadList = new ArrayList<ControleUpload>();
                 for(int i=0; i < lstOsFinalizada.size();i++){
                     controleUploadBLL = new ControleUploadBLL();
                     lstControleUploads = controleUploadBLL.listarByOvChamado(this, lstOsFinalizada.get(i).getOV_CHAMADO_NUM());
                     if(lstControleUploads != null){
                         //GUARDA AS LISTCONTROLEUPLOADS QUANDO POSSUI REGISTROS
-                        lstUpArqPrefEnvio.addAll(lstControleUploads);
+                        controleUploadList.addAll(lstControleUploads);
                     }
                     else {
                         //OS FINALIZADA MAIS N�O POSSUI UPLOADS,
@@ -324,14 +337,8 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
                         Toast.makeText(this, "Nenhuma Imagem para a ETP: "+lstOsFinalizada.get(i).getOV_CHAMADO_NUM()+"", Toast.LENGTH_SHORT).show();
                     }
                 }
-                if(lstUpArqPrefEnvio.size() > 0){
-                    gson = new GsonBuilder().create();
-                    JsonArray jsonArrayUpArq = gson.toJsonTree(lstUpArqPrefEnvio).getAsJsonArray();
-                    for(int j=0;j< jsonArrayUpArq.size();j++){
-                        JsonElement jsonUpArqPref = jsonArrayUpArq.get(j);
-                        // TODO: 03/10/2018 USAR AsyncControleUploads
-                        new AsyncEnviarUploadArqPref(this, this).execute(jsonUpArqPref.toString());
-                    }
+                if(controleUploadList.size() > 0){
+                    new AsyncControleUploads(this, callBackControleUpload,controleUploadList).execute();
                 }
             }
             else {
@@ -344,70 +351,34 @@ public class MainActivity extends BaseActivity implements TarefaInterface {
         //======ENVIO UPLOAD ARQ PREF============================
     }
 
-    @Override
-    public void respostaAsyncEnvioUpload(String json) {
-        try {
-            if(json.equals("true")){
-                //CONFIRMA ENVIO
-                StatusControleUploadBLL statusControleUploadBLL = new StatusControleUploadBLL();
-                StatusControleUpload statusControleUpload = new StatusControleUpload();
-                statusControleUpload.setLINHA(lstUpArqPrefEnvio.get(cEnvioUpArqPref-1).getLinha());
-                SimpleDateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
-                statusControleUpload.setDATA_ENVIO(format.format(new Date()));
-                if(statusControleUploadBLL.Insert(this, statusControleUpload) != -1){
-                    contaEnvUpArqPref++;
-                }
-            }
-            if(lstUpArqPrefEnvio.size() == cEnvioUpArqPref){
-                //FINALIZA ROTINA DE ENVIO UPLOAD ARQ PREF
-                //INICIA CONFIRMACAO DE ENVIO DE OS FINALIZADA
-                for(int i=0; i < lstOsFinalizada.size();i++){
-                    new AsyncConfirmarEnvOS_Upload(this, this).execute(lstOsFinalizada.get(i));
-                }
-            }
-            else if(json.equals("FileNotFound"))
-                Toast.makeText(this, "Imagem não encontrada: "+(contaEnvUpArqPref)+"", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, contaEnvUpArqPref+" imagem enviada", Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e) {
-            contaUpArqPref = 0;
-            contaEnvUpArqPref = 0;
-            cEnvioUpArqPref = 0;
-            contaConfEnvOs = 0;
-        }
-    }
+    public CallBackGeneric callBackConfirmarEnvOS(){
+        return new CallBackGeneric() {
+            @Override
+            public void callBackSuccess(Object response) {
+                try {
+                    List<String> osLinha = (List<String>) response;
 
-    @Override
-    public void respostaAsyncConfirmaEnvOs(String json) {
-        try {
-            if(json.equals("true")){
-                //CONFIRMA ENVIO
-                contaConfEnvOs++;
-            }
-            if(cEnvioConfEnvOs == lstOsFinalizada.size()){
-                StatusOsBLL statusOsBLL = new StatusOsBLL();
-                if(contaEnvUpArqPref > 0){
-                    for(int i=0; i < lstOsFinalizada.size();i++){
-                        statusOsBLL.updateStatus(this, lstOsFinalizada.get(i).getLINHA(), "imagem");
+                    if(osLinha.size() > 0){
+                        StatusOsBLL statusOsBLL = new StatusOsBLL();
+                        for (String linha:osLinha) {
+                            statusOsBLL.updateStatus(getContext(), linha, "imagem");
+                        }
+                        new AlertaDialog(getContext()).showDialogAviso(
+                                "Confirmação Envio",
+                                "ETP Confirmada: "+osLinha.size()+" | Imagens: "+controleUploadsSucesso.size()+"");
+
+                        fragmentTransaction(ListOSFinalizadaFragment.class.getSimpleName(), new ListOSFinalizadaFragment(), false, 1);
                     }
-                    new AlertaDialog(this).showDialogAviso("Confirmação Envio", "ETP Confirmada: "+contaConfEnvOs+" | Imagens: "+contaEnvUpArqPref+"");
                 }
-                zerarCounts();
+                catch (Exception e) {
+                }
             }
-        }
-        catch (Exception e) {
-            zerarCounts();
-        }
-    }
 
-    private void zerarCounts(){
-        contaConfEnvOs = 0;
-        cEnvioConfEnvOs = 0;
+            @Override
+            public void callBackError(Object response) {
 
-        contaEnvUpArqPref = 0;
-        cEnvioUpArqPref = 0;
-        contaUpArqPref = 0;
+            }
+        };
     }
     //==================ENVIO UPLOAD=====================================================
 

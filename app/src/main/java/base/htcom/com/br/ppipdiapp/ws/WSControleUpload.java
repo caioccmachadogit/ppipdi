@@ -11,7 +11,7 @@ public class WSControleUpload {
 	
 	public final String URL = VarConfig.URLWS;
 	
-	public String EnviarUploadArqPref(String json){
+	public String enviarUploadArqPref(String json){
 		String retorno;
 		try {
 			RequestSoap rSoap = new RequestSoap();

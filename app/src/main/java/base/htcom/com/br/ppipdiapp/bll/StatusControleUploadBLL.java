@@ -23,7 +23,7 @@ public class StatusControleUploadBLL {
 	
 	GerenciadorDB gerDB = new GerenciadorDB();
 	
-	public long Insert(Context context, StatusControleUpload statusControleUpload) throws Exception{
+	public long insert(Context context, StatusControleUpload statusControleUpload) throws Exception{
 		long resultadoInsercao = 0;
 		try{
 			ContentValues contentValues = DatabaseConverter.convertObjectToContentValue(statusControleUpload);

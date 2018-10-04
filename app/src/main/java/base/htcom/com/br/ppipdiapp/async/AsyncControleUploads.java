@@ -22,7 +22,7 @@ import base.htcom.com.br.ppipdiapp.ws.WSControleUpload;
 public class AsyncControleUploads extends AsyncTask<String, String, List<ControleUpload>>{
 	private ProgressDialog pd;
 	private Activity activity;
-	private TarefaInterfaceReenv ti;
+	private CallBackGeneric callBackGeneric;
 	private String host = VarConfig.Ftphost;
 	private String user = VarConfig.Ftpuser;
 	private String passw = VarConfig.Ftppassw;
@@ -34,9 +34,9 @@ public class AsyncControleUploads extends AsyncTask<String, String, List<Control
 	private FTPManager ftpManager = new FTPManager();
 	private List<ControleUpload> controleUploadsOK = new ArrayList<>();
 	
-	public AsyncControleUploads(Activity activity, TarefaInterfaceReenv ti, List<ControleUpload> lstControleUploads){
+	public AsyncControleUploads(Activity activity, CallBackGeneric callBackGeneric, List<ControleUpload> lstControleUploads){
 		this.activity = activity;
-		this.ti = ti;
+		this.callBackGeneric = callBackGeneric;
 		this.lstControleUploads = lstControleUploads;
 	}
 
@@ -63,8 +63,8 @@ public class AsyncControleUploads extends AsyncTask<String, String, List<Control
 		if(controleUploadsOK.size() > 0){
 			for (int i=0;i<controleUploadsOK.size();i++){
 				ControleUpload controleUpload = controleUploadsOK.get(i);
-				if(ws.EnviarUploadArqPref(gson.toJson(controleUpload)).equals("true")) {
-					publishProgress("Confirmando Imagens: "+i+1+"/"+controleUploadsOK.size());
+				if(ws.enviarUploadArqPref(gson.toJson(controleUpload)).equals("true")) {
+					publishProgress("Confirmando Imagens: "+i+"/"+controleUploadsOK.size());
 				}
 				controleUploadsSucesso.add(controleUpload);
 			}
@@ -87,7 +87,7 @@ public class AsyncControleUploads extends AsyncTask<String, String, List<Control
 							{
 								Log.d(TAG,"UploadsOK->"+arqOrigem);
 								controleUploadsOK.add(controleUpload);
-								publishProgress("Enviando Imagens: "+i+1+"/"+lstControleUploads.size());
+								publishProgress("Enviando Imagens: "+i+"/"+lstControleUploads.size());
 							}
 							ftpManager.desconectar();
 						}
@@ -130,7 +130,7 @@ public class AsyncControleUploads extends AsyncTask<String, String, List<Control
 	protected void onPostExecute(List<ControleUpload> controleUploadsSucesso)
 	{
 		Log.d(TAG,"controleUploadsSucesso->"+controleUploadsSucesso.size());
-		ti.respostaAsyncEnvioUpload(controleUploadsSucesso);
+		callBackGeneric.callBackSuccess(controleUploadsSucesso);
 		this.pd.dismiss();
 		
 	}
