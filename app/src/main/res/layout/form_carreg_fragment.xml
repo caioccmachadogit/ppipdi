@@ -118,8 +118,7 @@
                         android:id="@+id/edtEtiqueta"
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
-                        android:background="@android:drawable/editbox_background"
-                        android:inputType="numberSigned" />
+                        android:background="@android:drawable/editbox_background"/>
 
                     <CheckBox
                         android:id="@+id/ckAtiva"
@@ -286,12 +285,12 @@
                     <TextView
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:text="Antena" />
+                        android:text="Ant hØ" />
 
                     <TextView
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:text="dim(mts)" />
+                        android:text="Ant L(m)" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -307,21 +306,21 @@
 
                     <EditText
                         android:id="@+id/edtElemDim"
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/editbox_background"
                         android:inputType="numberDecimal" />
 
                     <EditText
                         android:id="@+id/edtElemDim2"
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/editbox_background"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
 
                     <EditText
                         android:id="@+id/edtElemPeso"
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:background="@android:drawable/editbox_background"
@@ -477,24 +476,24 @@
 
                     <EditText
                         android:id="@+id/edtAltAzi"
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/editbox_background"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
 
                     <EditText
                         android:id="@+id/edtAZI"
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/editbox_background"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
 
                     <EditText
                         android:id="@+id/edtTilt"
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/editbox_background"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
                 </TableRow>
             </TableLayout>
 
@@ -699,21 +698,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="FA" />
+                        android:text="FA(mm)" />
 
                     <TextView
                         android:id="@+id/tvFb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="FB" />
+                        android:text="FB(mm)" />
 
                     <TextView
                         android:id="@+id/tvFc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="FC" />
+                        android:text="FC(mm)" />
                 </TableRow>
 
                 <TableRow
@@ -759,14 +758,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="FD" />
+                        android:text="FD(mm)" />
 
                     <TextView
                         android:id="@+id/tvFe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="FE" />
+                        android:text="FE(mm)" />
                 </TableRow>
 
                 <TableRow
@@ -811,21 +810,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="MA" />
+                        android:text="MA(mm)" />
 
                     <TextView
                         android:id="@+id/tvMb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="MB" />
+                        android:text="MB(mm)" />
 
                     <TextView
                         android:id="@+id/tvMc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="MC" />
+                        android:text="MC(mm)" />
                 </TableRow>
 
                 <TableRow
@@ -870,21 +869,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="MD" />
+                        android:text="MD(mm)" />
 
                     <TextView
                         android:id="@+id/tvMe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="ME" />
+                        android:text="ME(mm)" />
 
                     <TextView
                         android:id="@+id/tvMf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="MF" />
+                        android:text="MF(mm)" />
                 </TableRow>
 
                 <TableRow
@@ -929,21 +928,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="MG" />
+                        android:text="MG(mm)" />
 
                     <TextView
                         android:id="@+id/tvMh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="MH" />
+                        android:text="MH(mm)" />
 
                     <TextView
                         android:id="@+id/tvMi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="MI" />
+                        android:text="MI(mm)" />
                 </TableRow>
 
                 <TableRow
@@ -1010,14 +1009,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@+id/txtOperadora"
                         android:layout_toRightOf="@+id/spinnerOperadora"
-                        android:text="Cabo" />
+                        android:text="Ø(mm)" />
 
                     <TextView
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@+id/txtOperadora"
                         android:layout_toRightOf="@+id/spinnerOperadora"
-                        android:text="dim(mm)" />
+                        android:text="comp(m)" />
 
                     <TextView
                         android:id="@+id/txtQtd2"
@@ -1134,7 +1133,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_default_lay_main"
                 android:drawableLeft="@android:drawable/arrow_down_float"
-                android:text="Cabo ID"
+                android:text="Cabo"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
