@@ -238,6 +238,8 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 			if(!IDCAR.equals("0")){
 				carregarForm();
 			}
+
+			checkFotos();
 		}
 		catch (Exception e) {
 			Log.e(TAG, "ERROR ONCREATE FRAGMENT NOVOCARREGAMENTO",e);
@@ -245,6 +247,66 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		}
 		setupBackButton();
 		return view;
+	}
+
+
+	private void checkFotos() {
+		try {
+			if(!IDCAR.equals("0")){
+				String idCarr = "0";
+				if(tipoCarregamento.equals("NOVA")){
+					idCarr = IDCAR;
+				}
+				else if (tipoCarregamento.equals("PLANTA")) {
+					idCarr = carregamentoPlanta.getINFO_50();
+				}
+				Carregamento carregamento = carregamentoBLL.listarById(getActivity(), idCarr);
+
+				//a c p s
+				if(carregamento != null){
+					ControleUpload controleUploadA = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+"a", carregamento.getCODIGO());
+					if(controleUploadA != null){
+					    btnFotoA.setCompoundDrawablesWithIntrinsicBounds(
+					    		getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
+								null,
+								getContext().getResources().getDrawable(R.drawable.ic_check_green),
+								null);
+						Log.d(TAG, "foto->Elemento de Carga");
+					}
+					ControleUpload controleUploadC = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+"c", carregamento.getCODIGO());
+					if(controleUploadC != null){
+						btnFotoC.setCompoundDrawablesWithIntrinsicBounds(
+								getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
+								null,
+								getContext().getResources().getDrawable(R.drawable.ic_check_green),
+								null);
+						Log.d(TAG, "foto->Cabo");
+					}
+					ControleUpload controleUploadP = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+"p", carregamento.getCODIGO());
+					if(controleUploadP != null){
+						btnFotoP.setCompoundDrawablesWithIntrinsicBounds(
+								getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
+								null,
+								getContext().getResources().getDrawable(R.drawable.ic_check_green),
+								null);
+						Log.d(TAG, "foto->Posição na EV");
+					}
+					ControleUpload controleUploadS = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+"s", carregamento.getCODIGO());
+					if(controleUploadS != null){
+						btnFotoS.setCompoundDrawablesWithIntrinsicBounds(
+								getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
+								null,
+								getContext().getResources().getDrawable(R.drawable.ic_check_green),
+								null);
+						Log.d(TAG, "foto->Suporte de Fixação");
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			LogErrorBLL.LogError(e.getMessage(), "checkFotos",getActivity());
+		}
+
 	}
 	
 	private void popularSpinners() throws Exception {

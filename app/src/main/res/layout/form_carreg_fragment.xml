@@ -1122,7 +1122,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_default_lay_main"
-                android:drawableLeft="@android:drawable/arrow_down_float"
+                android:drawableLeft="@drawable/ic_arrow_down"
                 android:text="Elemento de Carga"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -1132,7 +1132,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_default_lay_main"
-                android:drawableLeft="@android:drawable/arrow_down_float"
+                android:drawableLeft="@drawable/ic_arrow_down"
                 android:text="Cabo"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -1142,7 +1142,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_default_lay_main"
-                android:drawableLeft="@android:drawable/arrow_down_float"
+                android:drawableLeft="@drawable/ic_arrow_down"
                 android:text="Posição na EV"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -1152,7 +1152,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_default_lay_main"
-                android:drawableLeft="@android:drawable/arrow_down_float"
+                android:drawableLeft="@drawable/ic_arrow_down"
                 android:text="Suporte de Fixação"
                 android:textColor="#000000"
                 android:textSize="18sp" />
