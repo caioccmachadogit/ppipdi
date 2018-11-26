@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
+import android.support.annotation.UiThread;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -53,7 +55,8 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 	private AlertDialog alerta;
 	private ControleUploadBLL controleUploadBLL = new ControleUploadBLL();
 	private CarregamentoBLL carregamentoBLL = new CarregamentoBLL();
-    //============OBJS VIEW ===========================================
+	private AdapterEvFotos adapterEvFotos;
+	//============OBJS VIEW ===========================================
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,7 +100,7 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Log.i("FragmentList", "Item clicked: " + id);
+		Log.d("FragmentList", "Item clicked: " + id);
 		ImageView imgAction = (ImageView) v.findViewById(R.id.img_acao);
 		 _ID = (String) imgAction.getTag();
 		showMenu(v);
@@ -163,64 +166,100 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 	
 	private void atualizarListView() {
 		try {
-			lst = new ArrayList<Combo>();
+			lst = new ArrayList<>();
 			Combo foto1 = new Combo();
 			foto1.setTITULO("1) Frente Site com EV");
 			foto1.setLINHA("22001");
+			foto1.setFoto(checkFoto(foto1.getLINHA()));
 			lst.add(foto1);
+
 			Combo foto2 = new Combo();
 			foto2.setTITULO("2) EV Face 1");
 			foto2.setLINHA("22002");
+			foto2.setFoto(checkFoto(foto2.getLINHA()));
 			lst.add(foto2);
+
 			Combo foto3 = new Combo();
 			foto3.setTITULO("3) EV Face 2");
 			foto3.setLINHA("22003");
+			foto3.setFoto(checkFoto(foto3.getLINHA()));
 			lst.add(foto3);
+
 			Combo foto4 = new Combo();
 			foto4.setTITULO("4) EV Face 3");
 			foto4.setLINHA("22004");
+			foto4.setFoto(checkFoto(foto4.getLINHA()));
 			lst.add(foto4);
+
 			Combo foto5 = new Combo();
 			foto5.setTITULO("5) EV Face 4");
 			foto5.setLINHA("22005");
+			foto5.setFoto(checkFoto(foto5.getLINHA()));
 			lst.add(foto5);
+
 			Combo foto6 = new Combo();
 			foto6.setTITULO("6) EV Aterramento");
 			foto6.setLINHA("22006");
+			foto6.setFoto(checkFoto(foto6.getLINHA()));
 			lst.add(foto6);
+
 			Combo foto7 = new Combo();
 			foto7.setTITULO("7) Placa identificação EV");
 			foto7.setLINHA("22011");
+			foto7.setFoto(checkFoto(foto7.getLINHA()));
 			lst.add(foto7);
+
 			Combo foto8 = new Combo();
 			foto8.setTITULO("8) EV Esteira Vertical Foto 1");
 			foto8.setLINHA("22012");
+			foto8.setFoto(checkFoto(foto8.getLINHA()));
 			lst.add(foto8);
+
 			Combo foto9 = new Combo();
 			foto9.setTITULO("9) EV Esteira Vertical Foto 2");
 			foto9.setLINHA("22013");
+			foto9.setFoto(checkFoto(foto9.getLINHA()));
 			lst.add(foto9);
+
 			Combo foto10 = new Combo();
 			foto10.setTITULO("10) EV Esteira Horizontal Foto 1");
 			foto10.setLINHA("22014");
+			foto10.setFoto(checkFoto(foto10.getLINHA()));
 			lst.add(foto10);
+
 			Combo foto11 = new Combo();
 			foto11.setTITULO("11) EV Esteira Horizontal Foto 2");
 			foto11.setLINHA("22015");
+			foto11.setFoto(checkFoto(foto11.getLINHA()));
 			lst.add(foto11);
+
 			Combo foto12 = new Combo();
 			foto12.setTITULO("12) Placa Passagem Cabos");
 			foto12.setLINHA("22016");
+			foto12.setFoto(checkFoto(foto12.getLINHA()));
 			lst.add(foto12);
 
-			AdapterEvFotos adapterEvFotos = new AdapterEvFotos(getActivity(), R.layout.lv_item_ev_fotos, lst);
+			adapterEvFotos = new AdapterEvFotos(getActivity(), R.layout.lv_item_ev_fotos, lst);
 			setListAdapter(adapterEvFotos);
 		}
 		catch (Exception e) {
 			LogErrorBLL.LogError(e.getMessage(), "Criar List Ev Fotos", getActivity());
 		}
 	}
-	
+
+	private boolean checkFoto(String linha) {
+		ControleUpload controleUpload = null;
+		try {
+			controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(),linha , OsMenuActitivity._OV_CHAMADO);
+			if(controleUpload != null)
+				return true;
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+
 	private void btnImg(){
 		try {
 			ControleUpload controleUpload = controleUploadBLL.listarByArqCarregado(getActivity(), _ID, OsMenuActitivity._OV_CHAMADO);
@@ -401,6 +440,8 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 						controleUploadBLL.insert(getActivity(), prepararControleUpload(finalBitmap, null));
 					}
 					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
+
+					refreshAdapter();
 				}
 			}
 		}
@@ -408,5 +449,20 @@ public class EvFotosFragment extends BaseListFragment implements OnMenuItemClick
 			LogErrorBLL.LogError(e.getMessage(), "onActivityResult",getActivity());
 		}
 		showDialog(msgDialog);
+	}
+
+	@MainThread
+    private void refreshAdapter() {
+        setCheckFoto();
+        adapterEvFotos.notifyDataSetChanged();
+    }
+
+    private void setCheckFoto() {
+		for (Combo c:lst) {
+			if(c.getLINHA().equals(_ID)){
+				c.setFoto(true);
+				break;
+			}
+		}
 	}
 }

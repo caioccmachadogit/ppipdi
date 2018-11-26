@@ -12,6 +12,9 @@ public class Combo implements Serializable{
 	private String LINHA,	VALIDADE,	MANDATORIO,	CLIENTE,	CONTRATO,	CONTRATO_FASE,	REFERENCIA,	ORDEM,	FILTRO,
 	SIGLA,	COD,	TIPO,	COD_REL,	TIPO_REL,	TITULO,	VALOR,	CLASSIFICACAO,	AEV,	CA,	OBSERVACAO,	OBSERVACAO_MASTER,
 	CONTROLE_ROTINA,	CONTROLE_MSG,	ATUALIZACAO_NOME,	ATUALIZACAO_DATA,	INSERCAO_DATA,	INSERCAO_NOME;
+
+	private boolean isFoto;
+
 	public String getLINHA() {
 		return LINHA;
 	}
@@ -175,5 +178,11 @@ public class Combo implements Serializable{
 		INSERCAO_NOME = iNSERCAO_NOME;
 	}
 
+	public boolean isFoto() {
+		return isFoto;
+	}
 
+	public void setFoto(boolean foto) {
+		isFoto = foto;
+	}
 }

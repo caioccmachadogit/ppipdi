@@ -31,26 +31,31 @@ public class AdapterEvFotos extends ArrayAdapter<Combo>{
 	public static class ViewHolder{
     	TextView titulo;
     	ImageView action;
+		ImageView checkFoto;
     	Combo combo;
     }
 	
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View row = convertView;
-		ViewHolder holder = null;
+	public View getView(int position, View row, ViewGroup parent) {
+		ViewHolder holder = new ViewHolder();
 
 		LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 		row = inflater.inflate(layoutResourceId, parent, false);
 
-		holder = new ViewHolder();
 		holder.combo = items.get(position);
 		
-		holder.titulo = (TextView)row.findViewById(R.id.tv_tit);
+		holder.titulo = row.findViewById(R.id.tv_tit);
 		holder.titulo.setText(holder.combo.getTITULO());
 		
-		holder.action = (ImageView)row.findViewById(R.id.img_acao);
+		holder.action = row.findViewById(R.id.img_acao);
 		holder.action.setTag(holder.combo.getLINHA());
-		
+
+		holder.checkFoto = row.findViewById(R.id.img_check);
+		if(holder.combo.isFoto())
+			holder.checkFoto.setVisibility(View.VISIBLE);
+		else
+			holder.checkFoto.setVisibility(View.INVISIBLE);
+
 		row.setTag(holder);
 
 		return row;
