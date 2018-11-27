@@ -4,9 +4,9 @@
     <string name="geral_RegistroSalvo">Registro salvo com sucesso!</string>
     <string name="geral_RegistroNSalvo">Registro não salvo!</string>
 
-    <string name="app_name">PPI PDI</string>
+    <string name="app_name">Digital task collector</string>
     <string name="action_settings">V.041018</string> <!-- ATUALIZACAO:
-    Refactor Controle upload FTP | Rezise foto camera -->
+    Solicitacao de revisao e novos ajustes -->
 
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>

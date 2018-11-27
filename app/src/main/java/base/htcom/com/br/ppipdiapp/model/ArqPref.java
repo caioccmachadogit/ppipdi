@@ -145,7 +145,12 @@ public class ArqPref implements Serializable{
 		INSERCAO_NOME = iNSERCAO_NOME;
 	}
 	
-	
+	public boolean isObs(){
+		if(getOS_VERIF_20XXX() != null){
+			return getOS_VERIF_20XXX().length() > 10;
+		}
+		return false;
+	}
 	
 	
 

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,9 @@ public class ArqPrefActivity extends BaseActivity implements ActivityResult {
 	private static String LONGITUDE = null;
 	private String _TIPOREL;
 	private ControleUploadBLL controleUploadBLL = new ControleUploadBLL();
+	private AdapterArqPref adapterArqPref;
+	private List<Combo> lst;
+	private final String TAG = getClass().getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +103,7 @@ public class ArqPrefActivity extends BaseActivity implements ActivityResult {
 			}
 			
 			ComboBLL comboBLL = new ComboBLL();
-			List<Combo> lst = new ArrayList<Combo>();
+			lst = new ArrayList<>();
 			if(OsMenuActitivity._OS.getOS_SITUACAO().equals("OS ABERTA")){
 				lst = comboBLL.listarByFiltro(this, tipo, _TIPOREL);
 			}
@@ -116,7 +120,7 @@ public class ArqPrefActivity extends BaseActivity implements ActivityResult {
 				}
 			}
 			if(lst != null){
-				AdapterArqPref adapterArqPref = new AdapterArqPref(this, R.layout.lv_item_arq_pref, lst);
+				adapterArqPref = new AdapterArqPref(this, R.layout.lv_item_arq_pref, lst);
 				lv.setAdapter(adapterArqPref);
 			}
 		} catch (Exception e) {
@@ -424,6 +428,7 @@ public class ArqPrefActivity extends BaseActivity implements ActivityResult {
 						controleUploadBLL.insert(this, prepararControleUpload(finalBitmap, null));
 					}
 					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
+					refreshAdapter();
 				}
 			}
 		}
@@ -431,6 +436,11 @@ public class ArqPrefActivity extends BaseActivity implements ActivityResult {
 			LogErrorBLL.LogError(e.getMessage(), "onActivityResult",this);
 		}
 		showDialog(msgDialog);
+	}
+
+	@MainThread
+	private void refreshAdapter(){
+		adapterArqPref.notifyDataSetChanged();
 	}
 
 	private void showDialog(String msgDialog) {

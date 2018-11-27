@@ -9,4 +9,5 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="cinzaTopo">#f0eceb</color>
     <color name="cinza"> #bcbec0</color>
+    <color name="checkArqPref">#d07777d4</color>
 </resources>
