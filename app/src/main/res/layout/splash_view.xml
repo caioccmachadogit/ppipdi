@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#fff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_digital_t_c"
     android:padding="@dimen/dimens_15"
     android:orientation="vertical" >
 
-    <ImageView
-        android:layout_gravity="center"
-        android:layout_width="@dimen/dimens_300"
-        android:layout_height="match_parent"
-        android:src="@drawable/logo_ppi_pdi" >
-    </ImageView>
+    <!--<ImageView-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_width="@dimen/dimens_300"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/logo_ppi_pdi" >-->
+    <!--</ImageView>-->
 
 </LinearLayout>

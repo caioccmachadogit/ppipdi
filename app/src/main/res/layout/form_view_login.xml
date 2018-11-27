@@ -24,7 +24,7 @@
                 android:layout_width="@dimen/dimens_250"
                 android:layout_height="@dimen/dimens_150"
                 android:layout_marginTop="@dimen/dimens_25"
-                android:src="@drawable/logo_ppi_pdi" />
+                android:src="@drawable/logo_digital_t_c" />
 
             <LinearLayout
                 android:background="@color/cinzaTopo"

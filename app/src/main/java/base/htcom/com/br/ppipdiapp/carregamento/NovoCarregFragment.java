@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.UiThread;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -260,46 +261,23 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 				else if (tipoCarregamento.equals("PLANTA")) {
 					idCarr = carregamentoPlanta.getINFO_50();
 				}
-				Carregamento carregamento = carregamentoBLL.listarById(getActivity(), idCarr);
 
 				//a c p s
-				if(carregamento != null){
-					ControleUpload controleUploadA = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+"a", carregamento.getCODIGO());
-					if(controleUploadA != null){
-					    btnFotoA.setCompoundDrawablesWithIntrinsicBounds(
-					    		getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
-								null,
-								getContext().getResources().getDrawable(R.drawable.ic_check_green),
-								null);
-						Log.d(TAG, "foto->Elemento de Carga");
-					}
-					ControleUpload controleUploadC = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+"c", carregamento.getCODIGO());
-					if(controleUploadC != null){
-						btnFotoC.setCompoundDrawablesWithIntrinsicBounds(
-								getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
-								null,
-								getContext().getResources().getDrawable(R.drawable.ic_check_green),
-								null);
-						Log.d(TAG, "foto->Cabo");
-					}
-					ControleUpload controleUploadP = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+"p", carregamento.getCODIGO());
-					if(controleUploadP != null){
-						btnFotoP.setCompoundDrawablesWithIntrinsicBounds(
-								getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
-								null,
-								getContext().getResources().getDrawable(R.drawable.ic_check_green),
-								null);
-						Log.d(TAG, "foto->Posição na EV");
-					}
-					ControleUpload controleUploadS = controleUploadBLL.listarByArqCarregado(getActivity(), "19"+carregamento.getCAMPO_TIPO().substring(2, 5)+"s", carregamento.getCODIGO());
-					if(controleUploadS != null){
-						btnFotoS.setCompoundDrawablesWithIntrinsicBounds(
-								getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
-								null,
-								getContext().getResources().getDrawable(R.drawable.ic_check_green),
-								null);
-						Log.d(TAG, "foto->Suporte de Fixação");
-					}
+				if(verificarFotoCarregamento("a", idCarr) != null){
+					setButtonDrawablesCheck(btnFotoA);
+					Log.d(TAG, "foto->Elemento de Carga");
+				}
+				if(verificarFotoCarregamento("c", idCarr) != null){
+					setButtonDrawablesCheck(btnFotoC);
+					Log.d(TAG, "foto->Cabo");
+				}
+				if(verificarFotoCarregamento("p", idCarr) != null){
+					setButtonDrawablesCheck(btnFotoP);
+					Log.d(TAG, "foto->Posição na EV");
+				}
+				if(verificarFotoCarregamento("s", idCarr) != null){
+					setButtonDrawablesCheck(btnFotoS);
+					Log.d(TAG, "foto->Suporte de Fixação");
 				}
 			}
 		}
@@ -308,7 +286,28 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 		}
 
 	}
-	
+
+	private void setButtonDrawablesCheck(Button btnFoto) {
+		btnFoto.setCompoundDrawablesWithIntrinsicBounds(
+				getContext().getResources().getDrawable(R.drawable.ic_arrow_down),
+				null,
+				getContext().getResources().getDrawable(R.drawable.ic_check_green),
+				null);
+	}
+
+	private ControleUpload verificarFotoCarregamento(String tipo, String idCarr) {
+		try {
+			Carregamento carregamento = carregamentoBLL.listarById(getActivity(), idCarr);
+			return controleUploadBLL.listarByArqCarregado
+					(getActivity(),
+					"19"+carregamento.getCAMPO_TIPO().substring(2, 5)+tipo,
+					carregamento.getCODIGO());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private void popularSpinners() throws Exception {
 		insumosBLL = new InsumosBLL();
 		lstInsumos = insumosBLL.listarAntena(getActivity());
@@ -1880,6 +1879,8 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 					}
 					msgDialog = getResources().getString(R.string.geral_RegistroSalvo);
 					btnGravar(false);
+
+					verificarButtonDrawables(CaptImg);
 				}
 			}
 		}
@@ -1887,5 +1888,23 @@ public class NovoCarregFragment extends BaseFragment implements OnMenuItemClickL
 			LogErrorBLL.LogError(e.getMessage(), "onActivityResult",getActivity());
 		}
 		showDialog(msgDialog);
+	}
+
+	@MainThread
+	private void verificarButtonDrawables(String captImg) {
+		switch (captImg){
+			case "a":
+				setButtonDrawablesCheck(btnFotoA);
+				break;
+			case "c":
+				setButtonDrawablesCheck(btnFotoC);
+				break;
+			case "p":
+				setButtonDrawablesCheck(btnFotoP);
+				break;
+			case "s":
+				setButtonDrawablesCheck(btnFotoS);
+				break;
+		}
 	}
 }
