@@ -467,6 +467,7 @@ public class BaseActivity extends AppCompatActivity {
         Bitmap finalBitmap = null;
         String tempPath = tempImageFile.getAbsolutePath();
         Bitmap bitmapOrg = BitmapUtills.createOriginalBitmap(tempPath);
+        bitmapOrg = BitmapUtills.insertDateTimeIntoBitmap(bitmapOrg);
         try {
             bitmapOrg = BitmapUtills.rotateImage(tempPath, bitmapOrg);
             finalBitmap = BitmapUtills.resizeBitmap(bitmapOrg);

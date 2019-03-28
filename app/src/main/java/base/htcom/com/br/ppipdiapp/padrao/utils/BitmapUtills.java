@@ -3,7 +3,10 @@ package base.htcom.com.br.ppipdiapp.padrao.utils;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.os.Build;
 import android.util.Log;
@@ -14,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.Normalizer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class BitmapUtills {
@@ -300,6 +305,21 @@ public class BitmapUtills {
 		final Matrix matrix = new Matrix();
 		matrix.postRotate(angle);
 		return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+	}
+
+	public static Bitmap insertDateTimeIntoBitmap(Bitmap bitmap){
+		Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+		Canvas canvas = new Canvas(mutableBitmap); //bmp is the bitmap to dwaw into
+
+		Paint paint = new Paint();
+		paint.setColor(Color.RED);
+		paint.setTextSize(75);
+		paint.setTextAlign(Paint.Align.CENTER);
+
+		String date = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
+		canvas.drawText(date, mutableBitmap.getWidth()-370, mutableBitmap.getHeight()-50, paint);
+
+		return mutableBitmap;
 	}
 	
 }
